@@ -19,6 +19,7 @@ function territoryApp() {
         isUpdatingAddresses: false,
         searchQuery: '',
         filterType: 'all',
+        introStep: 0,
         tutorialActive: false,
         tutorialStep: 1,
 
@@ -40,23 +41,59 @@ function territoryApp() {
                 // Helper for infinite scroll or similar
             });
 
-            // Trigger live interactive guide on first visit
+            // Trigger intro modal on first visit
             if (!localStorage.getItem('tutorialSeen')) {
                 setTimeout(() => {
-                    this.startInteractiveGuide();
+                    this.openIntroModal();
                 }, 400);
             }
         },
 
+        openIntroModal() {
+            this.introStep = 0;
+            this.modals.tutorial = true;
+        },
+        nextIntroStep() {
+            if (this.introStep < 3) {
+                this.introStep++;
+            }
+        },
+        prevIntroStep() {
+            if (this.introStep > 0) {
+                this.introStep--;
+            }
+        },
+        startInteractiveGuideFromIntro() {
+            this.modals.tutorial = false;
+            this.startInteractiveGuide();
+        },
         startInteractiveGuide() {
+            this.modals.tutorial = false;
             this.tutorialActive = true;
             this.tutorialStep = 1;
             this.view = 'dashboard';
         },
         finishTutorial() {
             localStorage.setItem('tutorialSeen', 'true');
+            this.modals.tutorial = false;
             this.tutorialActive = false;
             this.tutorialStep = 0;
+        },
+        introTouchStartX: 0,
+        handleIntroTouchStart(e) {
+            if (e.touches && e.touches.length > 0) {
+                this.introTouchStartX = e.touches[0].clientX;
+            }
+        },
+        handleIntroTouchEnd(e) {
+            if (e.changedTouches && e.changedTouches.length > 0) {
+                const diffX = e.changedTouches[0].clientX - this.introTouchStartX;
+                if (diffX < -40) {
+                    this.nextIntroStep();
+                } else if (diffX > 40) {
+                    this.prevIntroStep();
+                }
+            }
         },
 
         cardTouchStartX: 0,
