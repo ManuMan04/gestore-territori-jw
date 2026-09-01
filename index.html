@@ -106,8 +106,7 @@
                         <template x-for="f in [
                             {id: 'all', label: 'Tutti'}, 
                             {id: 'in_progress', label: 'In corso'}, 
-                            {id: 'completed', label: 'Completati'}, 
-                            {id: 'expired', label: 'Scaduti'}
+                            {id: 'completed', label: 'Completati'}
                         ]" :key="f.id">
                             <button @click="filterType = f.id"
                                 class="px-5 py-2.5 rounded-2xl text-xs font-bold whitespace-nowrap transition-all border shadow-sm shadow-slate-200/50 dark:shadow-none"
