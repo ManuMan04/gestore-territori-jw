@@ -19,7 +19,8 @@ function territoryApp() {
         isUpdatingAddresses: false,
         searchQuery: '',
         filterType: 'all',
-        tutorialStep: 0,
+        tutorialActive: false,
+        tutorialStep: 1,
 
         initApp() {
             if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
@@ -39,60 +40,23 @@ function territoryApp() {
                 // Helper for infinite scroll or similar
             });
 
-            // Trigger tutorial on first visit
+            // Trigger live interactive guide on first visit
             if (!localStorage.getItem('tutorialSeen')) {
                 setTimeout(() => {
-                    this.startTutorial();
+                    this.startInteractiveGuide();
                 }, 400);
             }
         },
 
-        startTutorial() {
-            this.tutorialStep = 0;
-            this.modals.tutorial = true;
+        startInteractiveGuide() {
+            this.tutorialActive = true;
+            this.tutorialStep = 1;
             this.view = 'dashboard';
-        },
-        nextTutorialStep() {
-            if (this.tutorialStep === 0) {
-                this.tutorialStep = 1;
-            } else if (this.tutorialStep === 1) {
-                if (this.territories && this.territories.length > 0) {
-                    this.openTerritory(this.territories[0].id);
-                }
-                this.tutorialStep = 2;
-            } else if (this.tutorialStep === 2) {
-                this.tutorialStep = 3;
-            } else {
-                this.finishTutorial();
-            }
-        },
-        prevTutorialStep() {
-            if (this.tutorialStep > 0) {
-                this.tutorialStep--;
-                if (this.tutorialStep <= 1 && this.view === 'editor') {
-                    this.goBack();
-                }
-            }
         },
         finishTutorial() {
             localStorage.setItem('tutorialSeen', 'true');
-            this.modals.tutorial = false;
-        },
-        tutorialTouchStartX: 0,
-        handleTutorialTouchStart(e) {
-            if (e.touches && e.touches.length > 0) {
-                this.tutorialTouchStartX = e.touches[0].clientX;
-            }
-        },
-        handleTutorialTouchEnd(e) {
-            if (e.changedTouches && e.changedTouches.length > 0) {
-                const diffX = e.changedTouches[0].clientX - this.tutorialTouchStartX;
-                if (diffX < -40) {
-                    this.nextTutorialStep();
-                } else if (diffX > 40) {
-                    this.prevTutorialStep();
-                }
-            }
+            this.tutorialActive = false;
+            this.tutorialStep = 0;
         },
 
         cardTouchStartX: 0,
@@ -153,6 +117,9 @@ function territoryApp() {
             this.forms.territoryName = '';
             this.forms.territoryColor = null;
             this.modals.newTerritory = true;
+            if (this.tutorialActive && this.tutorialStep === 1) {
+                this.tutorialStep = 2;
+            }
         },
         focusAtEnd(el) {
             if (!el) return;
@@ -195,11 +162,22 @@ function territoryApp() {
             this.territories.push(newT);
             this.filterType = 'all';
             this.modals.newTerritory = false;
+            if (this.tutorialActive) {
+                this.openTerritory(newT.id);
+                this.tutorialStep = 3;
+            }
         },
         openTerritory(id) {
+            if (this.cardIsDragging) {
+                this.cardIsDragging = false;
+                return;
+            }
             this.activeTerritory = this.territories.find(t => t.id === id);
             this.view = 'editor';
             this.selectionMode = false;
+            if (this.tutorialActive && this.tutorialStep <= 2) {
+                this.tutorialStep = 3;
+            }
         },
         goBack() {
             this.activeTerritory = null;
@@ -362,6 +340,9 @@ function territoryApp() {
                     unit.status = 0;
                 }
                 if (addr) addr.lastInteraction = new Date().toISOString();
+                if (this.tutorialActive && this.tutorialStep === 3) {
+                    this.tutorialStep = 4;
+                }
             }
         },
         getActiveUnitNumber(addr, unitId, fallbackIndex) {
@@ -461,6 +442,9 @@ function territoryApp() {
             this.currentEditingUnit = { unit, addr };
             this.forms.noteText = unit.note || '';
             this.modals.note = true;
+            if (this.tutorialActive && this.tutorialStep === 4) {
+                this.tutorialStep = 5;
+            }
         },
         handleCardClick(t, e) {
             this.openTerritory(t.id);
