@@ -252,6 +252,13 @@ function territoryApp() {
             }
         },
         getUnitClasses(unit) {
+            if (unit.isHole) {
+                let holeBase = 'bg-slate-100/40 dark:bg-slate-900/40 text-slate-300 dark:text-slate-700 border border-dashed border-slate-200/80 dark:border-slate-800/80';
+                if (this.selectionMode && this.isSelected(unit.id)) {
+                    return 'scale-95 ring-4 ring-jw-600 ring-inset opacity-100 ' + holeBase;
+                }
+                return holeBase;
+            }
             let base = '';
             switch (unit.status) {
                 case 1: base = 'bg-emerald-50/90 dark:bg-emerald-950/30 text-emerald-800 dark:text-emerald-300 border-2 border-emerald-400 dark:border-emerald-600'; break;
@@ -266,14 +273,27 @@ function territoryApp() {
         },
         bulkAction(action) {
             if (this.selectedUnits.length === 0) return;
-            const targetStatus = action === 'green' ? 1 : 2;
-            this.activeTerritory.addresses.forEach(a => {
-                a.units.forEach(u => { if (this.selectedUnits.includes(u.id)) u.status = targetStatus; });
-            });
+            if (action === 'hole') {
+                this.activeTerritory.addresses.forEach(a => {
+                    a.units.forEach(u => {
+                        if (this.selectedUnits.includes(u.id)) u.isHole = !u.isHole;
+                    });
+                });
+            } else {
+                const targetStatus = action === 'green' ? 1 : (action === 'red' ? 2 : 0);
+                this.activeTerritory.addresses.forEach(a => {
+                    a.units.forEach(u => {
+                        if (this.selectedUnits.includes(u.id)) {
+                            u.isHole = false;
+                            u.status = targetStatus;
+                        }
+                    });
+                });
+            }
             this.selectedUnits = []; this.selectionMode = false;
         },
         handleTouchStart(unit, addr, e) {
-            if (this.selectionMode) return;
+            if (this.selectionMode || unit.isHole) return;
             this.longPressTriggered = false;
             clearTimeout(this.touchTimer);
             const touch = e.touches && e.touches.length > 0 ? e.touches[0] : (e.changedTouches && e.changedTouches.length > 0 ? e.changedTouches[0] : null);
@@ -306,7 +326,7 @@ function territoryApp() {
             this.touchTimer = null;
         },
         handleNoteLongPress(unit, addr, e) {
-            if (this.selectionMode) return;
+            if (this.selectionMode || unit.isHole) return;
             this.longPressTriggered = true;
             this.openNoteModal(unit, addr);
         },
@@ -332,8 +352,9 @@ function territoryApp() {
                 if (t.addresses) {
                     t.addresses.forEach(a => {
                         if (a.units) {
-                            totalUnits += a.units.length;
-                            completedUnits += a.units.filter(u => u.status !== 0).length;
+                            const valid = a.units.filter(u => !u.isHole);
+                            totalUnits += valid.length;
+                            completedUnits += valid.filter(u => u.status !== 0).length;
                         }
                     });
                 }
@@ -350,9 +371,10 @@ function territoryApp() {
             let total = 0, green = 0, red = 0;
             t.addresses.forEach(a => {
                 if (a && a.units) {
-                    total += a.units.length;
-                    green += a.units.filter(u => u.status === 1).length;
-                    red += a.units.filter(u => u.status === 2).length;
+                    const valid = a.units.filter(u => !u.isHole);
+                    total += valid.length;
+                    green += valid.filter(u => u.status === 1).length;
+                    red += valid.filter(u => u.status === 2).length;
                 }
             });
             const percent = total === 0 ? 0 : Math.round(((green + red) / total) * 100);
@@ -360,15 +382,19 @@ function territoryApp() {
         },
         calculateAddressStats(addr) {
             if (!addr || !addr.units || addr.units.length === 0) return { percent: 0, green: 0, red: 0, neutral: 0, total: 0 };
-            const total = addr.units.length;
-            const green = addr.units.filter(u => u.status === 1).length;
-            const red = addr.units.filter(u => u.status === 2).length;
+            const valid = addr.units.filter(u => !u.isHole);
+            const total = valid.length;
+            const green = valid.filter(u => u.status === 1).length;
+            const red = valid.filter(u => u.status === 2).length;
             const percent = total === 0 ? 0 : Math.round(((green + red) / total) * 100);
             return { percent, green, red, neutral: total - green - red, total };
         },
         countTotalUnits(t) {
             if (!t || !t.addresses) return 0;
-            return t.addresses.reduce((acc, a) => acc + (a && a.units ? a.units.length : 0), 0);
+            return t.addresses.reduce((acc, a) => {
+                if (!a || !a.units) return acc;
+                return acc + a.units.filter(u => !u.isHole).length;
+            }, 0);
         },
         getFilteredTerritories() {
             return this.territories.filter(t => {
