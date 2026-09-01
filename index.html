@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="it" class="antialiased">
+<html lang="it" class="antialiased h-full">
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>MioTerritorio</title>
 
     <!-- Tailwind CSS -->
@@ -34,21 +34,21 @@
 </head>
 
 <body
-    class="bg-slate-100/80 text-slate-900 dark:bg-slate-950 dark:text-slate-100 transition-colors duration-300 h-screen h-[100dvh] overflow-hidden"
+    class="bg-slate-100/80 text-slate-900 dark:bg-slate-950 dark:text-slate-100 transition-colors duration-300 h-full overflow-hidden"
     x-data="territoryApp()" x-init="initApp()" @touchstart="handleSwipeStart($event)" @touchend="handleSwipeEnd($event)"
     :class="{ 'dark': isDark }">
 
     <!-- App Container -->
     <div @click="if(!$event.target.closest('input, textarea, [contenteditable], button, a')) document.activeElement.blur()"
-        class="max-w-md md:max-w-3xl lg:max-w-5xl mx-auto h-full h-[100dvh] relative shadow-2xl bg-slate-100/80 dark:bg-slate-950 overflow-hidden flex flex-col">
+        class="max-w-md md:max-w-3xl lg:max-w-5xl mx-auto h-full w-full relative shadow-2xl bg-slate-100/80 dark:bg-slate-950 overflow-hidden flex flex-col">
 
 
         <!-- Dashboard View -->
         <template x-if="view === 'dashboard'">
             <div class="flex-1 flex flex-col h-full min-h-0 bg-slate-100/80 dark:bg-slate-950 animate-fade-in relative z-0">
                 <!-- Header -->
-                <header class="sticky top-0 z-30 px-5 pb-4 bg-slate-100/90 dark:bg-slate-950/90 backdrop-blur-md transition-colors"
-                    style="padding-top: calc(1.75rem + env(safe-area-inset-top, 0px));">
+                <header class="flex-shrink-0 z-30 px-5 pb-4 bg-slate-100/90 dark:bg-slate-950/90 backdrop-blur-md transition-colors"
+                    style="padding-top: calc(max(1rem, env(safe-area-inset-top, 0px)) + 0.75rem);">
 
                     <!-- Identity + Theme Switcher -->
                     <div class="flex items-center justify-between mb-5">
@@ -255,8 +255,8 @@
             <div class="flex-1 flex flex-col h-full min-h-0 bg-gray-100 dark:bg-gray-950 animate-fade-in relative z-0">
                 <!-- Header -->
                 <header
-                    class="px-4 pb-4 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 flex items-center gap-3 sticky top-0 z-20 shadow-sm"
-                    style="padding-top: calc(1.5rem + env(safe-area-inset-top, 0px));">
+                    class="flex-shrink-0 px-4 pb-4 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 flex items-center gap-3 z-20 shadow-sm"
+                    style="padding-top: calc(max(1rem, env(safe-area-inset-top, 0px)) + 0.5rem);">
 
                     <button @click="goBack()"
                         class="w-10 h-10 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 flex items-center justify-center text-gray-600 dark:text-gray-300 transition-colors">
@@ -351,8 +351,8 @@
             <div class="flex-1 flex flex-col h-full min-h-0 bg-slate-100/80 dark:bg-slate-950 animate-fade-in relative z-0">
                 <!-- Header -->
                 <header
-                    class="px-5 pb-4 bg-slate-100/90 dark:bg-slate-950/90 backdrop-blur-md flex items-center gap-3 sticky top-0 z-20 transition-colors"
-                    style="padding-top: calc(1.5rem + env(safe-area-inset-top, 0px));">
+                    class="flex-shrink-0 px-5 pb-4 bg-slate-100/90 dark:bg-slate-950/90 backdrop-blur-md flex items-center gap-3 z-20 transition-colors"
+                    style="padding-top: calc(max(1rem, env(safe-area-inset-top, 0px)) + 0.5rem);">
 
                     <button @click="goBack()"
                         class="w-10 h-10 rounded-2xl bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 flex items-center justify-center text-slate-600 dark:text-slate-300 transition-all flex-shrink-0 border border-slate-200/80 dark:border-slate-700/80 shadow-xs">
@@ -1104,7 +1104,7 @@
         <!-- Live Interactive Guided Tour Banner (Non-blocking, on top of everything including modals) -->
         <div x-show="tutorialActive" x-cloak
             class="fixed inset-x-3 max-w-md mx-auto z-[999] pointer-events-auto bg-slate-900/95 dark:bg-slate-900/95 text-white backdrop-blur-md rounded-2xl p-3.5 shadow-2xl border border-jw-500/40 animate-slide-up flex flex-col gap-2.5"
-            style="top: calc(1rem + env(safe-area-inset-top, 0px));">
+            style="top: calc(max(0.5rem, env(safe-area-inset-top, 0px)) + 0.5rem);">
             
             <!-- Top Bar: Step & Close -->
             <div class="flex items-center justify-between">
