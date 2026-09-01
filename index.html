@@ -876,44 +876,45 @@
                             </div>
                         </div>
 
-                        <!-- Advanced (Custom) Mode Inputs -->
-                        <div x-show="forms.addressCreationMode === 'custom'" class="space-y-4">
+                        <!-- Advanced (Interactive Visual Grid Builder) Mode Inputs -->
+                        <div x-show="forms.addressCreationMode === 'custom'" class="space-y-3">
                             <!-- Info Box -->
-                            <div
-                                class="bg-jw-50 dark:bg-jw-900/30 border border-jw-100 dark:border-jw-500/20 rounded-xl p-3.5 flex gap-3 items-center">
-                                <i class="fas fa-circle-info text-jw-600 dark:text-jw-400 text-sm"></i>
-                                <p class="text-xs leading-relaxed text-jw-800 dark:text-jw-300 font-medium">
-                                    Usa questa modalità per pulsantiere irregolari. Definisci quante unità ci sono in
-                                    ogni colonna (es. 10, 8, 8, 10).
+                            <div class="bg-jw-50 dark:bg-jw-950/40 border border-jw-100 dark:border-jw-900/30 rounded-xl p-3 flex gap-2.5 items-start">
+                                <i class="fas fa-hand-pointer text-jw-600 dark:text-jw-400 text-xs mt-0.5 flex-shrink-0"></i>
+                                <p class="text-xs leading-relaxed text-jw-900 dark:text-jw-300 font-medium">
+                                    Tocca una casella della griglia per trasformarla in uno <strong>spazio vuoto</strong> (tassello cieco) o riattivarla.
                                 </p>
                             </div>
 
-                            <div class="flex items-center justify-between px-1">
-                                <label
-                                    class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Disposizione
-                                    Pannello</label>
-                                <div class="flex gap-3">
-                                    <button @click="forms.customCols.pop()" :disabled="forms.customCols.length <= 1"
-                                        class="text-xl text-gray-400 hover:text-red-500 disabled:opacity-30 transition-colors"><i
-                                            class="fas fa-minus-circle"></i></button>
-                                    <button @click="forms.customCols.push('')"
-                                        class="text-xl text-jw-600 hover:text-jw-700 transition-colors"><i
-                                            class="fas fa-plus-circle"></i></button>
+                            <!-- Rows & Cols Controls -->
+                            <div class="flex items-center justify-between bg-slate-50 dark:bg-slate-800/60 p-2.5 rounded-2xl border border-slate-100 dark:border-slate-800 text-xs font-bold">
+                                <div class="flex items-center gap-1.5">
+                                    <span class="text-slate-400">Colonne:</span>
+                                    <button @click="removeVisualCol()" :disabled="forms.visualCols <= 1" class="w-6 h-6 rounded-lg bg-white dark:bg-slate-700 text-slate-600 dark:text-slate-300 disabled:opacity-30 shadow-xs flex items-center justify-center"><i class="fas fa-minus text-[10px]"></i></button>
+                                    <span class="w-5 text-center font-black text-slate-800 dark:text-white" x-text="forms.visualCols"></span>
+                                    <button @click="addVisualCol()" class="w-6 h-6 rounded-lg bg-white dark:bg-slate-700 text-slate-600 dark:text-slate-300 shadow-xs flex items-center justify-center"><i class="fas fa-plus text-[10px]"></i></button>
+                                </div>
+
+                                <div class="flex items-center gap-1.5">
+                                    <span class="text-slate-400">Righe:</span>
+                                    <button @click="removeVisualRow()" :disabled="forms.visualRows <= 1" class="w-6 h-6 rounded-lg bg-white dark:bg-slate-700 text-slate-600 dark:text-slate-300 disabled:opacity-30 shadow-xs flex items-center justify-center"><i class="fas fa-minus text-[10px]"></i></button>
+                                    <span class="w-5 text-center font-black text-slate-800 dark:text-white" x-text="forms.visualRows"></span>
+                                    <button @click="addVisualRow()" class="w-6 h-6 rounded-lg bg-white dark:bg-slate-700 text-slate-600 dark:text-slate-300 shadow-xs flex items-center justify-center"><i class="fas fa-plus text-[10px]"></i></button>
                                 </div>
                             </div>
 
-                            <!-- Scrollable Grid Area -->
-                            <div class="max-h-[160px] overflow-y-auto px-1 pt-1 pb-2 custom-scrollbar">
-                                <div class="grid grid-cols-4 gap-2">
-                                    <template x-for="(val, idx) in forms.customCols" :key="idx">
-                                        <div class="relative pt-1.5">
-                                            <span
-                                                class="absolute top-0 left-0 w-4 h-4 bg-white dark:bg-gray-800 rounded-full flex items-center justify-center text-[8px] font-bold text-jw-600 dark:text-jw-400 border border-jw-100 dark:border-jw-500/30 z-10 shadow-sm"
-                                                x-text="idx + 1"></span>
-                                            <input type="tel" x-model="forms.customCols[idx]"
-                                                class="w-full py-2 bg-gray-50 dark:bg-gray-800 border-none rounded-lg focus:ring-2 focus:ring-jw-500 text-gray-900 dark:text-white shadow-inner text-center text-sm"
-                                                placeholder="Es: 10">
-                                        </div>
+                            <!-- Interactive Grid Preview -->
+                            <div class="max-h-[220px] overflow-y-auto p-2 bg-slate-50/60 dark:bg-slate-950/60 rounded-2xl border border-slate-100 dark:border-slate-800 custom-scrollbar">
+                                <div class="grid gap-1.5" :style="'grid-template-columns: repeat(' + forms.visualCols + ', minmax(0, 1fr));'">
+                                    <template x-for="(slot, idx) in forms.visualSlots" :key="idx">
+                                        <button @click="toggleVisualSlot(idx)" type="button"
+                                            class="aspect-square rounded-xl flex flex-col items-center justify-center transition-all border text-xs font-extrabold select-none"
+                                            :class="slot.isHole ? 
+                                                'bg-slate-100/60 dark:bg-slate-900/40 border-dashed border-slate-300 dark:border-slate-700 text-slate-300 dark:text-slate-700' : 
+                                                'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 shadow-xs hover:border-jw-600'">
+                                            <span x-show="!slot.isHole" x-text="getVisualSlotUnitNumber(idx)"></span>
+                                            <i x-show="slot.isHole" class="fas fa-border-none text-[10px] opacity-40"></i>
+                                        </button>
                                     </template>
                                 </div>
                             </div>
@@ -921,22 +922,22 @@
 
                         <div class="h-6 flex items-center justify-center">
                             <p x-show="forms.addressCreationMode === 'grid' || forms.addressCreationMode === 'custom'"
-                                class="text-sm text-gray-400 font-medium">
-                                Totale citofoni: <span class="text-jw-600 dark:text-jw-400 font-extrabold" x-text="forms.addressCreationMode === 'grid' ? 
+                                class="text-xs text-slate-400 font-medium">
+                                Totale citofoni attivi: <span class="text-jw-600 dark:text-jw-400 font-extrabold" x-text="forms.addressCreationMode === 'grid' ? 
                                     (parseInt(forms.addressRows) || 0) * (parseInt(forms.addressCols) || 0) : 
-                                    forms.customCols.reduce((acc, v) => acc + (parseInt(v) || 0), 0)"></span>
+                                    countActiveVisualUnits()"></span>
                             </p>
                         </div>
 
                         <div class="flex justify-end gap-3 pt-2">
                             <button @click="modals.newAddress = false"
-                                class="px-4 py-2 text-sm font-bold text-gray-400 hover:text-gray-600 transition-colors">Annulla</button>
+                                class="px-4 py-2 text-sm font-bold text-slate-400 hover:text-slate-600 transition-colors">Annulla</button>
                             <button @click="submitNewAddress()"
                                 class="px-8 py-2.5 bg-jw-600 text-white font-bold rounded-xl shadow-lg shadow-jw-600/20 hover:bg-jw-700 active:scale-95 transition-all text-sm flex items-center justify-center gap-2 disabled:opacity-30 disabled:cursor-not-allowed"
                                 :disabled="!forms.addressName.trim() || 
                                 (forms.addressCreationMode === 'simple' ? (!forms.addressUnits || parseInt(forms.addressUnits) <= 0) : 
                                 (forms.addressCreationMode === 'grid' ? (!forms.addressRows || !forms.addressCols || parseInt(forms.addressRows) <= 0 || parseInt(forms.addressCols) <= 0) : 
-                                (forms.customCols.every(v => !v || parseInt(v) <= 0))))">
+                                countActiveVisualUnits() <= 0))">
                                 <i class="fas fa-plus-circle"></i> Aggiungi
                             </button>
                         </div>

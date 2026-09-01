@@ -203,39 +203,76 @@ function territoryApp() {
         openNewAddressModal() {
             this.forms.addressName = '';
             this.forms.addressUnits = '';
-            this.forms.addressRows = '';
-            this.forms.addressCols = '';
+            this.forms.addressRows = '4';
+            this.forms.addressCols = '3';
             this.forms.addressCreationMode = 'simple';
-            this.forms.customCols = [];
+            this.forms.visualRows = 4;
+            this.forms.visualCols = 3;
+            this.forms.visualSlots = [];
+            this.updateVisualGridSlots();
             this.modals.newAddress = true;
+        },
+        updateVisualGridSlots() {
+            const total = this.forms.visualRows * this.forms.visualCols;
+            const newSlots = [];
+            for (let i = 0; i < total; i++) {
+                const existing = this.forms.visualSlots && this.forms.visualSlots[i];
+                newSlots.push({ id: i, isHole: existing ? existing.isHole : false });
+            }
+            this.forms.visualSlots = newSlots;
+        },
+        addVisualRow() { this.forms.visualRows++; this.updateVisualGridSlots(); },
+        removeVisualRow() { if (this.forms.visualRows > 1) { this.forms.visualRows--; this.updateVisualGridSlots(); } },
+        addVisualCol() { this.forms.visualCols++; this.updateVisualGridSlots(); },
+        removeVisualCol() { if (this.forms.visualCols > 1) { this.forms.visualCols--; this.updateVisualGridSlots(); } },
+        toggleVisualSlot(idx) {
+            if (this.forms.visualSlots[idx]) {
+                this.forms.visualSlots[idx].isHole = !this.forms.visualSlots[idx].isHole;
+            }
+        },
+        getVisualSlotUnitNumber(idx) {
+            let activeCount = 0;
+            for (let i = 0; i <= idx; i++) {
+                if (this.forms.visualSlots[i] && !this.forms.visualSlots[i].isHole) {
+                    activeCount++;
+                }
+            }
+            return activeCount;
+        },
+        countActiveVisualUnits() {
+            if (!this.forms.visualSlots) return 0;
+            return this.forms.visualSlots.filter(s => !s.isHole).length;
         },
         submitNewAddress() {
             if (!this.forms.addressName) return;
 
-            let count = 0;
+            let units = [];
             let cols = null;
-            let columnsLayout = null;
 
             if (this.forms.addressCreationMode === 'simple') {
-                count = parseInt(this.forms.addressUnits) || 0;
+                const count = parseInt(this.forms.addressUnits) || 0;
+                units = Array.from({ length: count }, () => ({ id: Date.now() + Math.random().toString(), status: 0, note: '' }));
             } else if (this.forms.addressCreationMode === 'grid') {
                 const r = parseInt(this.forms.addressRows) || 0;
                 const c = parseInt(this.forms.addressCols) || 0;
-                count = r * c;
+                const count = r * c;
                 cols = c;
+                units = Array.from({ length: count }, () => ({ id: Date.now() + Math.random().toString(), status: 0, note: '' }));
             } else if (this.forms.addressCreationMode === 'custom') {
-                columnsLayout = this.forms.customCols.map(val => parseInt(val) || 0);
-                count = columnsLayout.reduce((acc, val) => acc + val, 0);
-                cols = columnsLayout.length;
+                cols = this.forms.visualCols;
+                units = this.forms.visualSlots.map(s => ({
+                    id: Date.now() + Math.random().toString(),
+                    isHole: s.isHole,
+                    status: 0,
+                    note: ''
+                }));
             }
 
-            const units = Array.from({ length: count }, () => ({ id: Date.now() + Math.random().toString(), status: 0, note: '' }));
             this.activeTerritory.addresses.push({
                 id: Date.now().toString() + Math.random().toString(36).substr(2, 5),
                 name: this.forms.addressName,
                 units: units,
-                cols: cols,
-                columnsLayout: columnsLayout
+                cols: cols
             });
             this.modals.newAddress = false;
         },
