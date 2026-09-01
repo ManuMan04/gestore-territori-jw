@@ -6,16 +6,20 @@ function territoryApp() {
         activeTerritory: null,
         selectionMode: false,
         selectedUnits: [],
-        modals: { newTerritory: false, newAddress: false, note: false, deleteConfirm: false, colorPickerId: null },
+        modals: { newTerritory: false, newAddress: false, note: false, deleteConfirm: false, colorPickerId: null, tutorial: false },
         deleteState: { type: null, id: null, targetName: '' },
         forms: { territoryName: '', territoryColor: null, addressName: '', addressUnits: '', addressRows: '', addressCols: '', addressCreationMode: 'simple', customCols: [], noteText: '' },
         currentEditingUnit: null,
         touchTimer: null,
         longPressTriggered: false,
         touchStartX: 0,
+        touchStartY: 0,
+        touchStartUnitX: 0,
+        touchStartUnitY: 0,
         isUpdatingAddresses: false,
         searchQuery: '',
         filterType: 'all',
+        tutorialStep: 0,
 
         initApp() {
             if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
@@ -34,12 +38,48 @@ function territoryApp() {
             this.$watch('view', (val) => {
                 // Helper for infinite scroll or similar
             });
+
+            // Trigger tutorial on first visit
+            if (!localStorage.getItem('tutorialSeen')) {
+                setTimeout(() => {
+                    this.startTutorial();
+                }, 400);
+            }
         },
 
-        handleSwipeStart(e) { this.touchStartX = e.changedTouches[0].screenX; },
+        startTutorial() {
+            this.tutorialStep = 0;
+            this.modals.tutorial = true;
+        },
+        nextTutorialStep() {
+            if (this.tutorialStep < 3) {
+                this.tutorialStep++;
+            } else {
+                this.finishTutorial();
+            }
+        },
+        prevTutorialStep() {
+            if (this.tutorialStep > 0) {
+                this.tutorialStep--;
+            }
+        },
+        finishTutorial() {
+            localStorage.setItem('tutorialSeen', 'true');
+            this.modals.tutorial = false;
+        },
+
+        handleSwipeStart(e) {
+            if (!e.changedTouches || e.changedTouches.length === 0) return;
+            this.touchStartX = e.changedTouches[0].clientX;
+            this.touchStartY = e.changedTouches[0].clientY;
+        },
         handleSwipeEnd(e) {
-            const diffX = e.changedTouches[0].screenX - this.touchStartX;
-            if (diffX > 100 && (this.view === 'editor' || this.view === 'info')) this.goBack();
+            if (!e.changedTouches || e.changedTouches.length === 0) return;
+            const diffX = e.changedTouches[0].clientX - this.touchStartX;
+            const diffY = e.changedTouches[0].clientY - this.touchStartY;
+            if (diffX > 100 && Math.abs(diffY) < 50 && Math.abs(diffX) > Math.abs(diffY) * 2 && (this.view === 'editor' || this.view === 'info')) {
+                this.goBack();
+            }
         },
 
         toggleTheme() { this.isDark = !this.isDark; },
@@ -208,9 +248,9 @@ function territoryApp() {
         getUnitClasses(unit) {
             let base = '';
             switch (unit.status) {
-                case 1: base = 'bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-400 border-2 border-green-300 dark:border-green-800'; break;
-                case 2: base = 'bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-400 border-2 border-red-300 dark:border-red-800'; break;
-                default: base = 'bg-white dark:bg-gray-800 text-gray-500 border border-gray-200 dark:border-gray-700';
+                case 1: base = 'bg-emerald-50/90 dark:bg-emerald-950/30 text-emerald-800 dark:text-emerald-300 border-2 border-emerald-400 dark:border-emerald-600'; break;
+                case 2: base = 'bg-rose-50/90 dark:bg-rose-950/30 text-rose-800 dark:text-rose-300 border-2 border-rose-300 dark:border-rose-700'; break;
+                default: base = 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700';
             }
             if (this.selectionMode && this.isSelected(unit.id)) {
                 return 'scale-95 ring-4 ring-jw-600 ring-inset opacity-100 ' + base;
@@ -230,6 +270,11 @@ function territoryApp() {
             if (this.selectionMode) return;
             this.longPressTriggered = false;
             clearTimeout(this.touchTimer);
+            const touch = e.touches && e.touches.length > 0 ? e.touches[0] : (e.changedTouches && e.changedTouches.length > 0 ? e.changedTouches[0] : null);
+            if (touch) {
+                this.touchStartUnitX = touch.clientX;
+                this.touchStartUnitY = touch.clientY;
+            }
             this.touchTimer = setTimeout(() => {
                 this.longPressTriggered = true;
                 if (navigator.vibrate) {
@@ -238,8 +283,21 @@ function territoryApp() {
                 this.openNoteModal(unit, addr);
             }, 600);
         },
+        handleTouchMove(e) {
+            if (!this.touchTimer) return;
+            const touch = e.touches && e.touches.length > 0 ? e.touches[0] : (e.changedTouches && e.changedTouches.length > 0 ? e.changedTouches[0] : null);
+            if (touch) {
+                const dx = touch.clientX - this.touchStartUnitX;
+                const dy = touch.clientY - this.touchStartUnitY;
+                if (Math.hypot(dx, dy) > 8) {
+                    clearTimeout(this.touchTimer);
+                    this.touchTimer = null;
+                }
+            }
+        },
         handleTouchEnd(e) {
             clearTimeout(this.touchTimer);
+            this.touchTimer = null;
         },
         handleNoteLongPress(unit, addr, e) {
             if (this.selectionMode) return;
@@ -282,7 +340,7 @@ function territoryApp() {
         },
 
         calculateStats(t) {
-            if (!t || !t.addresses || t.addresses.length === 0) return { percent: 0, green: 0, red: 0, neutral: 0 };
+            if (!t || !t.addresses || t.addresses.length === 0) return { percent: 0, green: 0, red: 0, neutral: 0, total: 0 };
             let total = 0, green = 0, red = 0;
             t.addresses.forEach(a => {
                 if (a && a.units) {
@@ -291,6 +349,14 @@ function territoryApp() {
                     red += a.units.filter(u => u.status === 2).length;
                 }
             });
+            const percent = total === 0 ? 0 : Math.round(((green + red) / total) * 100);
+            return { percent, green, red, neutral: total - green - red, total };
+        },
+        calculateAddressStats(addr) {
+            if (!addr || !addr.units || addr.units.length === 0) return { percent: 0, green: 0, red: 0, neutral: 0, total: 0 };
+            const total = addr.units.length;
+            const green = addr.units.filter(u => u.status === 1).length;
+            const red = addr.units.filter(u => u.status === 2).length;
             const percent = total === 0 ? 0 : Math.round(((green + red) / total) * 100);
             return { percent, green, red, neutral: total - green - red, total };
         },
