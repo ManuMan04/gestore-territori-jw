@@ -81,6 +81,9 @@ function territoryApp() {
             this.modals.tutorialComplete = false;
             this.tutorialActive = false;
             this.tutorialStep = 0;
+            this.view = 'dashboard';
+            this.activeTerritory = null;
+            this.selectionMode = false;
         },
         introTouchStartX: 0,
         handleIntroTouchStart(e) {

@@ -48,7 +48,7 @@
             <div class="flex-1 flex flex-col h-full min-h-0 bg-slate-100/80 dark:bg-slate-950 animate-fade-in relative z-0">
                 <!-- Header -->
                 <header class="sticky top-0 z-30 px-5 pb-4 bg-slate-100/90 dark:bg-slate-950/90 backdrop-blur-md transition-colors"
-                    style="padding-top: max(1.25rem, env(safe-area-inset-top, 0px));">
+                    style="padding-top: calc(1.75rem + env(safe-area-inset-top, 0px));">
 
                     <!-- Identity + Theme Switcher -->
                     <div class="flex items-center justify-between mb-5">
@@ -256,7 +256,7 @@
                 <!-- Header -->
                 <header
                     class="px-4 pb-4 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 flex items-center gap-3 sticky top-0 z-20 shadow-sm"
-                    style="padding-top: max(1rem, env(safe-area-inset-top, 0px));">
+                    style="padding-top: calc(1.5rem + env(safe-area-inset-top, 0px));">
 
                     <button @click="goBack()"
                         class="w-10 h-10 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 flex items-center justify-center text-gray-600 dark:text-gray-300 transition-colors">
@@ -352,7 +352,7 @@
                 <!-- Header -->
                 <header
                     class="px-5 pb-4 bg-slate-100/90 dark:bg-slate-950/90 backdrop-blur-md flex items-center gap-3 sticky top-0 z-20 transition-colors"
-                    style="padding-top: max(1rem, env(safe-area-inset-top, 0px));">
+                    style="padding-top: calc(1.5rem + env(safe-area-inset-top, 0px));">
 
                     <button @click="goBack()"
                         class="w-10 h-10 rounded-2xl bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 flex items-center justify-center text-slate-600 dark:text-slate-300 transition-all flex-shrink-0 border border-slate-200/80 dark:border-slate-700/80 shadow-xs">
@@ -1012,13 +1012,13 @@
                                 <div class="w-5 h-5 rounded-full bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 flex items-center justify-center text-[9px] flex-shrink-0 mt-0.5">
                                     <i class="fas fa-list-ol"></i>
                                 </div>
-                                <span><strong>Modalità Semplice:</strong> Inserisci solo il numero totale di citofoni sequenziali (es. 12, 24).</span>
+                                <span><strong>Modalità Semplice:</strong> Inserisci solo il numero totale di citofoni sequenziali (es. 12 o 24).</span>
                             </div>
                             <div class="flex items-start gap-2.5">
                                 <div class="w-5 h-5 rounded-full bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 flex items-center justify-center text-[9px] flex-shrink-0 mt-0.5">
                                     <i class="fas fa-border-all"></i>
                                 </div>
-                                <span><strong>Griglia & Avanzata:</strong> Crea pulsantiere a colonne regolari o disegna fori con spazi vuoti / tasselli ciechi per citofoniere asimmetriche reali.</span>
+                                <span><strong>Griglia & Avanzata:</strong> Crea pulsantiere regolari o disegna fori con spazi vuoti / tasselli ciechi per riprodurre citofoniere reali asimmetriche.</span>
                             </div>
                         </div>
                     </div>
@@ -1030,16 +1030,24 @@
                         </div>
                         <h3 class="text-xl font-black text-center text-slate-900 dark:text-white">Registra le visite</h3>
                         <p class="text-sm text-slate-500 dark:text-slate-400 text-center leading-relaxed">
-                            Aggiorna lo stato dei citofoni in tempo reale durante il ministero.
+                            Aggiorna lo stato dei citofoni toccandoli durante il ministero.
                         </p>
-                        <div class="bg-slate-50 dark:bg-slate-800/50 rounded-2xl p-3.5 space-y-2.5 border border-slate-100 dark:border-slate-800/80 text-xs text-slate-600 dark:text-slate-300">
+                        <div class="bg-slate-50 dark:bg-slate-800/50 rounded-2xl p-3.5 space-y-2 border border-slate-100 dark:border-slate-800/80 text-xs text-slate-600 dark:text-slate-300">
                             <div class="flex items-start gap-2.5">
                                 <span class="w-4 h-4 rounded-full bg-emerald-500 text-white text-[9px] font-bold flex items-center justify-center flex-shrink-0 mt-0.5"><i class="fas fa-check"></i></span>
-                                <span><strong>Stato verde (fatto) e rosso (assente):</strong> Tocca un citofono per cambiare lo stato.</span>
+                                <span><strong>1° tocco (Verde):</strong> Visita effettuata (Fatto).</span>
                             </div>
                             <div class="flex items-start gap-2.5">
-                                <i class="fas fa-sticky-note text-jw-600 dark:text-jw-400 mt-0.5 text-sm flex-shrink-0"></i>
-                                <span><strong>Pressione prolungata:</strong> Tieni premuto un citofono per aggiungere una nota personale.</span>
+                                <span class="w-4 h-4 rounded-full bg-rose-500 text-white text-[9px] font-bold flex items-center justify-center flex-shrink-0 mt-0.5"><i class="fas fa-times"></i></span>
+                                <span><strong>2° tocco (Rosso):</strong> Assente alla visita.</span>
+                            </div>
+                            <div class="flex items-start gap-2.5">
+                                <span class="w-4 h-4 rounded-full bg-slate-300 dark:bg-slate-700 text-slate-500 text-[8px] font-bold flex items-center justify-center flex-shrink-0 mt-0.5"><i class="fas fa-border-none"></i></span>
+                                <span><strong>3° tocco (Spazio Vuoto):</strong> Disattiva il citofono per buchi ciechi o spazi non assegnati.</span>
+                            </div>
+                            <div class="flex items-start gap-2.5 pt-1 border-t border-slate-200/60 dark:border-slate-700/60">
+                                <i class="fas fa-sticky-note text-jw-600 dark:text-jw-400 text-sm mt-0.5 flex-shrink-0"></i>
+                                <span><strong>Pressione prolungata:</strong> Tieni premuto per aggiungere una nota personale.</span>
                             </div>
                         </div>
                     </div>
@@ -1096,7 +1104,7 @@
         <!-- Live Interactive Guided Tour Banner (Non-blocking, on top of everything including modals) -->
         <div x-show="tutorialActive" x-cloak
             class="fixed inset-x-3 max-w-md mx-auto z-[999] pointer-events-auto bg-slate-900/95 dark:bg-slate-900/95 text-white backdrop-blur-md rounded-2xl p-3.5 shadow-2xl border border-jw-500/40 animate-slide-up flex flex-col gap-2.5"
-            style="top: max(0.75rem, env(safe-area-inset-top, 0px));">
+            style="top: calc(1rem + env(safe-area-inset-top, 0px));">
             
             <!-- Top Bar: Step & Close -->
             <div class="flex items-center justify-between">
@@ -1181,36 +1189,16 @@
             <div @click="finishTutorial()" class="absolute inset-0 bg-slate-900/60 backdrop-blur-md transition-opacity"></div>
 
             <!-- Modal Box -->
-            <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 w-full max-w-md relative shadow-2xl animate-slide-up border border-slate-100 dark:border-slate-800 overflow-hidden flex flex-col justify-between gap-5">
+            <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 w-full max-w-sm relative shadow-2xl animate-slide-up border border-slate-100 dark:border-slate-800 overflow-hidden flex flex-col justify-between gap-6 text-center">
                 
-                <div class="text-center space-y-3">
-                    <div class="w-16 h-16 rounded-3xl bg-emerald-500 text-white flex items-center justify-center text-3xl shadow-lg shadow-emerald-500/30 mx-auto">
-                        <i class="fas fa-check-circle"></i>
+                <div class="space-y-3">
+                    <div class="w-16 h-16 rounded-3xl bg-jw-600 text-white flex items-center justify-center text-3xl shadow-lg shadow-jw-600/30 mx-auto">
+                        <i class="fas fa-rocket"></i>
                     </div>
-                    <h3 class="text-2xl font-black text-slate-900 dark:text-white tracking-tight">Guida Completata!</h3>
+                    <h3 class="text-2xl font-black text-slate-900 dark:text-white tracking-tight">Tutorial Completato!</h3>
                     <p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
-                        Ora hai tutte le informazioni necessarie per gestire i tuoi territori e le visite nel ministero.
+                        Tutto pronto! Ora puoi iniziare a organizzare liberamente i tuoi territori e registrare le visite.
                     </p>
-                </div>
-
-                <!-- Recap Legend Box -->
-                <div class="bg-slate-50 dark:bg-slate-800/60 rounded-2xl p-4 border border-slate-100 dark:border-slate-800 text-xs space-y-2.5 text-slate-600 dark:text-slate-300">
-                    <div class="flex items-start gap-2.5">
-                        <span class="w-4 h-4 rounded-full bg-emerald-500 text-white text-[9px] font-bold flex items-center justify-center flex-shrink-0 mt-0.5"><i class="fas fa-check"></i></span>
-                        <span><strong>Verde (Fatto):</strong> Visita completata al citofono.</span>
-                    </div>
-                    <div class="flex items-start gap-2.5">
-                        <span class="w-4 h-4 rounded-full bg-rose-500 text-white text-[9px] font-bold flex items-center justify-center flex-shrink-0 mt-0.5"><i class="fas fa-times"></i></span>
-                        <span><strong>Rosso (Assente):</strong> Nessuno ha risposto alla visita.</span>
-                    </div>
-                    <div class="flex items-start gap-2.5">
-                        <span class="w-4 h-4 rounded-full bg-slate-300 dark:bg-slate-700 text-slate-500 text-[8px] font-bold flex items-center justify-center flex-shrink-0 mt-0.5"><i class="fas fa-border-none"></i></span>
-                        <span><strong>Spazio Vuoto (Tassello cieco):</strong> Per riprodurre fedelmente pulsantiere reali con struttura irregolare o buchi senza citofono.</span>
-                    </div>
-                    <div class="flex items-start gap-2.5 pt-1 border-t border-slate-200/60 dark:border-slate-700/60">
-                        <i class="fas fa-sticky-note text-jw-600 dark:text-jw-400 text-sm mt-0.5 flex-shrink-0"></i>
-                        <span><strong>Pressione prolungata:</strong> Tieni premuto per consultare o scrivere note sul citofono.</span>
-                    </div>
                 </div>
 
                 <!-- Button -->
