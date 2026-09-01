@@ -22,6 +22,7 @@ function territoryApp() {
         introStep: 0,
         tutorialActive: false,
         tutorialStep: 1,
+        testedStates: { green: false, red: false, hole: false },
 
         initApp() {
             if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
@@ -71,6 +72,7 @@ function territoryApp() {
             this.modals.tutorial = false;
             this.tutorialActive = true;
             this.tutorialStep = 1;
+            this.testedStates = { green: false, red: false, hole: false };
             this.view = 'dashboard';
         },
         finishTutorial() {
@@ -378,7 +380,17 @@ function territoryApp() {
                 }
                 if (addr) addr.lastInteraction = new Date().toISOString();
                 if (this.tutorialActive && this.tutorialStep === 3) {
-                    this.tutorialStep = 4;
+                    if (unit.status === 1) this.testedStates.green = true;
+                    if (unit.status === 2) this.testedStates.red = true;
+                    if (unit.isHole) this.testedStates.hole = true;
+
+                    if (this.testedStates.green && this.testedStates.red && this.testedStates.hole) {
+                        setTimeout(() => {
+                            if (this.tutorialActive && this.tutorialStep === 3) {
+                                this.tutorialStep = 4;
+                            }
+                        }, 450);
+                    }
                 }
             }
         },
@@ -479,9 +491,6 @@ function territoryApp() {
             this.currentEditingUnit = { unit, addr };
             this.forms.noteText = unit.note || '';
             this.modals.note = true;
-            if (this.tutorialActive && this.tutorialStep === 4) {
-                this.tutorialStep = 5;
-            }
         },
         handleCardClick(t, e) {
             this.openTerritory(t.id);
@@ -494,6 +503,15 @@ function territoryApp() {
                 this.currentEditingUnit.addr.lastInteraction = new Date().toISOString();
             }
             this.closeNoteModal();
+            if (this.tutorialActive && this.tutorialStep === 4) {
+                this.tutorialStep = 5;
+            }
+        },
+        promptRenameTerritory(t) {
+            const newName = prompt("Modifica il nome del territorio:", t.name);
+            if (newName && newName.trim()) {
+                t.name = newName.trim();
+            }
         },
         deleteCurrentEditingUnit() {
             if (this.currentEditingUnit && this.currentEditingUnit.addr && this.currentEditingUnit.unit) {
