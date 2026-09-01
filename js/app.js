@@ -6,7 +6,7 @@ function territoryApp() {
         activeTerritory: null,
         selectionMode: false,
         selectedUnits: [],
-        modals: { newTerritory: false, newAddress: false, note: false, deleteConfirm: false, colorPickerId: null, tutorial: false },
+        modals: { newTerritory: false, newAddress: false, note: false, deleteConfirm: false, colorPickerId: null, tutorial: false, tutorialComplete: false },
         deleteState: { type: null, id: null, targetName: '' },
         forms: { territoryName: '', territoryColor: null, addressName: '', addressUnits: '', addressRows: '', addressCols: '', addressCreationMode: 'simple', customCols: [], noteText: '' },
         currentEditingUnit: null,
@@ -78,6 +78,7 @@ function territoryApp() {
         finishTutorial() {
             localStorage.setItem('tutorialSeen', 'true');
             this.modals.tutorial = false;
+            this.modals.tutorialComplete = false;
             this.tutorialActive = false;
             this.tutorialStep = 0;
         },
@@ -504,7 +505,12 @@ function territoryApp() {
             }
             this.closeNoteModal();
             if (this.tutorialActive && this.tutorialStep === 4) {
-                this.tutorialStep = 5;
+                this.tutorialActive = false;
+                this.tutorialStep = 0;
+                localStorage.setItem('tutorialSeen', 'true');
+                setTimeout(() => {
+                    this.modals.tutorialComplete = true;
+                }, 300);
             }
         },
         promptRenameTerritory(t) {
