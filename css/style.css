@@ -152,3 +152,16 @@ body {
 .dark .custom-scrollbar:hover::-webkit-scrollbar-thumb {
     background: #5b3c88;
 }
+
+@keyframes colorCycle {
+    0% { color: #a1305b; }
+    20% { color: #7858a4; }
+    40% { color: #6081b6; }
+    60% { color: #1f8d52; }
+    80% { color: #be7352; }
+    100% { color: #a1305b; }
+}
+
+.animate-color-cycle {
+    animation: colorCycle 4s linear infinite;
+}

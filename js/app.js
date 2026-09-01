@@ -335,11 +335,79 @@ function territoryApp() {
             this.forms.noteText = unit.note || '';
             this.modals.note = true;
         },
+        cardTouchTimer: null,
+        cardLongPressTriggered: false,
+        cardTouchStartX: 0,
+        cardTouchStartY: 0,
+
+        handleCardTouchStart(t, e) {
+            this.cardLongPressTriggered = false;
+            clearTimeout(this.cardTouchTimer);
+            const touch = e.touches && e.touches.length > 0 ? e.touches[0] : null;
+            if (touch) {
+                this.cardTouchStartX = touch.clientX;
+                this.cardTouchStartY = touch.clientY;
+            }
+            this.cardTouchTimer = setTimeout(() => {
+                this.cardLongPressTriggered = true;
+                if (navigator.vibrate) {
+                    try { navigator.vibrate(50); } catch (err) { }
+                }
+                this.confirmDelete('territory', t.id);
+            }, 600);
+        },
+        handleCardTouchMove(e) {
+            if (!this.cardTouchTimer) return;
+            const touch = e.touches && e.touches.length > 0 ? e.touches[0] : null;
+            if (touch) {
+                const dx = touch.clientX - this.cardTouchStartX;
+                const dy = touch.clientY - this.cardTouchStartY;
+                if (Math.hypot(dx, dy) > 8) {
+                    clearTimeout(this.cardTouchTimer);
+                    this.cardTouchTimer = null;
+                }
+            }
+        },
+        handleCardTouchEnd(e) {
+            clearTimeout(this.cardTouchTimer);
+            this.cardTouchTimer = null;
+        },
+        handleCardLongPress(t, e) {
+            this.cardLongPressTriggered = true;
+            this.confirmDelete('territory', t.id);
+        },
+        handleCardClick(t, e) {
+            if (this.cardLongPressTriggered) {
+                this.cardLongPressTriggered = false;
+                return;
+            }
+            this.openTerritory(t.id);
+        },
+
         closeNoteModal() { this.modals.note = false; this.currentEditingUnit = null; },
         saveNote() {
             if (this.currentEditingUnit) {
                 this.currentEditingUnit.unit.note = this.forms.noteText;
                 this.currentEditingUnit.addr.lastInteraction = new Date().toISOString();
+            }
+            this.closeNoteModal();
+        },
+        deleteCurrentEditingUnit() {
+            if (this.currentEditingUnit && this.currentEditingUnit.addr && this.currentEditingUnit.unit) {
+                const { addr, unit } = this.currentEditingUnit;
+                if (addr.columnsLayout) {
+                    let currentStart = 0;
+                    const newLayout = [...addr.columnsLayout];
+                    addr.columnsLayout.forEach((count, colIdx) => {
+                        const colUnits = addr.units.slice(currentStart, currentStart + count);
+                        if (colUnits.some(u => u.id === unit.id)) {
+                            newLayout[colIdx] = Math.max(0, newLayout[colIdx] - 1);
+                        }
+                        currentStart += count;
+                    });
+                    addr.columnsLayout = newLayout;
+                }
+                addr.units = addr.units.filter(u => u.id !== unit.id);
             }
             this.closeNoteModal();
         },

@@ -74,14 +74,18 @@
                                 <i class="fas fa-info-circle text-base text-jw-600 dark:text-jw-400"></i>
                             </button>
 
-                            <button @click="toggleTheme()" title="Cambia Tema"
-                                class="w-10 h-10 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-xs flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all flex-shrink-0">
-                                <i class="fas text-sm" :class="isDark ? 'fa-sun text-amber-500' : 'fa-moon text-jw-600'"></i>
-                            </button>
+                            <!-- Theme Toggle Pill (Identical to Detail View) -->
+                            <div class="bg-white dark:bg-slate-900 p-1 rounded-full flex items-center border border-slate-200/80 dark:border-slate-800 shadow-xs flex-shrink-0">
+                                <button @click="toggleTheme()" title="Cambia tema"
+                                    class="w-8 h-8 rounded-full flex items-center justify-center transition-all"
+                                    :class="isDark ? 'bg-jw-600 text-white shadow-xs' : 'bg-amber-100/70 text-amber-600 shadow-xs'">
+                                    <i class="fas text-xs" :class="isDark ? 'fa-moon' : 'fa-sun'"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Search Row (Senza il bottone sliders) -->
+                    <!-- Search Row -->
                     <div class="mb-4">
                         <div class="relative w-full group">
                             <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
@@ -130,96 +134,101 @@
                             <template x-for="t in getFilteredTerritories()" :key="t.id">
 
                                 <div x-show="t" :data-id="t.id"
-                                    class="group bg-white dark:bg-slate-900 rounded-3xl p-5 border border-slate-200/80 dark:border-slate-800/80 shadow-xs hover:shadow-md transition-all cursor-pointer relative flex flex-col gap-3.5"
-                                    style="touch-action: pan-y;" @click="openTerritory(t.id)">
-
-                                    <!-- Left accent indicator strip -->
-                                    <div class="absolute left-0 top-0 bottom-0 w-1.5 rounded-l-3xl"
-                                        :style="{ backgroundColor: t.color || '#5b3c88' }"></div>
+                                    class="group bg-white dark:bg-slate-900 rounded-3xl p-5 border border-slate-200/80 dark:border-slate-800/80 shadow-xs hover:shadow-md transition-all cursor-pointer relative flex flex-col gap-3.5 select-none"
+                                    :style="'border-left: 6px solid ' + (t.color || '#5b3c88') + '; touch-action: pan-y;'"
+                                    @click="handleCardClick(t, $event)"
+                                    @touchstart="handleCardTouchStart(t, $event)"
+                                    @touchmove="handleCardTouchMove($event)"
+                                    @touchend="handleCardTouchEnd($event)"
+                                    @touchcancel="handleCardTouchEnd($event)"
+                                    @contextmenu.prevent="handleCardLongPress(t, $event)">
 
                                     <!-- Card Header -->
                                     <div class="flex items-start justify-between gap-3 pl-1">
-                                        <div class="flex items-start gap-3 min-w-0 flex-1">
-                                            <!-- Icon Box -->
-                                            <div class="w-11 h-11 rounded-2xl flex items-center justify-center text-lg flex-shrink-0 shadow-xs"
-                                                :style="{ backgroundColor: (t.color || '#5b3c88') + '18', color: t.color || '#5b3c88' }">
-                                                <i class="fas fa-building"></i>
+                                        <div class="min-w-0 flex-1">
+                                            <!-- Title & Edit Pen -->
+                                            <div class="flex items-center gap-1.5 mb-1">
+                                                <span contenteditable="true" x-text="t.name"
+                                                    @blur="t.name = $el.innerText" @click.stop
+                                                    @keydown.enter.prevent="$el.blur()"
+                                                    class="font-extrabold text-lg text-slate-800 dark:text-white border-b border-transparent transition-colors px-0.5 py-0.5 max-w-full break-words focus:bg-slate-50 dark:focus:bg-slate-800 rounded-t leading-snug"
+                                                    placeholder="Nome Territorio"></span>
+                                                <button @click.stop="focusAtEnd($el.previousElementSibling)"
+                                                    class="w-6 h-6 flex items-center justify-center text-slate-400 dark:text-slate-500 hover:text-jw-600 transition-colors flex-shrink-0">
+                                                    <i class="fas fa-pen text-xs"></i>
+                                                </button>
                                             </div>
 
-                                            <div class="min-w-0 flex-1">
-                                                <!-- Title & Edit Pen -->
-                                                <div class="flex items-center gap-1">
-                                                    <span contenteditable="true" x-text="t.name"
-                                                        @blur="t.name = $el.innerText" @click.stop
-                                                        @keydown.enter.prevent="$el.blur()"
-                                                        class="font-extrabold text-lg text-slate-800 dark:text-white border-b border-transparent transition-colors px-0.5 py-0.5 max-w-full break-words focus:bg-slate-50 dark:focus:bg-slate-800 rounded-t leading-snug"
-                                                        placeholder="Nome Territorio"></span>
-                                                    <button @click.stop="focusAtEnd($el.previousElementSibling)"
-                                                        class="w-6 h-6 flex items-center justify-center text-slate-400 dark:text-slate-500 hover:text-jw-600 transition-colors flex-shrink-0">
-                                                        <i class="fas fa-pen text-xs"></i>
-                                                    </button>
-                                                </div>
-
-                                                <!-- Meta info (Indirizzi & Citofoni) -->
-                                                <div class="flex items-center gap-2 text-xs font-semibold text-slate-400 dark:text-slate-500 mt-1">
-                                                    <span class="flex items-center gap-1">
-                                                        <i class="fas fa-location-dot text-slate-400 text-[11px]"></i>
-                                                        <strong class="text-slate-700 dark:text-slate-300 font-bold" x-text="t.addresses ? t.addresses.length : 0"></strong> Indirizzi
-                                                    </span>
-                                                    <span class="text-slate-300 dark:text-slate-700">|</span>
-                                                    <span class="flex items-center gap-1">
-                                                        <i class="fas fa-table-cells text-slate-400 text-[11px]"></i>
-                                                        <strong class="text-slate-700 dark:text-slate-300 font-bold" x-text="countTotalUnits(t)"></strong> Citofoni
-                                                    </span>
-                                                </div>
+                                            <!-- Meta info (Indirizzi & Citofoni) -->
+                                            <div class="flex items-center gap-2 text-xs font-semibold text-slate-400 dark:text-slate-500">
+                                                <span class="flex items-center gap-1">
+                                                    <i class="fas fa-location-dot text-slate-400 text-[11px]"></i>
+                                                    <strong class="text-slate-700 dark:text-slate-300 font-bold" x-text="t.addresses ? t.addresses.length : 0"></strong> Indirizzi
+                                                </span>
+                                                <span class="text-slate-300 dark:text-slate-700">|</span>
+                                                <span class="flex items-center gap-1">
+                                                    <i class="fas fa-table-cells text-slate-400 text-[11px]"></i>
+                                                    <strong class="text-slate-700 dark:text-slate-300 font-bold" x-text="countTotalUnits(t)"></strong> Citofoni
+                                                </span>
                                             </div>
                                         </div>
 
-                                        <!-- 3-Dots Options Button -->
-                                        <div class="relative flex-shrink-0" @click.stop>
-                                            <button @click="toggleCardMenu(t.id)"
-                                                class="w-9 h-9 rounded-2xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-500 hover:text-jw-600 dark:hover:text-jw-400 flex items-center justify-center transition-all border border-slate-200/80 dark:border-slate-700/80 shadow-xs">
-                                                <i class="fas fa-ellipsis text-sm"></i>
-                                            </button>
+                                        <!-- Header Actions (Date Picker + 3-Dots Button) -->
+                                        <div class="flex items-center gap-1.5 flex-shrink-0" @click.stop>
+                                            <!-- Calendar Date Picker Button -->
+                                            <div class="relative w-9 h-9 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-2xl transition-all border border-slate-200/80 dark:border-slate-700/80 flex items-center justify-center shadow-xs overflow-hidden flex-shrink-0">
+                                                <input type="date" x-model="t.expiration"
+                                                    class="absolute inset-0 opacity-0 w-full h-full cursor-pointer z-10">
+                                                <i class="far fa-calendar-alt text-sm text-slate-400 pointer-events-none"
+                                                    :class="{'text-jw-600 dark:text-jw-400': t.expiration}"></i>
+                                            </div>
 
-                                            <!-- 3-Dots Dropdown Menu (Color Picker + Expiration + Delete) -->
-                                            <div x-show="modals.colorPickerId === t.id" x-cloak
-                                                @click.away="closeCardMenu()"
-                                                class="absolute right-0 top-11 w-64 bg-white dark:bg-slate-900 rounded-2xl p-3.5 shadow-2xl border border-slate-200/80 dark:border-slate-800 z-50 animate-fade-in flex flex-col gap-3">
-                                                
-                                                <!-- Color Palette Section -->
-                                                <div>
-                                                    <span class="text-[10px] font-extrabold uppercase tracking-widest text-slate-400 mb-2 block">Colore territorio</span>
-                                                    <div class="grid grid-cols-5 gap-2">
-                                                        <template x-for="c in colorPalette" :key="c">
-                                                            <button @click="setTerritoryColor(t, c)"
-                                                                class="w-8 h-8 rounded-xl transition-all duration-200 flex items-center justify-center shadow-xs"
-                                                                :style="{ backgroundColor: c }"
-                                                                :class="t.color === c ? 'ring-2 ring-offset-2 ring-jw-600 scale-110' : 'hover:scale-105'">
-                                                                <i x-show="t.color === c" class="fas fa-check text-white text-xs"></i>
-                                                            </button>
-                                                        </template>
-                                                    </div>
-                                                </div>
-
-                                                <div class="border-t border-slate-100 dark:border-slate-800"></div>
-
-                                                <!-- Expiration Date Section -->
-                                                <div class="flex items-center justify-between gap-2">
-                                                    <span class="text-[10px] font-extrabold uppercase tracking-widest text-slate-400 flex items-center gap-1.5">
-                                                        <i class="far fa-calendar-alt text-xs text-slate-400"></i> Scadenza:
-                                                    </span>
-                                                    <input type="date" x-model="t.expiration"
-                                                        class="bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-semibold p-1.5 text-slate-800 dark:text-white outline-none focus:ring-2 focus:ring-jw-600">
-                                                </div>
-
-                                                <div class="border-t border-slate-100 dark:border-slate-800"></div>
-
-                                                <!-- Delete Action -->
-                                                <button @click="confirmDelete('territory', t.id); closeCardMenu()"
-                                                    class="w-full py-2 px-3 rounded-xl bg-rose-50 dark:bg-rose-950/40 text-rose-600 dark:text-rose-400 font-bold text-xs flex items-center gap-2 hover:bg-rose-100 transition-all">
-                                                    <i class="fas fa-trash-alt text-xs"></i> Elimina territorio
+                                            <!-- 3-Dots Options Button -->
+                                            <div class="relative flex-shrink-0">
+                                                <button @click="toggleCardMenu(t.id)"
+                                                    class="w-9 h-9 rounded-2xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-500 hover:text-jw-600 dark:hover:text-jw-400 flex items-center justify-center transition-all border border-slate-200/80 dark:border-slate-700/80 shadow-xs">
+                                                    <i class="fas fa-ellipsis text-sm"></i>
                                                 </button>
+
+                                                <!-- 3-Dots Dropdown Menu -->
+                                                <div x-show="modals.colorPickerId === t.id" x-cloak
+                                                    @click.away="closeCardMenu()"
+                                                    class="absolute right-0 top-11 w-64 bg-white dark:bg-slate-900 rounded-2xl p-3.5 shadow-2xl border border-slate-200/80 dark:border-slate-800 z-50 animate-fade-in flex flex-col gap-3">
+                                                    
+                                                    <!-- Color Palette Section -->
+                                                    <div>
+                                                        <span class="text-[10px] font-extrabold uppercase tracking-widest text-slate-400 mb-2 block">Colore territorio</span>
+                                                        <div class="grid grid-cols-5 gap-2">
+                                                            <template x-for="c in colorPalette" :key="c">
+                                                                <button @click="setTerritoryColor(t, c)"
+                                                                    class="w-8 h-8 rounded-xl transition-all duration-200 flex items-center justify-center shadow-xs"
+                                                                    :style="{ backgroundColor: c }"
+                                                                    :class="t.color === c ? 'ring-2 ring-offset-2 ring-jw-600 scale-110' : 'hover:scale-105'">
+                                                                    <i x-show="t.color === c" class="fas fa-check text-white text-xs"></i>
+                                                                </button>
+                                                            </template>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="border-t border-slate-100 dark:border-slate-800"></div>
+
+                                                    <!-- Expiration Date Section -->
+                                                    <div class="flex items-center justify-between gap-2">
+                                                        <span class="text-[10px] font-extrabold uppercase tracking-widest text-slate-400 flex items-center gap-1.5">
+                                                            <i class="far fa-calendar-alt text-xs text-slate-400"></i> Scadenza:
+                                                        </span>
+                                                        <input type="date" x-model="t.expiration"
+                                                            class="bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-semibold p-1.5 text-slate-800 dark:text-white outline-none focus:ring-2 focus:ring-jw-600">
+                                                    </div>
+
+                                                    <div class="border-t border-slate-100 dark:border-slate-800"></div>
+
+                                                    <!-- Delete Action -->
+                                                    <button @click="confirmDelete('territory', t.id); closeCardMenu()"
+                                                        class="w-full py-2 px-3 rounded-xl bg-rose-50 dark:bg-rose-950/40 text-rose-600 dark:text-rose-400 font-bold text-xs flex items-center gap-2 hover:bg-rose-100 transition-all">
+                                                        <i class="fas fa-trash-alt text-xs"></i> Elimina territorio
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -267,7 +276,7 @@
                         <!-- Add Button -->
                         <div class="mt-5 pb-6">
                             <button @click="openNewTerritoryModal()"
-                                class="w-full py-4 rounded-2xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-extrabold text-sm shadow-sm hover:opacity-90 active:scale-[0.98] transition-all flex items-center justify-center gap-2.5">
+                                class="w-full py-4 rounded-2xl bg-jw-600 hover:bg-jw-700 text-white font-extrabold text-sm shadow-lg shadow-jw-600/30 active:scale-[0.98] transition-all flex items-center justify-center gap-2.5">
                                 <i class="fas fa-plus-circle text-base"></i> Crea Nuovo Territorio
                             </button>
                         </div>
@@ -414,35 +423,39 @@
                 <!-- Detail Content -->
                 <div class="flex-1 overflow-y-auto p-4 md:p-6 no-scrollbar pb-32 min-h-0">
 
-                    <!-- Riepilogo territorio Card (Posto in alto prima delle note) -->
+                    <!-- Riepilogo territorio Card -->
                     <div class="bg-white dark:bg-slate-900 rounded-3xl p-5 shadow-xs border border-slate-200/80 dark:border-slate-800 mb-4 flex flex-col gap-3">
                         <div class="flex items-center gap-2 text-jw-600 dark:text-jw-400 font-extrabold text-sm tracking-wide">
                             <span>Riepilogo territorio</span>
                         </div>
                         
-                        <div class="grid grid-cols-5 gap-1 pt-1 text-center divide-x divide-slate-100 dark:divide-slate-800">
-                            <!-- Indirizzi -->
-                            <div class="flex flex-col items-center justify-center px-1">
-                                <div class="flex items-center gap-1.5 text-jw-600 dark:text-jw-400 mb-1">
-                                    <i class="fas fa-location-dot text-xs"></i>
-                                    <strong class="text-base font-black text-slate-800 dark:text-white" x-text="activeTerritory.addresses ? activeTerritory.addresses.length : 0"></strong>
+                        <!-- Row 1: Indirizzi (1/2) & Citofoni (2/2) -->
+                        <div class="grid grid-cols-2 gap-3 pb-2 border-b border-slate-100 dark:border-slate-800">
+                            <div class="bg-slate-50/80 dark:bg-slate-800/40 rounded-2xl p-3 text-center flex items-center justify-center gap-2.5 border border-slate-100/80 dark:border-slate-800/40">
+                                <i class="fas fa-location-dot text-jw-600 dark:text-jw-400 text-base"></i>
+                                <div class="text-left">
+                                    <strong class="text-lg font-black text-slate-800 dark:text-white leading-none block" x-text="activeTerritory.addresses ? activeTerritory.addresses.length : 0"></strong>
+                                    <span class="text-[11px] font-bold text-slate-400 dark:text-slate-500">Indirizzi</span>
                                 </div>
-                                <span class="text-[11px] font-semibold text-slate-400 dark:text-slate-500">Indirizzi</span>
                             </div>
 
-                            <!-- Citofoni -->
-                            <div class="flex flex-col items-center justify-center px-1">
-                                <div class="flex items-center gap-1.5 text-jw-600 dark:text-jw-400 mb-1">
-                                    <i class="fas fa-table-cells text-xs"></i>
-                                    <strong class="text-base font-black text-slate-800 dark:text-white" x-text="countTotalUnits(activeTerritory)"></strong>
+                            <div class="bg-slate-50/80 dark:bg-slate-800/40 rounded-2xl p-3 text-center flex items-center justify-center gap-2.5 border border-slate-100/80 dark:border-slate-800/40">
+                                <i class="fas fa-table-cells text-jw-600 dark:text-jw-400 text-base"></i>
+                                <div class="text-left">
+                                    <strong class="text-lg font-black text-slate-800 dark:text-white leading-none block" x-text="countTotalUnits(activeTerritory)"></strong>
+                                    <span class="text-[11px] font-bold text-slate-400 dark:text-slate-500">Citofoni</span>
                                 </div>
-                                <span class="text-[11px] font-semibold text-slate-400 dark:text-slate-500">Citofoni</span>
                             </div>
+                        </div>
 
+                        <!-- Row 2: Fatti, Assenti, Non visitati (3 Columns) -->
+                        <div class="grid grid-cols-3 gap-2 pt-1 text-center divide-x divide-slate-100 dark:divide-slate-800">
                             <!-- Fatti -->
                             <div class="flex flex-col items-center justify-center px-1">
-                                <div class="flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400 mb-1">
-                                    <i class="fas fa-check-circle text-xs"></i>
+                                <div class="flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400 mb-0.5">
+                                    <div class="w-4 h-4 rounded-full bg-emerald-500 text-white inline-flex items-center justify-center text-[8px] font-black shadow-xs leading-none select-none flex-shrink-0 text-center">
+                                        <i class="fas fa-check"></i>
+                                    </div>
                                     <strong class="text-base font-black text-emerald-600 dark:text-emerald-400" x-text="calculateStats(activeTerritory).green"></strong>
                                 </div>
                                 <span class="text-[11px] font-semibold text-slate-400 dark:text-slate-500">Fatti</span>
@@ -450,8 +463,10 @@
 
                             <!-- Assenti -->
                             <div class="flex flex-col items-center justify-center px-1">
-                                <div class="flex items-center gap-1.5 text-rose-500 dark:text-rose-400 mb-1">
-                                    <i class="fas fa-times-circle text-xs"></i>
+                                <div class="flex items-center gap-1.5 text-rose-500 dark:text-rose-400 mb-0.5">
+                                    <div class="w-4 h-4 rounded-full bg-rose-500 text-white inline-flex items-center justify-center text-[8px] font-black shadow-xs leading-none select-none flex-shrink-0 text-center">
+                                        <i class="fas fa-times"></i>
+                                    </div>
                                     <strong class="text-base font-black text-rose-500 dark:text-rose-400" x-text="calculateStats(activeTerritory).red"></strong>
                                 </div>
                                 <span class="text-[11px] font-semibold text-slate-400 dark:text-slate-500">Assenti</span>
@@ -459,8 +474,10 @@
 
                             <!-- Non visitati -->
                             <div class="flex flex-col items-center justify-center px-1">
-                                <div class="flex items-center gap-1.5 text-slate-400 dark:text-slate-500 mb-1">
-                                    <i class="fas fa-circle text-[10px]"></i>
+                                <div class="flex items-center gap-1.5 text-slate-400 dark:text-slate-500 mb-0.5">
+                                    <div class="w-4 h-4 rounded-full bg-slate-300 dark:bg-slate-600 text-white inline-flex items-center justify-center text-[6px] font-black shadow-xs leading-none select-none flex-shrink-0 text-center">
+                                        <i class="fas fa-circle"></i>
+                                    </div>
                                     <strong class="text-base font-black text-slate-700 dark:text-slate-300" x-text="calculateStats(activeTerritory).neutral"></strong>
                                 </div>
                                 <span class="text-[11px] font-semibold text-slate-400 dark:text-slate-500">Non visitati</span>
@@ -660,9 +677,9 @@
 
                                         <!-- Legend -->
                                         <div class="flex items-center justify-center gap-4 mt-4 pt-3 border-t border-slate-100 dark:border-slate-800/60 text-xs font-semibold text-slate-400 dark:text-slate-500">
-                                            <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span> Fatto</span>
-                                            <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-rose-500 inline-block"></span> Assente</span>
-                                            <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-slate-300 dark:bg-slate-600 inline-block"></span> Non visitato</span>
+                                            <span class="flex items-center gap-1.5"><div class="w-4 h-4 rounded-full bg-emerald-500 text-white inline-flex items-center justify-center text-[8px] font-black shadow-xs leading-none select-none flex-shrink-0 text-center"><i class="fas fa-check"></i></div> Fatto</span>
+                                            <span class="flex items-center gap-1.5"><div class="w-4 h-4 rounded-full bg-rose-500 text-white inline-flex items-center justify-center text-[8px] font-black shadow-xs leading-none select-none flex-shrink-0 text-center"><i class="fas fa-times"></i></div> Assente</span>
+                                            <span class="flex items-center gap-1.5"><div class="w-4 h-4 rounded-full bg-slate-300 dark:bg-slate-600 text-white inline-flex items-center justify-center text-[6px] font-black shadow-xs leading-none select-none flex-shrink-0 text-center"><i class="fas fa-circle"></i></div> Non visitato</span>
                                         </div>
 
                                     </div>
@@ -957,16 +974,23 @@
         <div x-show="modals.note" x-cloak class="fixed inset-0 z-[60] flex items-center justify-center p-4">
             <div @click="closeNoteModal()" class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
             <div
-                class="bg-white dark:bg-gray-900 rounded-2xl p-6 w-full max-w-sm relative shadow-2xl border border-gray-100 dark:border-gray-800">
+                class="bg-white dark:bg-slate-900 rounded-3xl p-6 w-full max-w-sm relative shadow-2xl border border-slate-100 dark:border-slate-800">
 
-                <h3 class="text-lg font-bold mb-4 text-gray-900 dark:text-white">Note Citofono</h3>
+                <h3 class="text-lg font-bold mb-4 text-slate-900 dark:text-white">Note Citofono</h3>
                 <textarea x-model="forms.noteText"
-                    class="w-full h-32 p-3 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-jw-600 outline-none resize-none text-gray-800 dark:text-gray-200 mb-4"></textarea>
-                <div class="flex justify-end gap-3">
-                    <button @click="closeNoteModal()"
-                        class="px-4 py-2 text-gray-500 dark:text-gray-400">Annulla</button>
-                    <button @click="saveNote()"
-                        class="px-6 py-2 bg-jw-600 text-white font-medium rounded-lg shadow-lg">Salva</button>
+                    class="w-full h-32 p-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-jw-600 outline-none resize-none text-slate-800 dark:text-slate-200 mb-4 text-sm"
+                    placeholder="Aggiungi una nota..."></textarea>
+                <div class="flex items-center justify-between gap-3">
+                    <button @click="deleteCurrentEditingUnit()"
+                        class="px-3 py-2 text-xs font-bold text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/40 hover:bg-rose-100 rounded-xl transition-all flex items-center gap-1.5">
+                        <i class="fas fa-trash-alt text-xs"></i> Elimina
+                    </button>
+                    <div class="flex items-center gap-2">
+                        <button @click="closeNoteModal()"
+                            class="px-3 py-2 text-xs font-bold text-slate-500 hover:text-slate-700 dark:text-slate-400">Annulla</button>
+                        <button @click="saveNote()"
+                            class="px-5 py-2 bg-jw-600 text-white font-bold text-xs rounded-xl shadow-md shadow-jw-600/30 hover:bg-jw-700 transition-all">Salva</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1014,10 +1038,8 @@
 
                     <!-- Slide 2: Organize -->
                     <div x-show="tutorialStep === 1" class="space-y-4">
-                        <div class="w-16 h-16 rounded-3xl bg-gradient-to-tr from-rose-500 via-amber-500 via-emerald-500 to-jw-600 p-0.5 shadow-xs mx-auto mb-2 flex items-center justify-center">
-                            <div class="w-full h-full bg-white dark:bg-slate-900 rounded-[22px] flex items-center justify-center">
-                                <i class="fas fa-building text-2xl text-jw-600 dark:text-jw-400"></i>
-                            </div>
+                        <div class="w-16 h-16 rounded-3xl bg-jw-50 dark:bg-jw-950/60 text-jw-600 dark:text-jw-400 flex items-center justify-center text-3xl shadow-xs mx-auto mb-2 border border-jw-100 dark:border-jw-900/40">
+                            <i class="fas fa-building"></i>
                         </div>
                         <h3 class="text-xl font-black text-center text-slate-900 dark:text-white">Organizza i tuoi territori</h3>
                         <p class="text-sm text-slate-500 dark:text-slate-400 text-center leading-relaxed">
@@ -1025,8 +1047,8 @@
                         </p>
                         <div class="bg-slate-50 dark:bg-slate-800/50 rounded-2xl p-3.5 space-y-2.5 border border-slate-100 dark:border-slate-800/80 text-xs text-slate-600 dark:text-slate-300">
                             <div class="flex items-start gap-2.5">
-                                <div class="w-5 h-5 rounded-full bg-gradient-to-r from-rose-500 via-amber-500 via-emerald-500 to-jw-600 flex items-center justify-center text-[9px] text-white flex-shrink-0 mt-0.5 shadow-xs">
-                                    <i class="fas fa-palette"></i>
+                                <div class="w-5 h-5 rounded-full bg-jw-50 dark:bg-jw-950/60 flex items-center justify-center text-[10px] flex-shrink-0 mt-0.5">
+                                    <i class="fas fa-palette animate-color-cycle"></i>
                                 </div>
                                 <span><strong>Etichette colorate:</strong> Assegna un colore a ciascun territorio per distinguerlo a colpo d'occhio.</span>
                             </div>
