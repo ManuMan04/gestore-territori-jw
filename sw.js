@@ -1,13 +1,20 @@
-const CACHE_NAME = 'territori-cache-v21';
+const CACHE_NAME = 'territori-cache-v22';
 const ASSETS = [
     'index.html',
     'css/style.css',
+    'css/fontawesome.min.css',
     'js/app.js',
+    'js/alpine.min.js',
+    'js/tailwind.min.js',
     'js/tailwind-config.js',
-    'https://cdn.tailwindcss.com',
-    'https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js',
-    'https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js',
-    'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css'
+    'webfonts/fa-solid-900.woff2',
+    'webfonts/fa-solid-900.ttf',
+    'webfonts/fa-regular-400.woff2',
+    'webfonts/fa-regular-400.ttf',
+    'webfonts/fa-brands-400.woff2',
+    'webfonts/fa-brands-400.ttf',
+    'icons/icon-192.png',
+    'manifest.json'
 ];
 
 self.addEventListener('install', (event) => {
