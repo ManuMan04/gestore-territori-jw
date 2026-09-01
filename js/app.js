@@ -50,10 +50,18 @@ function territoryApp() {
         startTutorial() {
             this.tutorialStep = 0;
             this.modals.tutorial = true;
+            this.view = 'dashboard';
         },
         nextTutorialStep() {
-            if (this.tutorialStep < 3) {
-                this.tutorialStep++;
+            if (this.tutorialStep === 0) {
+                this.tutorialStep = 1;
+            } else if (this.tutorialStep === 1) {
+                if (this.territories && this.territories.length > 0) {
+                    this.openTerritory(this.territories[0].id);
+                }
+                this.tutorialStep = 2;
+            } else if (this.tutorialStep === 2) {
+                this.tutorialStep = 3;
             } else {
                 this.finishTutorial();
             }
@@ -61,6 +69,9 @@ function territoryApp() {
         prevTutorialStep() {
             if (this.tutorialStep > 0) {
                 this.tutorialStep--;
+                if (this.tutorialStep <= 1 && this.view === 'editor') {
+                    this.goBack();
+                }
             }
         },
         finishTutorial() {
@@ -84,6 +95,26 @@ function territoryApp() {
             }
         },
 
+        cardTouchStartX: 0,
+        cardTouchStartY: 0,
+        cardIsDragging: false,
+        handleCardTouchStart(e) {
+            if (e.touches && e.touches.length > 0) {
+                this.cardTouchStartX = e.touches[0].clientX;
+                this.cardTouchStartY = e.touches[0].clientY;
+                this.cardIsDragging = false;
+            }
+        },
+        handleCardTouchMove(e) {
+            if (e.touches && e.touches.length > 0) {
+                const dx = e.touches[0].clientX - this.cardTouchStartX;
+                const dy = e.touches[0].clientY - this.cardTouchStartY;
+                if (Math.hypot(dx, dy) > 8) {
+                    this.cardIsDragging = true;
+                }
+            }
+        },
+
         handleSwipeStart(e) {
             if (!e.changedTouches || e.changedTouches.length === 0) return;
             this.touchStartX = e.changedTouches[0].clientX;
@@ -96,6 +127,16 @@ function territoryApp() {
             if (diffX > 100 && Math.abs(diffY) < 50 && Math.abs(diffX) > Math.abs(diffY) * 2 && (this.view === 'editor' || this.view === 'info')) {
                 this.goBack();
             }
+        },
+
+        openTerritory(id) {
+            if (this.cardIsDragging) {
+                this.cardIsDragging = false;
+                return;
+            }
+            this.activeTerritory = this.territories.find(t => t.id === id);
+            this.view = 'editor';
+            this.selectionMode = false;
         },
 
         toggleTheme() { this.isDark = !this.isDark; },
