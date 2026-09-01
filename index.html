@@ -406,20 +406,16 @@
                         
                         <!-- Row 1: Indirizzi (1/2) & Citofoni (2/2) -->
                         <div class="grid grid-cols-2 gap-2 pb-3 border-b border-slate-100 dark:border-slate-800 divide-x divide-slate-100 dark:divide-slate-800">
-                            <div class="flex items-center justify-center gap-2.5 px-2">
+                            <div class="flex items-center justify-center gap-2 px-2">
                                 <i class="fas fa-location-dot text-jw-600 dark:text-jw-400 text-sm"></i>
-                                <div class="text-left">
-                                    <strong class="text-base font-black text-slate-800 dark:text-white leading-none block" x-text="activeTerritory.addresses ? activeTerritory.addresses.length : 0"></strong>
-                                    <span class="text-[11px] font-bold text-slate-400 dark:text-slate-500">Indirizzi</span>
-                                </div>
+                                <strong class="text-base font-black text-slate-800 dark:text-white leading-none" x-text="activeTerritory.addresses ? activeTerritory.addresses.length : 0"></strong>
+                                <span class="text-[11px] font-bold text-slate-400 dark:text-slate-500">Indirizzi</span>
                             </div>
 
-                            <div class="flex items-center justify-center gap-2.5 px-2">
+                            <div class="flex items-center justify-center gap-2 px-2">
                                 <i class="fas fa-table-cells text-jw-600 dark:text-jw-400 text-sm"></i>
-                                <div class="text-left">
-                                    <strong class="text-base font-black text-slate-800 dark:text-white leading-none block" x-text="countTotalUnits(activeTerritory)"></strong>
-                                    <span class="text-[11px] font-bold text-slate-400 dark:text-slate-500">Citofoni</span>
-                                </div>
+                                <strong class="text-base font-black text-slate-800 dark:text-white leading-none" x-text="countTotalUnits(activeTerritory)"></strong>
+                                <span class="text-[11px] font-bold text-slate-400 dark:text-slate-500">Citofoni</span>
                             </div>
                         </div>
 
@@ -587,8 +583,8 @@
                                                     style="-webkit-touch-callout: none; -webkit-user-select: none; user-select: none;"
                                                     class="aspect-square rounded-2xl flex items-center justify-center relative shadow-xs transition-all duration-200 cursor-pointer select-none active:scale-95"
                                                     :class="getUnitClasses(unit)">
-                                                    <span class="text-base font-extrabold opacity-90 pointer-events-none"
-                                                        x-text="uIdx + 1"></span>
+                                                    <span x-show="!unit.isHole" class="text-base font-extrabold opacity-90 pointer-events-none"
+                                                        x-text="getActiveUnitNumber(addr, unit.id, uIdx)"></span>
                                                     
                                                     <!-- Status Badges -->
                                                     <div x-show="unit.status === 1" class="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-emerald-500 text-white text-[9px] font-bold flex items-center justify-center shadow-xs">
@@ -628,8 +624,8 @@
                                                             style="-webkit-touch-callout: none; -webkit-user-select: none; user-select: none;"
                                                             class="aspect-square rounded-2xl flex items-center justify-center relative shadow-xs transition-all duration-200 cursor-pointer select-none active:scale-95"
                                                             :class="getUnitClasses(unit)">
-                                                            <span class="text-base font-extrabold opacity-90 pointer-events-none"
-                                                                x-text="unit.globalIndex + 1"></span>
+                                                            <span x-show="!unit.isHole" class="text-base font-extrabold opacity-90 pointer-events-none"
+                                                                x-text="getActiveUnitNumber(addr, unit.id, unit.globalIndex)"></span>
                                                             
                                                             <!-- Status Badges -->
                                                             <div x-show="unit.status === 1" class="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-emerald-500 text-white text-[9px] font-bold flex items-center justify-center shadow-xs">

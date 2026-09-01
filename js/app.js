@@ -305,9 +305,37 @@ function territoryApp() {
                 if (this.isSelected(unit.id)) this.selectedUnits = this.selectedUnits.filter(id => id !== unit.id);
                 else this.selectedUnits.push(unit.id);
             } else {
-                if (unit.status === 0) unit.status = 1; else if (unit.status === 1) unit.status = 2; else unit.status = 0;
+                if (unit.isHole) {
+                    // Tap on Hole -> Reset to Normal Non-Visitato (status 0)
+                    unit.isHole = false;
+                    unit.status = 0;
+                } else if (unit.status === 0) {
+                    // Click 1: Fatto (Green, 1)
+                    unit.status = 1;
+                } else if (unit.status === 1) {
+                    // Click 2: Assente (Red, 2)
+                    unit.status = 2;
+                } else if (unit.status === 2) {
+                    // Click 3: Spazio Vuoto (isHole: true)
+                    unit.isHole = true;
+                    unit.status = 0;
+                }
                 if (addr) addr.lastInteraction = new Date().toISOString();
             }
+        },
+        getActiveUnitNumber(addr, unitId, fallbackIndex) {
+            if (!addr || !addr.units) return fallbackIndex + 1;
+            let activeCount = 0;
+            for (let i = 0; i < addr.units.length; i++) {
+                const u = addr.units[i];
+                if (!u.isHole) {
+                    activeCount++;
+                }
+                if (u.id === unitId) {
+                    return activeCount;
+                }
+            }
+            return fallbackIndex + 1;
         },
         getUnitClasses(unit) {
             if (unit.isHole) {
