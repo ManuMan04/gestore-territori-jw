@@ -522,6 +522,12 @@ function territoryApp() {
                 t.name = newName.trim();
             }
         },
+        promptRenameAddress(addr) {
+            const newName = prompt("Modifica nome indirizzo:", addr.name);
+            if (newName && newName.trim()) {
+                addr.name = newName.trim();
+            }
+        },
         deleteCurrentEditingUnit() {
             if (this.currentEditingUnit && this.currentEditingUnit.addr && this.currentEditingUnit.unit) {
                 const { addr, unit } = this.currentEditingUnit;
