@@ -148,7 +148,6 @@ function territoryApp() {
                 id: Date.now().toString() + Math.random().toString(36).substr(2, 5),
                 name: this.forms.territoryName,
                 color: this.forms.territoryColor,
-                expiration: '',
                 notes: '',
                 addresses: []
             };
@@ -165,6 +164,7 @@ function territoryApp() {
             this.activeTerritory = null;
             this.view = 'dashboard';
             this.selectionMode = false;
+            this.activeCardMenuId = null;
         },
         openInfo() {
             this.view = 'info';
@@ -507,7 +507,6 @@ function territoryApp() {
         },
         getFilteredTerritories() {
             return this.territories.filter(t => {
-                // Filter logic
                 const matchesSearch = t.name.toLowerCase().includes(this.searchQuery.toLowerCase());
                 if (!matchesSearch) return false;
 
@@ -515,17 +514,8 @@ function territoryApp() {
                 const isCompleted = stats.percent === 100 && stats.total > 0;
                 const isInProgress = stats.percent > 0 && stats.percent < 100;
 
-                let isExpired = false;
-                if (t.expiration) {
-                    const expDate = new Date(t.expiration);
-                    const today = new Date();
-                    today.setHours(0, 0, 0, 0);
-                    isExpired = expDate < today;
-                }
-
                 if (this.filterType === 'in_progress') return isInProgress;
                 if (this.filterType === 'completed') return isCompleted;
-                if (this.filterType === 'expired') return isExpired;
 
                 return true;
             });
