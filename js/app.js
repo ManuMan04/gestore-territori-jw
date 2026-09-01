@@ -67,6 +67,22 @@ function territoryApp() {
             localStorage.setItem('tutorialSeen', 'true');
             this.modals.tutorial = false;
         },
+        tutorialTouchStartX: 0,
+        handleTutorialTouchStart(e) {
+            if (e.touches && e.touches.length > 0) {
+                this.tutorialTouchStartX = e.touches[0].clientX;
+            }
+        },
+        handleTutorialTouchEnd(e) {
+            if (e.changedTouches && e.changedTouches.length > 0) {
+                const diffX = e.changedTouches[0].clientX - this.tutorialTouchStartX;
+                if (diffX < -40) {
+                    this.nextTutorialStep();
+                } else if (diffX > 40) {
+                    this.prevTutorialStep();
+                }
+            }
+        },
 
         handleSwipeStart(e) {
             if (!e.changedTouches || e.changedTouches.length === 0) return;
@@ -110,15 +126,20 @@ function territoryApp() {
 
         colorPalette: ['#a1305b', '#7858a4', '#6081b6', '#50a8b0', '#1f8d52', '#61c18d', '#b4c757', '#be7352', '#ac5655', '#895613'],
 
+        activeCardMenuId: null,
         toggleCardMenu(id) {
-            this.modals.colorPickerId = this.modals.colorPickerId === id ? null : id;
+            this.activeCardMenuId = this.activeCardMenuId === id ? null : id;
         },
         closeCardMenu() {
-            this.modals.colorPickerId = null;
+            this.activeCardMenuId = null;
+        },
+        openColorModal(id) {
+            this.activeCardMenuId = null;
+            this.modals.colorPickerId = id;
         },
         setTerritoryColor(t, color) {
-            t.color = color;
-            this.modals.colorPickerId = null; // Close picker
+            if (t) t.color = color;
+            this.modals.colorPickerId = null;
         },
 
         submitNewTerritory() {
@@ -335,52 +356,7 @@ function territoryApp() {
             this.forms.noteText = unit.note || '';
             this.modals.note = true;
         },
-        cardTouchTimer: null,
-        cardLongPressTriggered: false,
-        cardTouchStartX: 0,
-        cardTouchStartY: 0,
-
-        handleCardTouchStart(t, e) {
-            this.cardLongPressTriggered = false;
-            clearTimeout(this.cardTouchTimer);
-            const touch = e.touches && e.touches.length > 0 ? e.touches[0] : null;
-            if (touch) {
-                this.cardTouchStartX = touch.clientX;
-                this.cardTouchStartY = touch.clientY;
-            }
-            this.cardTouchTimer = setTimeout(() => {
-                this.cardLongPressTriggered = true;
-                if (navigator.vibrate) {
-                    try { navigator.vibrate(50); } catch (err) { }
-                }
-                this.confirmDelete('territory', t.id);
-            }, 600);
-        },
-        handleCardTouchMove(e) {
-            if (!this.cardTouchTimer) return;
-            const touch = e.touches && e.touches.length > 0 ? e.touches[0] : null;
-            if (touch) {
-                const dx = touch.clientX - this.cardTouchStartX;
-                const dy = touch.clientY - this.cardTouchStartY;
-                if (Math.hypot(dx, dy) > 8) {
-                    clearTimeout(this.cardTouchTimer);
-                    this.cardTouchTimer = null;
-                }
-            }
-        },
-        handleCardTouchEnd(e) {
-            clearTimeout(this.cardTouchTimer);
-            this.cardTouchTimer = null;
-        },
-        handleCardLongPress(t, e) {
-            this.cardLongPressTriggered = true;
-            this.confirmDelete('territory', t.id);
-        },
         handleCardClick(t, e) {
-            if (this.cardLongPressTriggered) {
-                this.cardLongPressTriggered = false;
-                return;
-            }
             this.openTerritory(t.id);
         },
 
