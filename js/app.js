@@ -110,6 +110,12 @@ function territoryApp() {
 
         colorPalette: ['#a1305b', '#7858a4', '#6081b6', '#50a8b0', '#1f8d52', '#61c18d', '#b4c757', '#be7352', '#ac5655', '#895613'],
 
+        toggleCardMenu(id) {
+            this.modals.colorPickerId = this.modals.colorPickerId === id ? null : id;
+        },
+        closeCardMenu() {
+            this.modals.colorPickerId = null;
+        },
         setTerritoryColor(t, color) {
             t.color = color;
             this.modals.colorPickerId = null; // Close picker

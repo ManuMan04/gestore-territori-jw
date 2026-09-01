@@ -46,7 +46,7 @@
         <!-- Dashboard View -->
         <template x-if="view === 'dashboard'">
             <div class="flex-1 flex flex-col h-full min-h-0 bg-slate-100/80 dark:bg-slate-950 animate-fade-in relative z-0">
-                <!-- Header (Senza linea/hr inferiore) -->
+                <!-- Header -->
                 <header class="sticky top-0 z-30 px-5 pt-6 pb-4 bg-slate-100/90 dark:bg-slate-950/90 backdrop-blur-md transition-colors">
 
                     <!-- Identity + Theme Switcher -->
@@ -67,24 +67,23 @@
                             </div>
                         </div>
 
-                        <!-- Theme Toggle Pill (Sun / Moon) -->
-                        <div class="bg-white dark:bg-slate-900 p-1 rounded-full flex items-center gap-1 border border-slate-200/80 dark:border-slate-800 shadow-xs">
-                            <button @click="if(isDark) toggleTheme()"
-                                class="w-8 h-8 rounded-full flex items-center justify-center transition-all"
-                                :class="!isDark ? 'bg-amber-100/70 text-amber-600 shadow-xs' : 'text-slate-400 hover:text-slate-600'">
-                                <i class="fas fa-sun text-xs"></i>
+                        <!-- Top Right Action Buttons (Info & Theme Toggle) -->
+                        <div class="flex items-center gap-2">
+                            <button @click="openInfo()" title="Informazioni"
+                                class="w-10 h-10 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-xs flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all flex-shrink-0">
+                                <i class="fas fa-info-circle text-base text-jw-600 dark:text-jw-400"></i>
                             </button>
-                            <button @click="if(!isDark) toggleTheme()"
-                                class="w-8 h-8 rounded-full flex items-center justify-center transition-all"
-                                :class="isDark ? 'bg-jw-600 text-white shadow-xs' : 'text-slate-400 hover:text-slate-600'">
-                                <i class="fas fa-moon text-xs"></i>
+
+                            <button @click="toggleTheme()" title="Cambia Tema"
+                                class="w-10 h-10 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-xs flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all flex-shrink-0">
+                                <i class="fas text-sm" :class="isDark ? 'fa-sun text-amber-500' : 'fa-moon text-jw-600'"></i>
                             </button>
                         </div>
                     </div>
 
-                    <!-- Search + Sliders Row -->
-                    <div class="flex items-center gap-3 mb-4">
-                        <div class="relative flex-1 group">
+                    <!-- Search Row (Senza il bottone sliders) -->
+                    <div class="mb-4">
+                        <div class="relative w-full group">
                             <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
                                 <i class="fas fa-search text-sm"></i>
                             </div>
@@ -96,11 +95,6 @@
                                 </button>
                             </div>
                         </div>
-
-                        <button @click="openInfo()" title="Informazioni"
-                            class="w-11 h-11 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-xs flex items-center justify-center text-slate-500 dark:text-slate-400 hover:text-jw-600 active:scale-95 transition-all flex-shrink-0">
-                            <i class="fas fa-sliders text-sm"></i>
-                        </button>
                     </div>
 
                     <!-- Filter Pills Row -->
@@ -127,7 +121,7 @@
                     x-ref="territoryList">
 
                     <div class="flex-1 p-4 md:p-6 pb-6">
-                        <div x-show="getFilteredTerritories().length === 0" class="text-center py-12 text-gray-400">
+                        <div x-show="getFilteredTerritories().length === 0" class="text-center py-12 text-slate-400">
                             <i class="fas fa-search-minus text-4xl mb-4 opacity-20"></i>
                             <p class="text-sm font-medium">Nessun territorio trovato.</p>
                         </div>
@@ -136,8 +130,8 @@
                             <template x-for="t in getFilteredTerritories()" :key="t.id">
 
                                 <div x-show="t" :data-id="t.id"
-                                    class="group active:scale-[0.99] bg-white dark:bg-gray-900 rounded-3xl p-5 border border-gray-100 dark:border-gray-800/80 shadow-sm hover:shadow-md transition-all cursor-pointer relative flex flex-col gap-3.5 overflow-hidden select-none touch-manipulation"
-                                    style="-webkit-touch-callout: none;" @click="openTerritory(t.id)">
+                                    class="group bg-white dark:bg-slate-900 rounded-3xl p-5 border border-slate-200/80 dark:border-slate-800/80 shadow-xs hover:shadow-md transition-all cursor-pointer relative flex flex-col gap-3.5"
+                                    style="touch-action: pan-y;" @click="openTerritory(t.id)">
 
                                     <!-- Left accent indicator strip -->
                                     <div class="absolute left-0 top-0 bottom-0 w-1.5 rounded-l-3xl"
@@ -147,7 +141,7 @@
                                     <div class="flex items-start justify-between gap-3 pl-1">
                                         <div class="flex items-start gap-3 min-w-0 flex-1">
                                             <!-- Icon Box -->
-                                            <div class="w-11 h-11 rounded-2xl flex items-center justify-center text-lg flex-shrink-0 shadow-sm"
+                                            <div class="w-11 h-11 rounded-2xl flex items-center justify-center text-lg flex-shrink-0 shadow-xs"
                                                 :style="{ backgroundColor: (t.color || '#5b3c88') + '18', color: t.color || '#5b3c88' }">
                                                 <i class="fas fa-building"></i>
                                             </div>
@@ -158,52 +152,81 @@
                                                     <span contenteditable="true" x-text="t.name"
                                                         @blur="t.name = $el.innerText" @click.stop
                                                         @keydown.enter.prevent="$el.blur()"
-                                                        class="font-extrabold text-lg text-gray-900 dark:text-white border-b border-transparent transition-colors px-0.5 py-0.5 max-w-full break-words focus:bg-gray-50 dark:focus:bg-gray-800 rounded-t leading-snug"
+                                                        class="font-extrabold text-lg text-slate-800 dark:text-white border-b border-transparent transition-colors px-0.5 py-0.5 max-w-full break-words focus:bg-slate-50 dark:focus:bg-slate-800 rounded-t leading-snug"
                                                         placeholder="Nome Territorio"></span>
                                                     <button @click.stop="focusAtEnd($el.previousElementSibling)"
-                                                        class="w-6 h-6 flex items-center justify-center text-gray-400 dark:text-gray-500 hover:text-jw-600 transition-colors flex-shrink-0">
+                                                        class="w-6 h-6 flex items-center justify-center text-slate-400 dark:text-slate-500 hover:text-jw-600 transition-colors flex-shrink-0">
                                                         <i class="fas fa-pen text-xs"></i>
                                                     </button>
                                                 </div>
 
                                                 <!-- Meta info (Indirizzi & Citofoni) -->
-                                                <div class="flex items-center gap-2 text-xs font-semibold text-gray-400 dark:text-gray-500 mt-1">
+                                                <div class="flex items-center gap-2 text-xs font-semibold text-slate-400 dark:text-slate-500 mt-1">
                                                     <span class="flex items-center gap-1">
-                                                        <i class="fas fa-location-dot text-gray-400 text-[11px]"></i>
-                                                        <strong class="text-gray-700 dark:text-gray-300 font-bold" x-text="t.addresses ? t.addresses.length : 0"></strong> Indirizzi
+                                                        <i class="fas fa-location-dot text-slate-400 text-[11px]"></i>
+                                                        <strong class="text-slate-700 dark:text-slate-300 font-bold" x-text="t.addresses ? t.addresses.length : 0"></strong> Indirizzi
                                                     </span>
-                                                    <span class="text-gray-300 dark:text-gray-700">|</span>
+                                                    <span class="text-slate-300 dark:text-slate-700">|</span>
                                                     <span class="flex items-center gap-1">
-                                                        <i class="fas fa-table-cells text-gray-400 text-[11px]"></i>
-                                                        <strong class="text-gray-700 dark:text-gray-300 font-bold" x-text="countTotalUnits(t)"></strong> Citofoni
+                                                        <i class="fas fa-table-cells text-slate-400 text-[11px]"></i>
+                                                        <strong class="text-slate-700 dark:text-slate-300 font-bold" x-text="countTotalUnits(t)"></strong> Citofoni
                                                     </span>
                                                 </div>
                                             </div>
                                         </div>
 
-                                        <!-- Action Buttons -->
-                                        <div class="flex items-center gap-1.5 flex-shrink-0" @click.stop>
-                                            <!-- Expiration -->
-                                            <div class="relative flex items-center group/cal">
-                                                <div class="relative w-9 h-9 bg-gray-50 dark:bg-gray-800/80 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-2xl transition-colors border border-gray-100 dark:border-gray-700/50 flex items-center justify-center">
-                                                    <input type="date" x-model="t.expiration"
-                                                        class="absolute inset-0 opacity-0 w-full h-full z-10 cursor-pointer">
-                                                    <i class="far fa-calendar-alt text-sm text-gray-400"
-                                                        :class="{'text-jw-600 dark:text-jw-400': t.expiration}"></i>
-                                                </div>
-                                            </div>
-
-                                            <!-- Delete Button -->
-                                            <button @click="confirmDelete('territory', t.id)"
-                                                class="w-9 h-9 rounded-2xl bg-gray-50 dark:bg-gray-800/80 hover:bg-red-50 dark:hover:bg-red-900/30 text-gray-400 hover:text-red-500 dark:hover:text-red-400 flex items-center justify-center transition-colors border border-gray-100 dark:border-gray-700/50">
+                                        <!-- 3-Dots Options Button -->
+                                        <div class="relative flex-shrink-0" @click.stop>
+                                            <button @click="toggleCardMenu(t.id)"
+                                                class="w-9 h-9 rounded-2xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-500 hover:text-jw-600 dark:hover:text-jw-400 flex items-center justify-center transition-all border border-slate-200/80 dark:border-slate-700/80 shadow-xs">
                                                 <i class="fas fa-ellipsis text-sm"></i>
                                             </button>
+
+                                            <!-- 3-Dots Dropdown Menu (Color Picker + Expiration + Delete) -->
+                                            <div x-show="modals.colorPickerId === t.id" x-cloak
+                                                @click.away="closeCardMenu()"
+                                                class="absolute right-0 top-11 w-64 bg-white dark:bg-slate-900 rounded-2xl p-3.5 shadow-2xl border border-slate-200/80 dark:border-slate-800 z-50 animate-fade-in flex flex-col gap-3">
+                                                
+                                                <!-- Color Palette Section -->
+                                                <div>
+                                                    <span class="text-[10px] font-extrabold uppercase tracking-widest text-slate-400 mb-2 block">Colore territorio</span>
+                                                    <div class="grid grid-cols-5 gap-2">
+                                                        <template x-for="c in colorPalette" :key="c">
+                                                            <button @click="setTerritoryColor(t, c)"
+                                                                class="w-8 h-8 rounded-xl transition-all duration-200 flex items-center justify-center shadow-xs"
+                                                                :style="{ backgroundColor: c }"
+                                                                :class="t.color === c ? 'ring-2 ring-offset-2 ring-jw-600 scale-110' : 'hover:scale-105'">
+                                                                <i x-show="t.color === c" class="fas fa-check text-white text-xs"></i>
+                                                            </button>
+                                                        </template>
+                                                    </div>
+                                                </div>
+
+                                                <div class="border-t border-slate-100 dark:border-slate-800"></div>
+
+                                                <!-- Expiration Date Section -->
+                                                <div class="flex items-center justify-between gap-2">
+                                                    <span class="text-[10px] font-extrabold uppercase tracking-widest text-slate-400 flex items-center gap-1.5">
+                                                        <i class="far fa-calendar-alt text-xs text-slate-400"></i> Scadenza:
+                                                    </span>
+                                                    <input type="date" x-model="t.expiration"
+                                                        class="bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-semibold p-1.5 text-slate-800 dark:text-white outline-none focus:ring-2 focus:ring-jw-600">
+                                                </div>
+
+                                                <div class="border-t border-slate-100 dark:border-slate-800"></div>
+
+                                                <!-- Delete Action -->
+                                                <button @click="confirmDelete('territory', t.id); closeCardMenu()"
+                                                    class="w-full py-2 px-3 rounded-xl bg-rose-50 dark:bg-rose-950/40 text-rose-600 dark:text-rose-400 font-bold text-xs flex items-center gap-2 hover:bg-rose-100 transition-all">
+                                                    <i class="fas fa-trash-alt text-xs"></i> Elimina territorio
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
 
                                     <!-- Progress Bar -->
                                     <div class="flex items-center gap-3 pl-1">
-                                        <div class="h-2.5 flex-1 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
+                                        <div class="h-2.5 flex-1 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
                                             <div class="h-full rounded-full transition-all duration-500"
                                                 :style="{ width: calculateStats(t).percent + '%', backgroundColor: t.color || '#5b3c88' }"></div>
                                         </div>
@@ -211,41 +234,31 @@
                                             x-text="calculateStats(t).percent + '%'"></span>
                                     </div>
 
-                                    <!-- Bottom Pill Row (Stats & Palette) -->
-                                    <div class="bg-gray-50/80 dark:bg-gray-800/40 rounded-2xl p-2.5 px-3.5 flex items-center justify-between gap-2 border border-gray-100/80 dark:border-gray-800/40">
-                                        <div class="flex items-center gap-3 text-xs font-semibold">
-                                            <!-- Green Fatti -->
-                                            <div class="flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400">
-                                                <div class="w-5 h-5 rounded-full bg-emerald-500 text-white flex items-center justify-center text-[10px] shadow-sm">
-                                                    <i class="fas fa-check"></i>
-                                                </div>
-                                                <span class="font-bold" x-text="calculateStats(t).green"></span>
-                                                <span x-text="calculateStats(t).green === 1 ? 'Fatto' : 'Fatti'"></span>
+                                    <!-- Bottom Pill Row (Stats icons centered!) -->
+                                    <div class="bg-slate-50/80 dark:bg-slate-800/40 rounded-2xl p-2.5 px-3.5 flex items-center justify-around gap-2 border border-slate-100/80 dark:border-slate-800/40">
+                                        <!-- Green Fatti -->
+                                        <div class="flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400 text-xs font-bold">
+                                            <div class="w-5 h-5 rounded-full bg-emerald-500 text-white inline-flex items-center justify-center text-[9px] font-black shadow-xs leading-none select-none flex-shrink-0 text-center">
+                                                <i class="fas fa-check"></i>
                                             </div>
-                                            <!-- Red Assenti -->
-                                            <div class="flex items-center gap-1.5 text-rose-500 dark:text-rose-400">
-                                                <div class="w-5 h-5 rounded-full bg-rose-500 text-white flex items-center justify-center text-[10px] shadow-sm">
-                                                    <i class="fas fa-times"></i>
-                                                </div>
-                                                <span class="font-bold" x-text="calculateStats(t).red"></span>
-                                                <span x-text="calculateStats(t).red === 1 ? 'Assente' : 'Assenti'"></span>
-                                            </div>
-                                            <!-- Neutral Non Visitati -->
-                                            <div class="flex items-center gap-1.5 text-gray-400 dark:text-gray-500">
-                                                <div class="w-5 h-5 rounded-full bg-gray-300 dark:bg-gray-700 text-white flex items-center justify-center text-[10px]">
-                                                    <i class="fas fa-circle text-[5px]"></i>
-                                                </div>
-                                                <span class="font-bold" x-text="calculateStats(t).neutral"></span>
-                                                <span x-text="calculateStats(t).neutral === 1 ? 'Non visitato' : 'Non visitati'"></span>
-                                            </div>
+                                            <span><strong x-text="calculateStats(t).green"></strong> <span x-text="calculateStats(t).green === 1 ? 'Fatto' : 'Fatti'"></span></span>
                                         </div>
 
-                                        <!-- Palette Button -->
-                                        <button @click.stop="modals.colorPickerId = t.id"
-                                            class="w-8 h-8 rounded-xl flex items-center justify-center transition-transform hover:scale-110 active:scale-95 flex-shrink-0"
-                                            :style="{ backgroundColor: (t.color || '#5b3c88') + '20', color: t.color || '#5b3c88' }">
-                                            <i class="fas fa-palette text-xs"></i>
-                                        </button>
+                                        <!-- Red Assenti -->
+                                        <div class="flex items-center gap-1.5 text-rose-500 dark:text-rose-400 text-xs font-bold">
+                                            <div class="w-5 h-5 rounded-full bg-rose-500 text-white inline-flex items-center justify-center text-[9px] font-black shadow-xs leading-none select-none flex-shrink-0 text-center">
+                                                <i class="fas fa-times"></i>
+                                            </div>
+                                            <span><strong x-text="calculateStats(t).red"></strong> <span x-text="calculateStats(t).red === 1 ? 'Assente' : 'Assenti'"></span></span>
+                                        </div>
+
+                                        <!-- Neutral Non Visitati -->
+                                        <div class="flex items-center gap-1.5 text-slate-400 dark:text-slate-500 text-xs font-bold">
+                                            <div class="w-5 h-5 rounded-full bg-slate-300 dark:bg-slate-600 text-white inline-flex items-center justify-center text-[7px] font-black shadow-xs leading-none select-none flex-shrink-0 text-center">
+                                                <i class="fas fa-circle"></i>
+                                            </div>
+                                            <span><strong class="text-slate-700 dark:text-slate-300" x-text="calculateStats(t).neutral"></strong> <span x-text="calculateStats(t).neutral === 1 ? 'Non visitato' : 'Non visitati'"></span></span>
+                                        </div>
                                     </div>
                                 </div>
                             </template>
@@ -401,30 +414,8 @@
                 <!-- Detail Content -->
                 <div class="flex-1 overflow-y-auto p-4 md:p-6 no-scrollbar pb-32 min-h-0">
 
-                    <!-- Note territorio Card -->
-                    <div class="bg-white dark:bg-slate-900 rounded-3xl p-5 shadow-xs border border-slate-200/80 dark:border-slate-800 mb-4 flex flex-col gap-2">
-                        <div class="flex items-center gap-2 text-jw-600 dark:text-jw-400 font-bold text-xs tracking-wider">
-                            <i class="fas fa-sticky-note"></i>
-                            <span>Note territorio</span>
-                        </div>
-                        <div contenteditable="true" x-text="activeTerritory.notes || ''"
-                            @blur="activeTerritory.notes = $el.innerText"
-                            class="min-h-[24px] text-sm text-slate-700 dark:text-slate-300 outline-none border-b border-slate-100 dark:border-slate-800 focus:border-jw-600 transition-colors py-1"
-                            placeholder="Scrivi qui..."></div>
-                    </div>
-
-                    <!-- Selection Mode Button -->
-                    <div class="flex justify-end mb-4" x-show="activeTerritory.addresses.length > 0">
-                        <button @click="toggleSelectionMode()"
-                            class="px-4 py-2 rounded-2xl text-xs font-bold transition-all flex items-center gap-2 border shadow-xs"
-                            :class="selectionMode ? 'bg-jw-600 text-white border-jw-600 ring-2 ring-jw-200 dark:ring-jw-900' : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 border-slate-200/80 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800'">
-                            <i class="fas fa-square-check text-jw-600 dark:text-jw-400" :class="{'text-white': selectionMode}"></i>
-                            <span x-text="selectionMode ? 'Mod. Selezione Attiva' : 'Seleziona'"></span>
-                        </button>
-                    </div>
-
-                    <!-- Riepilogo territorio Card (Posto in alto prima delle schede indirizzi) -->
-                    <div class="bg-white dark:bg-slate-900 rounded-3xl p-5 shadow-xs border border-slate-200/80 dark:border-slate-800 mb-5 flex flex-col gap-3">
+                    <!-- Riepilogo territorio Card (Posto in alto prima delle note) -->
+                    <div class="bg-white dark:bg-slate-900 rounded-3xl p-5 shadow-xs border border-slate-200/80 dark:border-slate-800 mb-4 flex flex-col gap-3">
                         <div class="flex items-center gap-2 text-jw-600 dark:text-jw-400 font-extrabold text-sm tracking-wide">
                             <span>Riepilogo territorio</span>
                         </div>
@@ -475,6 +466,28 @@
                                 <span class="text-[11px] font-semibold text-slate-400 dark:text-slate-500">Non visitati</span>
                             </div>
                         </div>
+                    </div>
+
+                    <!-- Note territorio Card -->
+                    <div class="bg-white dark:bg-slate-900 rounded-3xl p-5 shadow-xs border border-slate-200/80 dark:border-slate-800 mb-4 flex flex-col gap-2">
+                        <div class="flex items-center gap-2 text-jw-600 dark:text-jw-400 font-bold text-xs tracking-wider">
+                            <i class="fas fa-sticky-note"></i>
+                            <span>Note territorio</span>
+                        </div>
+                        <div contenteditable="true" x-text="activeTerritory.notes || ''"
+                            @blur="activeTerritory.notes = $el.innerText"
+                            class="min-h-[24px] text-sm text-slate-700 dark:text-slate-300 outline-none border-b border-slate-100 dark:border-slate-800 focus:border-jw-600 transition-colors py-1"
+                            placeholder="Scrivi qui..."></div>
+                    </div>
+
+                    <!-- Selection Mode Button -->
+                    <div class="flex justify-end mb-4" x-show="activeTerritory.addresses.length > 0">
+                        <button @click="toggleSelectionMode()"
+                            class="px-4 py-2 rounded-2xl text-xs font-bold transition-all flex items-center gap-2 border shadow-xs"
+                            :class="selectionMode ? 'bg-jw-600 text-white border-jw-600 ring-2 ring-jw-200 dark:ring-jw-900' : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 border-slate-200/80 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800'">
+                            <i class="fas fa-square-check text-jw-600 dark:text-jw-400" :class="{'text-white': selectionMode}"></i>
+                            <span x-text="selectionMode ? 'Mod. Selezione Attiva' : 'Seleziona'"></span>
+                        </button>
                     </div>
 
                     <!-- Addresses List -->
@@ -966,7 +979,7 @@
                 <!-- Header (Skip Button) -->
                 <div class="flex items-center justify-between mb-2">
                     <span class="text-xs font-extrabold uppercase tracking-widest text-jw-600 dark:text-jw-400">
-                        Guida Rapida • <span x-text="(tutorialStep + 1) + ' / 4'"></span>
+                        Guida rapida • <span x-text="(tutorialStep + 1) + ' / 4'"></span>
                     </span>
                     <button @click="finishTutorial()" class="text-xs font-bold text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors px-2.5 py-1 rounded-xl bg-slate-100 dark:bg-slate-800">
                         Salta
@@ -982,58 +995,64 @@
                         </div>
                         <h3 class="text-xl font-black text-center text-slate-900 dark:text-white">Benvenuto in MioTerritorio</h3>
                         <p class="text-sm text-slate-500 dark:text-slate-400 text-center leading-relaxed">
-                            L'applicazione semplice e moderna progettata per aiutarti a gestire e organizzare i tuoi territori e le visite nel ministero.
+                            L'applicazione semplice e moderna progettata per aiutarti a gestire i tuoi territori e le visite nel ministero.
                         </p>
                         <div class="bg-slate-50 dark:bg-slate-800/50 rounded-2xl p-3.5 space-y-2.5 border border-slate-100 dark:border-slate-800/80 text-xs text-slate-600 dark:text-slate-300">
                             <div class="flex items-start gap-2.5">
                                 <i class="fas fa-lock text-jw-600 dark:text-jw-400 mt-0.5 text-sm flex-shrink-0"></i>
-                                <span><strong>100% Privato & Locale:</strong> I tuoi dati restano salvati solo sul tuo dispositivo. Nessun server esterno.</span>
+                                <span><strong>100% privato e locale:</strong> I tuoi dati restano salvati solo sul tuo dispositivo. Nessun server esterno.</span>
                             </div>
                             <div class="flex items-start gap-2.5">
                                 <i class="fas fa-wifi text-jw-600 dark:text-jw-400 mt-0.5 text-sm flex-shrink-0"></i>
-                                <span><strong>Funziona Offline:</strong> Puoi consultare l'app ovunque, anche in assenza di segnale.</span>
+                                <span><strong>Funziona offline:</strong> Puoi consultare l'app ovunque, anche senza rete.</span>
                             </div>
                         </div>
                     </div>
 
                     <!-- Slide 2: Organize -->
                     <div x-show="tutorialStep === 1" class="space-y-4">
-                        <div class="w-16 h-16 rounded-3xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-3xl shadow-xs mx-auto mb-2 border border-emerald-100 dark:border-emerald-900/40">
-                            <i class="fas fa-building"></i>
+                        <div class="w-16 h-16 rounded-3xl bg-gradient-to-tr from-rose-500 via-amber-500 via-emerald-500 to-jw-600 p-0.5 shadow-xs mx-auto mb-2 flex items-center justify-center">
+                            <div class="w-full h-full bg-white dark:bg-slate-900 rounded-[22px] flex items-center justify-center">
+                                <i class="fas fa-building text-2xl text-jw-600 dark:text-jw-400"></i>
+                            </div>
                         </div>
-                        <h3 class="text-xl font-black text-center text-slate-900 dark:text-white">Organizza i Tuoi Territori</h3>
+                        <h3 class="text-xl font-black text-center text-slate-900 dark:text-white">Organizza i tuoi territori</h3>
                         <p class="text-sm text-slate-500 dark:text-slate-400 text-center leading-relaxed">
                             Crea territori e personalizza la loro struttura in pochi tocchi.
                         </p>
                         <div class="bg-slate-50 dark:bg-slate-800/50 rounded-2xl p-3.5 space-y-2.5 border border-slate-100 dark:border-slate-800/80 text-xs text-slate-600 dark:text-slate-300">
                             <div class="flex items-start gap-2.5">
-                                <i class="fas fa-palette text-emerald-600 dark:text-emerald-400 mt-0.5 text-sm flex-shrink-0"></i>
-                                <span><strong>Etichette Colorate:</strong> Assegna un colore a ciascun territorio per distinguerlo a colpo d'occhio.</span>
+                                <div class="w-5 h-5 rounded-full bg-gradient-to-r from-rose-500 via-amber-500 via-emerald-500 to-jw-600 flex items-center justify-center text-[9px] text-white flex-shrink-0 mt-0.5 shadow-xs">
+                                    <i class="fas fa-palette"></i>
+                                </div>
+                                <span><strong>Etichette colorate:</strong> Assegna un colore a ciascun territorio per distinguerlo a colpo d'occhio.</span>
                             </div>
                             <div class="flex items-start gap-2.5">
-                                <i class="fas fa-table-cells text-emerald-600 dark:text-emerald-400 mt-0.5 text-sm flex-shrink-0"></i>
-                                <span><strong>Pulsantiere Personalizzate:</strong> Crea indirizzi a griglia o con il numero di citofoni desiderato.</span>
+                                <div class="w-5 h-5 rounded-full bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 flex items-center justify-center text-[9px] flex-shrink-0 mt-0.5">
+                                    <i class="fas fa-table-cells"></i>
+                                </div>
+                                <span><strong>Pulsantiere personalizzate:</strong> Crea indirizzi a griglia o con il numero di citofoni desiderato.</span>
                             </div>
                         </div>
                     </div>
 
                     <!-- Slide 3: Visits & Notes -->
                     <div x-show="tutorialStep === 2" class="space-y-4">
-                        <div class="w-16 h-16 rounded-3xl bg-rose-50 dark:bg-rose-950/60 text-rose-500 dark:text-rose-400 flex items-center justify-center text-3xl shadow-xs mx-auto mb-2 border border-rose-100 dark:border-rose-900/40">
-                            <i class="fas fa-check-double"></i>
+                        <div class="w-16 h-16 rounded-3xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-3xl shadow-xs mx-auto mb-2 border border-emerald-100 dark:border-emerald-900/40">
+                            <i class="fas fa-clipboard-check"></i>
                         </div>
-                        <h3 class="text-xl font-black text-center text-slate-900 dark:text-white">Registra le Visite</h3>
+                        <h3 class="text-xl font-black text-center text-slate-900 dark:text-white">Registra le visite</h3>
                         <p class="text-sm text-slate-500 dark:text-slate-400 text-center leading-relaxed">
-                            Aggiorna lo stato dei citofoni in tempo reale mentre svolgi il ministero.
+                            Aggiorna lo stato dei citofoni in tempo reale durante il ministero.
                         </p>
                         <div class="bg-slate-50 dark:bg-slate-800/50 rounded-2xl p-3.5 space-y-2.5 border border-slate-100 dark:border-slate-800/80 text-xs text-slate-600 dark:text-slate-300">
                             <div class="flex items-start gap-2.5">
                                 <span class="w-4 h-4 rounded-full bg-emerald-500 text-white text-[9px] font-bold flex items-center justify-center flex-shrink-0 mt-0.5"><i class="fas fa-check"></i></span>
-                                <span><strong>Verde (Fatto) / Rosso (Assente):</strong> Tocca un citofono per cambiare stato.</span>
+                                <span><strong>Stato verde (fatto) e rosso (assente):</strong> Tocca un citofono per cambiare lo stato.</span>
                             </div>
                             <div class="flex items-start gap-2.5">
                                 <i class="fas fa-sticky-note text-jw-600 dark:text-jw-400 mt-0.5 text-sm flex-shrink-0"></i>
-                                <span><strong>Pressione Prolungata:</strong> Tieni premuto un citofono per aggiungere una nota personale.</span>
+                                <span><strong>Pressione prolungata:</strong> Tieni premuto un citofono per aggiungere una nota personale.</span>
                             </div>
                         </div>
                     </div>
@@ -1043,7 +1062,7 @@
                         <div class="w-16 h-16 rounded-3xl bg-jw-600 text-white flex items-center justify-center text-3xl shadow-lg shadow-jw-600/30 mx-auto mb-2">
                             <i class="fas fa-rocket"></i>
                         </div>
-                        <h3 class="text-xl font-black text-center text-slate-900 dark:text-white">Tutto Pronto!</h3>
+                        <h3 class="text-xl font-black text-center text-slate-900 dark:text-white">Tutto pronto!</h3>
                         <p class="text-sm text-slate-500 dark:text-slate-400 text-center leading-relaxed">
                             Ora puoi iniziare a creare e gestire i tuoi territori. Potrai rivedere questa guida in qualsiasi momento nella sezione Informazioni.
                         </p>
@@ -1068,7 +1087,7 @@
                         </button>
                         <button @click="nextTutorialStep()"
                             class="py-3.5 px-6 rounded-2xl bg-jw-600 text-white font-extrabold text-sm shadow-lg shadow-jw-600/30 hover:bg-jw-700 active:scale-[0.98] transition-all flex-1 flex items-center justify-center gap-2">
-                            <span x-text="tutorialStep === 3 ? 'Inizia ad Usare l\'App' : 'Avanti'"></span>
+                            <span x-text="tutorialStep === 3 ? 'Inizia ad usare MioTerritorio' : 'Avanti'"></span>
                             <i class="fas" :class="tutorialStep === 3 ? 'fa-check' : 'fa-arrow-right'"></i>
                         </button>
                     </div>
