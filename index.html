@@ -136,9 +136,9 @@
                         <div x-show="getFilteredTerritories().length === 0" class="flex flex-col items-center justify-center pt-2 pb-6 animate-fade-in">
                             
                             <!-- 3D Map Illustration (Dark & Light) -->
-                            <div class="w-full flex items-center justify-center my-1">
-                                <img x-show="isDark" src="img/empty_map_dark.png" alt="Nessun territorio" class="w-64 max-h-44 object-contain pointer-events-none select-none">
-                                <img x-show="!isDark" src="img/empty_map_light.png" alt="Nessun territorio" class="w-64 max-h-44 object-contain pointer-events-none select-none">
+                            <div class="w-full flex items-center justify-center my-2">
+                                <img x-show="isDark" src="img/empty_map_dark.png" alt="Nessun territorio" class="w-80 sm:w-96 max-h-56 object-contain pointer-events-none select-none">
+                                <img x-show="!isDark" src="img/empty_map_light.png" alt="Nessun territorio" class="w-80 sm:w-96 max-h-56 object-contain pointer-events-none select-none">
                             </div>
 
                             <!-- Text Message -->
@@ -1790,10 +1790,10 @@
             </div>
         </div>
 
-        <!-- Advanced Filter & Sort Modal -->
+        <!-- Simplified Filter & Sort Modal -->
         <div x-show="modals.filterModal" x-cloak class="fixed inset-0 z-[120] flex items-center justify-center p-4">
             <div @click="closeFilterModal()" class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity"></div>
-            <div class="bg-white dark:bg-[#111827] rounded-3xl p-5 sm:p-6 w-full max-w-md relative shadow-2xl animate-scale-up border border-slate-100 dark:border-slate-800 flex flex-col gap-4 max-h-[85vh] overflow-y-auto no-scrollbar">
+            <div class="bg-white dark:bg-[#111827] rounded-3xl p-5 sm:p-6 w-full max-w-sm relative shadow-2xl animate-scale-up border border-slate-100 dark:border-slate-800 flex flex-col gap-4">
                 
                 <!-- Modal Header -->
                 <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800/80 pb-3">
@@ -1802,8 +1802,8 @@
                             <i class="fas fa-sliders"></i>
                         </div>
                         <div>
-                            <h3 class="text-base font-black text-slate-900 dark:text-white leading-tight">Filtri & Ordinamento</h3>
-                            <p class="text-[11px] font-semibold text-slate-400 dark:text-slate-500">Personalizza la vista dei territori</p>
+                            <h3 class="text-base font-black text-slate-900 dark:text-white leading-tight">Filtra Territori</h3>
+                            <p class="text-[11px] font-semibold text-slate-400 dark:text-slate-500">Scegli cosa visualizzare</p>
                         </div>
                     </div>
                     <button @click="closeFilterModal()" class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-400 hover:text-slate-600 dark:hover:text-white flex items-center justify-center transition-colors">
@@ -1811,157 +1811,89 @@
                     </button>
                 </div>
 
-                <!-- Section 1: Stato Territorio -->
+                <!-- Section 1: Stato -->
                 <div class="space-y-2">
                     <label class="text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
-                        Stato del Territorio
+                        Stato
                     </label>
-                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5">
-                        <template x-for="st in [
-                            { id: 'all', label: 'Tutti', icon: 'fa-globe' },
-                            { id: 'not_started', label: 'Non iniziati', icon: 'fa-circle' },
-                            { id: 'in_progress', label: 'In corso', icon: 'fa-spinner' },
-                            { id: 'completed', label: 'Completati', icon: 'fa-check-circle' }
-                        ]" :key="st.id">
-                            <button @click="filters.status = st.id; if (st.id === 'all') filterType = 'all'; else if (st.id === 'in_progress') filterType = 'in_progress'; else if (st.id === 'completed') filterType = 'completed';"
-                                class="py-2.5 px-2 rounded-2xl text-xs font-bold transition-all border text-center flex flex-col items-center justify-center gap-1 shadow-xs"
-                                :class="filters.status === st.id ? 
-                                    'bg-jw-600 text-white border-jw-600 shadow-md shadow-jw-600/20' : 
-                                    'bg-slate-50 dark:bg-[#0d1322] border-slate-200/80 dark:border-slate-800/80 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'">
-                                <i class="fas text-xs" :class="st.icon"></i>
-                                <span class="text-[11px]" x-text="st.label"></span>
-                            </button>
-                        </template>
+                    <div class="grid grid-cols-3 gap-1.5">
+                        <button @click="filters.status = 'all'; filterType = 'all'"
+                            class="py-2.5 px-2 rounded-2xl text-xs font-bold transition-all border text-center shadow-xs"
+                            :class="filters.status === 'all' ? 'bg-jw-600 text-white border-jw-600 shadow-md shadow-jw-600/20' : 'bg-slate-50 dark:bg-[#0d1322] border-slate-200/80 dark:border-slate-800 text-slate-600 dark:text-slate-400'">
+                            Tutti
+                        </button>
+                        <button @click="filters.status = 'in_progress'; filterType = 'in_progress'"
+                            class="py-2.5 px-2 rounded-2xl text-xs font-bold transition-all border text-center shadow-xs"
+                            :class="filters.status === 'in_progress' ? 'bg-jw-600 text-white border-jw-600 shadow-md shadow-jw-600/20' : 'bg-slate-50 dark:bg-[#0d1322] border-slate-200/80 dark:border-slate-800 text-slate-600 dark:text-slate-400'">
+                            In corso
+                        </button>
+                        <button @click="filters.status = 'completed'; filterType = 'completed'"
+                            class="py-2.5 px-2 rounded-2xl text-xs font-bold transition-all border text-center shadow-xs"
+                            :class="filters.status === 'completed' ? 'bg-jw-600 text-white border-jw-600 shadow-md shadow-jw-600/20' : 'bg-slate-50 dark:bg-[#0d1322] border-slate-200/80 dark:border-slate-800 text-slate-600 dark:text-slate-400'">
+                            Completati
+                        </button>
                     </div>
                 </div>
 
-                <!-- Section 2: Ordinamento -->
+                <!-- Section 2: Ordina per -->
                 <div class="space-y-2">
                     <label class="text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
                         Ordina per
                     </label>
                     <div class="grid grid-cols-2 gap-1.5">
-                        <template x-for="sort in [
-                            { id: 'name_asc', label: 'Nome (A - Z)' },
-                            { id: 'name_desc', label: 'Nome (Z - A)' },
-                            { id: 'percent_desc', label: '% Completamento (Max)' },
-                            { id: 'percent_asc', label: '% Completamento (Min)' },
-                            { id: 'units_desc', label: 'Più Citofoni' },
-                            { id: 'units_asc', label: 'Meno Citofoni' }
-                        ]" :key="sort.id">
-                            <button @click="filters.sortBy = sort.id"
-                                class="py-2 px-3 rounded-2xl text-xs font-bold transition-all border text-left flex items-center justify-between gap-1 shadow-xs"
-                                :class="filters.sortBy === sort.id ? 
-                                    'bg-jw-600/10 dark:bg-purple-950/40 text-jw-600 dark:text-purple-400 border-jw-600/40 dark:border-purple-500/40' : 
-                                    'bg-slate-50 dark:bg-[#0d1322] border-slate-200/80 dark:border-slate-800/80 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'">
-                                <span class="text-[11px]" x-text="sort.label"></span>
-                                <i x-show="filters.sortBy === sort.id" class="fas fa-check text-[10px]"></i>
-                            </button>
-                        </template>
+                        <button @click="filters.sortBy = 'name_asc'"
+                            class="py-2 px-3 rounded-2xl text-xs font-bold transition-all border text-left flex items-center justify-between shadow-xs"
+                            :class="filters.sortBy === 'name_asc' ? 'bg-jw-600/10 dark:bg-purple-950/40 text-jw-600 dark:text-purple-400 border-jw-600/40 dark:border-purple-500/40' : 'bg-slate-50 dark:bg-[#0d1322] border-slate-200/80 dark:border-slate-800 text-slate-600 dark:text-slate-400'">
+                            <span>Nome (A - Z)</span>
+                            <i x-show="filters.sortBy === 'name_asc'" class="fas fa-check text-[10px]"></i>
+                        </button>
+                        <button @click="filters.sortBy = 'percent_desc'"
+                            class="py-2 px-3 rounded-2xl text-xs font-bold transition-all border text-left flex items-center justify-between shadow-xs"
+                            :class="filters.sortBy === 'percent_desc' ? 'bg-jw-600/10 dark:bg-purple-950/40 text-jw-600 dark:text-purple-400 border-jw-600/40 dark:border-purple-500/40' : 'bg-slate-50 dark:bg-[#0d1322] border-slate-200/80 dark:border-slate-800 text-slate-600 dark:text-slate-400'">
+                            <span>% Avanzamento</span>
+                            <i x-show="filters.sortBy === 'percent_desc'" class="fas fa-check text-[10px]"></i>
+                        </button>
+                        <button @click="filters.sortBy = 'units_desc'"
+                            class="py-2 px-3 rounded-2xl text-xs font-bold transition-all border text-left flex items-center justify-between shadow-xs"
+                            :class="filters.sortBy === 'units_desc' ? 'bg-jw-600/10 dark:bg-purple-950/40 text-jw-600 dark:text-purple-400 border-jw-600/40 dark:border-purple-500/40' : 'bg-slate-50 dark:bg-[#0d1322] border-slate-200/80 dark:border-slate-800 text-slate-600 dark:text-slate-400'">
+                            <span>Più Citofoni</span>
+                            <i x-show="filters.sortBy === 'units_desc'" class="fas fa-check text-[10px]"></i>
+                        </button>
+                        <button @click="filters.sortBy = 'name_desc'"
+                            class="py-2 px-3 rounded-2xl text-xs font-bold transition-all border text-left flex items-center justify-between shadow-xs"
+                            :class="filters.sortBy === 'name_desc' ? 'bg-jw-600/10 dark:bg-purple-950/40 text-jw-600 dark:text-purple-400 border-jw-600/40 dark:border-purple-500/40' : 'bg-slate-50 dark:bg-[#0d1322] border-slate-200/80 dark:border-slate-800 text-slate-600 dark:text-slate-400'">
+                            <span>Nome (Z - A)</span>
+                            <i x-show="filters.sortBy === 'name_desc'" class="fas fa-check text-[10px]"></i>
+                        </button>
                     </div>
                 </div>
 
-                <!-- Section 3: Range Numero Citofoni -->
+                <!-- Section 3: Dimensione / Numero Citofoni -->
                 <div class="space-y-2">
-                    <div class="flex items-center justify-between">
-                        <label class="text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
-                            Numero di Citofoni
-                        </label>
-                        <span class="text-xs font-black text-jw-600 dark:text-purple-400"
-                            x-text="(filters.minUnits === 0 && filters.maxUnits >= 100) ? 'Tutti i citofoni' : (filters.minUnits + ' - ' + (filters.maxUnits >= 100 ? '100+' : filters.maxUnits) + ' citofoni')">
-                        </span>
-                    </div>
-
-                    <!-- Fast Range Presets -->
-                    <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-1">
+                    <label class="text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
+                        Dimensione Territorio
+                    </label>
+                    <div class="grid grid-cols-2 gap-1.5">
                         <button @click="filters.minUnits = 0; filters.maxUnits = 100"
-                            class="px-3 py-1 rounded-xl text-[11px] font-bold border transition-all"
-                            :class="(filters.minUnits === 0 && filters.maxUnits >= 100) ? 'bg-jw-600 text-white border-jw-600' : 'bg-slate-100 dark:bg-slate-800 border-transparent text-slate-500'">
+                            class="py-2 px-2.5 rounded-2xl text-xs font-bold transition-all border text-center shadow-xs"
+                            :class="(filters.minUnits === 0 && filters.maxUnits >= 100) ? 'bg-jw-600 text-white border-jw-600 shadow-xs' : 'bg-slate-50 dark:bg-[#0d1322] border-slate-200/80 dark:border-slate-800 text-slate-600 dark:text-slate-400'">
                             Tutti
                         </button>
                         <button @click="filters.minUnits = 1; filters.maxUnits = 15"
-                            class="px-3 py-1 rounded-xl text-[11px] font-bold border transition-all"
-                            :class="(filters.minUnits === 1 && filters.maxUnits === 15) ? 'bg-jw-600 text-white border-jw-600' : 'bg-slate-100 dark:bg-slate-800 border-transparent text-slate-500'">
-                            1 - 15 (Piccoli)
+                            class="py-2 px-2.5 rounded-2xl text-xs font-bold transition-all border text-center shadow-xs"
+                            :class="(filters.minUnits === 1 && filters.maxUnits === 15) ? 'bg-jw-600 text-white border-jw-600 shadow-xs' : 'bg-slate-50 dark:bg-[#0d1322] border-slate-200/80 dark:border-slate-800 text-slate-600 dark:text-slate-400'">
+                            Piccoli (1-15)
                         </button>
                         <button @click="filters.minUnits = 16; filters.maxUnits = 40"
-                            class="px-3 py-1 rounded-xl text-[11px] font-bold border transition-all"
-                            :class="(filters.minUnits === 16 && filters.maxUnits === 40) ? 'bg-jw-600 text-white border-jw-600' : 'bg-slate-100 dark:bg-slate-800 border-transparent text-slate-500'">
-                            16 - 40 (Medi)
+                            class="py-2 px-2.5 rounded-2xl text-xs font-bold transition-all border text-center shadow-xs"
+                            :class="(filters.minUnits === 16 && filters.maxUnits === 40) ? 'bg-jw-600 text-white border-jw-600 shadow-xs' : 'bg-slate-50 dark:bg-[#0d1322] border-slate-200/80 dark:border-slate-800 text-slate-600 dark:text-slate-400'">
+                            Medi (16-40)
                         </button>
                         <button @click="filters.minUnits = 41; filters.maxUnits = 100"
-                            class="px-3 py-1 rounded-xl text-[11px] font-bold border transition-all"
-                            :class="(filters.minUnits === 41 && filters.maxUnits >= 100) ? 'bg-jw-600 text-white border-jw-600' : 'bg-slate-100 dark:bg-slate-800 border-transparent text-slate-500'">
-                            40+ (Grandi)
+                            class="py-2 px-2.5 rounded-2xl text-xs font-bold transition-all border text-center shadow-xs"
+                            :class="(filters.minUnits === 41 && filters.maxUnits >= 100) ? 'bg-jw-600 text-white border-jw-600 shadow-xs' : 'bg-slate-50 dark:bg-[#0d1322] border-slate-200/80 dark:border-slate-800 text-slate-600 dark:text-slate-400'">
+                            Grandi (40+)
                         </button>
-                    </div>
-
-                    <!-- Min and Max Sliders -->
-                    <div class="p-3 bg-slate-50 dark:bg-[#0d1322] rounded-2xl border border-slate-200/80 dark:border-slate-800/80 space-y-2">
-                        <div class="space-y-1">
-                            <div class="flex justify-between text-[10px] font-bold text-slate-400">
-                                <span>Minimo citofoni</span>
-                                <span x-text="filters.minUnits"></span>
-                            </div>
-                            <input type="range" min="0" max="100" step="5" x-model.number="filters.minUnits"
-                                class="w-full h-1.5 bg-slate-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-jw-600">
-                        </div>
-
-                        <div class="space-y-1 pt-1">
-                            <div class="flex justify-between text-[10px] font-bold text-slate-400">
-                                <span>Massimo citofoni</span>
-                                <span x-text="filters.maxUnits >= 100 ? '100+' : filters.maxUnits"></span>
-                            </div>
-                            <input type="range" min="5" max="100" step="5" x-model.number="filters.maxUnits"
-                                class="w-full h-1.5 bg-slate-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-jw-600">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Section 4: Filtra per Colore -->
-                <div class="space-y-2">
-                    <div class="flex items-center justify-between">
-                        <label class="text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
-                            Colore Etichetta
-                        </label>
-                        <button x-show="filters.selectedColor" @click="filters.selectedColor = null" class="text-[11px] font-bold text-jw-600 dark:text-jw-400 hover:underline">
-                            Deseleziona
-                        </button>
-                    </div>
-                    <div class="flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
-                        <button @click="filters.selectedColor = null"
-                            class="w-8 h-8 rounded-full border-2 flex items-center justify-center text-xs flex-shrink-0 transition-all"
-                            :class="filters.selectedColor === null ? 'border-jw-600 scale-110 shadow-sm bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200' : 'border-slate-200 dark:border-slate-700 text-slate-400'">
-                            <i class="fas fa-asterisk text-[9px]"></i>
-                        </button>
-                        <template x-for="c in colorPalette" :key="c">
-                            <button @click="filters.selectedColor = (filters.selectedColor === c ? null : c)"
-                                class="w-8 h-8 rounded-full border-2 transition-transform flex-shrink-0 flex items-center justify-center text-white"
-                                :class="filters.selectedColor === c ? 'border-white dark:border-slate-900 ring-2 ring-jw-600 scale-110 shadow-md' : 'border-transparent opacity-80 hover:opacity-100'"
-                                :style="{ backgroundColor: c }">
-                                <i x-show="filters.selectedColor === c" class="fas fa-check text-[10px]"></i>
-                            </button>
-                        </template>
-                    </div>
-                </div>
-
-                <!-- Section 5: Solo con Note -->
-                <div class="p-3.5 bg-slate-50 dark:bg-[#0d1322] rounded-2xl border border-slate-200/80 dark:border-slate-800/80 flex items-center justify-between cursor-pointer"
-                    @click="filters.hasNotesOnly = !filters.hasNotesOnly">
-                    <div class="flex items-center gap-2.5">
-                        <div class="w-8 h-8 rounded-xl bg-purple-100 dark:bg-[#312356] text-jw-600 dark:text-[#c084fc] flex items-center justify-center text-xs shadow-xs">
-                            <i class="fas fa-sticky-note"></i>
-                        </div>
-                        <div>
-                            <h4 class="text-xs font-bold text-slate-900 dark:text-white">Solo con Note</h4>
-                            <p class="text-[10px] text-slate-400">Territori con almeno una nota salvata</p>
-                        </div>
-                    </div>
-                    <!-- Toggle Switch -->
-                    <div class="w-11 h-6 rounded-full transition-colors relative flex items-center px-0.5"
-                        :class="filters.hasNotesOnly ? 'bg-jw-600' : 'bg-slate-300 dark:bg-slate-700'">
-                        <div class="w-5 h-5 rounded-full bg-white transition-transform transform shadow-xs"
-                            :class="filters.hasNotesOnly ? 'translate-x-5' : 'translate-x-0'"></div>
                     </div>
                 </div>
 
@@ -1969,11 +1901,11 @@
                 <div class="grid grid-cols-2 gap-2.5 pt-2 border-t border-slate-100 dark:border-slate-800">
                     <button @click="resetFilters()"
                         class="py-3 px-4 rounded-2xl border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 font-bold text-xs hover:bg-slate-50 dark:hover:bg-slate-800 transition-all active:scale-[0.98]">
-                        Reimposta filtri
+                        Reimposta
                     </button>
                     <button @click="closeFilterModal()"
                         class="py-3 px-4 rounded-2xl bg-jw-600 hover:bg-jw-700 text-white font-extrabold text-xs shadow-lg shadow-jw-600/30 active:scale-[0.98] transition-all flex items-center justify-center gap-1.5">
-                        <i class="fas fa-check"></i> Mostra Risultati (<span x-text="getFilteredTerritories().length"></span>)
+                        <i class="fas fa-check"></i> Mostra (<span x-text="getFilteredTerritories().length"></span>)
                     </button>
                 </div>
 
@@ -1987,7 +1919,31 @@
     <script>
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('sw.js').then((reg) => {
+                // Check for updates on startup
                 reg.update();
+
+                // Check for updates whenever app comes to foreground / screen unlocked
+                document.addEventListener('visibilitychange', () => {
+                    if (document.visibilityState === 'visible' && navigator.onLine) {
+                        reg.update();
+                    }
+                });
+
+                // Periodically check for updates if connected
+                setInterval(() => {
+                    if (navigator.onLine) {
+                        reg.update();
+                    }
+                }, 60000);
+            });
+
+            // When new SW activates, seamlessly reload to load latest update
+            let isRefreshing = false;
+            navigator.serviceWorker.addEventListener('controllerchange', () => {
+                if (!isRefreshing) {
+                    isRefreshing = true;
+                    window.location.reload();
+                }
             });
         }
     </script>
