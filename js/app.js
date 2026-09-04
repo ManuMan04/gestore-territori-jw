@@ -6,7 +6,7 @@ function territoryApp() {
         activeTerritory: null,
         selectionMode: false,
         selectedUnits: [],
-        modals: { newTerritory: false, newAddress: false, note: false, deleteConfirm: false, colorPickerId: null, tutorial: false, tutorialComplete: false, pwaGuide: false },
+        modals: { newTerritory: false, newAddress: false, note: false, deleteConfirm: false, colorPickerId: null, tutorial: false, tutorialComplete: false, pwaGuide: false, resetConfirm: false },
         deleteState: { type: null, id: null, targetName: '' },
         forms: { territoryName: '', territoryColor: null, addressName: '', addressUnits: '', addressRows: '', addressCols: '', addressCreationMode: 'simple', customCols: [], noteText: '' },
         currentEditingUnit: null,
@@ -248,8 +248,43 @@ function territoryApp() {
             this.selectionMode = false;
             this.activeCardMenuId = null;
         },
+        previousView: 'dashboard',
+        previousInfoView: 'settings',
+        openSettings() {
+            if (this.view !== 'settings' && this.view !== 'info') {
+                this.previousView = this.view;
+            }
+            this.view = 'settings';
+        },
+        goBackFromSettings() {
+            this.view = this.previousView || 'dashboard';
+        },
         openInfo() {
+            if (this.view !== 'info') {
+                this.previousInfoView = this.view;
+            }
             this.view = 'info';
+        },
+        goBackFromInfo() {
+            this.view = this.previousInfoView || 'settings';
+        },
+        countAllAddresses() {
+            if (!this.territories || this.territories.length === 0) return 0;
+            return this.territories.reduce((sum, t) => sum + (t.addresses ? t.addresses.length : 0), 0);
+        },
+        countAllAppUnits() {
+            if (!this.territories || this.territories.length === 0) return 0;
+            return this.territories.reduce((sum, t) => sum + this.countTotalUnits(t), 0);
+        },
+        formatAppData() {
+            localStorage.removeItem('territories');
+            localStorage.removeItem('tutorialSeen');
+            this.territories = [];
+            this.activeTerritory = null;
+            this.selectionMode = false;
+            this.selectedUnits = [];
+            this.modals.resetConfirm = false;
+            this.view = 'dashboard';
         },
 
         confirmDelete(type, id) {
