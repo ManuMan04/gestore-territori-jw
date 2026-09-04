@@ -276,6 +276,34 @@ function territoryApp() {
             if (!this.territories || this.territories.length === 0) return 0;
             return this.territories.reduce((sum, t) => sum + this.countTotalUnits(t), 0);
         },
+        getLocalStorageSize() {
+            try {
+                let total = 0;
+                for (let key in localStorage) {
+                    if (localStorage.hasOwnProperty(key)) {
+                        total += ((localStorage[key].length + key.length) * 2);
+                    }
+                }
+                const mb = (total / (1024 * 1024)).toFixed(2);
+                return `${mb} MB`;
+            } catch (e) {
+                return '0 MB';
+            }
+        },
+        getLocalStoragePercent() {
+            try {
+                let total = 0;
+                for (let key in localStorage) {
+                    if (localStorage.hasOwnProperty(key)) {
+                        total += ((localStorage[key].length + key.length) * 2);
+                    }
+                }
+                const percent = Math.min(100, Math.round((total / 5242880) * 100));
+                return percent;
+            } catch (e) {
+                return 0;
+            }
+        },
         formatAppData() {
             localStorage.removeItem('territories');
             localStorage.removeItem('tutorialSeen');
