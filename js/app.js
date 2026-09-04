@@ -71,6 +71,8 @@ function territoryApp() {
         },
         openPwaGuide() {
             this.pwaStep = 0;
+            this.modals.tutorial = false;
+            this.modals.tutorialComplete = false;
             this.modals.pwaGuide = true;
         },
         closePwaGuide() {
