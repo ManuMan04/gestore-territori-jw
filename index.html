@@ -20,13 +20,18 @@
     <link rel="stylesheet" href="css/style.css">
 
     <!-- Icons & PWA -->
-    <link rel="icon" type="image/png" href="icons/icon-192.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
     <link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-title" content="MioTerritorio">
+    <meta name="application-name" content="MioTerritorio">
     <meta name="theme-color" content="#5b3c88" media="(prefers-color-scheme: light)">
     <meta name="theme-color" content="#171717" media="(prefers-color-scheme: dark)">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <link rel="apple-touch-icon" href="icons/icon-192.png">
 </head>
 
 <body
@@ -323,10 +328,15 @@
                             </div>
                         </div>
 
-                        <!-- Re-open Interactive Guide Button -->
-                        <button @click="openIntroModal()" class="w-full py-3.5 px-4 rounded-2xl bg-jw-600 text-white font-extrabold text-sm shadow-lg shadow-jw-600/30 hover:bg-jw-700 active:scale-[0.98] transition-all flex items-center justify-center gap-2.5">
-                            <i class="fas fa-graduation-cap text-base"></i> Rivedi Guida e Tutorial
-                        </button>
+                        <!-- Re-open Interactive Guide and PWA Guide Buttons -->
+                        <div class="space-y-2.5">
+                            <button @click="openIntroModal()" class="w-full py-3.5 px-4 rounded-2xl bg-jw-600 text-white font-extrabold text-sm shadow-lg shadow-jw-600/30 hover:bg-jw-700 active:scale-[0.98] transition-all flex items-center justify-center gap-2.5">
+                                <i class="fas fa-graduation-cap text-base"></i> Rivedi Guida e Tutorial
+                            </button>
+                            <button @click="openPwaGuide()" class="w-full py-3 px-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 text-slate-800 dark:text-slate-200 font-extrabold text-xs shadow-xs hover:bg-slate-50 dark:hover:bg-slate-800 active:scale-[0.98] transition-all flex items-center justify-center gap-2">
+                                <i class="fas fa-mobile-screen-button text-jw-600 dark:text-jw-400"></i> Come installare su iPhone (PWA)
+                            </button>
+                        </div>
 
                         <!-- Disclaimer Bar -->
                         <div
@@ -637,10 +647,11 @@
                                         </div>
 
                                         <!-- Legend -->
-                                        <div class="flex items-center justify-center gap-4 mt-4 pt-3 border-t border-slate-100 dark:border-slate-800/60 text-xs font-semibold text-slate-400 dark:text-slate-500">
+                                        <div class="flex items-center justify-center flex-wrap gap-3 sm:gap-4 mt-4 pt-3 border-t border-slate-100 dark:border-slate-800/60 text-xs font-semibold text-slate-400 dark:text-slate-500">
                                             <span class="flex items-center gap-1.5"><div class="w-4 h-4 rounded-full bg-emerald-500 text-white inline-flex items-center justify-center text-[8px] font-black shadow-xs leading-none select-none flex-shrink-0 text-center"><i class="fas fa-check"></i></div> Fatto</span>
                                             <span class="flex items-center gap-1.5"><div class="w-4 h-4 rounded-full bg-rose-500 text-white inline-flex items-center justify-center text-[8px] font-black shadow-xs leading-none select-none flex-shrink-0 text-center"><i class="fas fa-times"></i></div> Assente</span>
                                             <span class="flex items-center gap-1.5"><div class="w-4 h-4 rounded-full bg-slate-300 dark:bg-slate-600 text-white inline-flex items-center justify-center text-[6px] font-black shadow-xs leading-none select-none flex-shrink-0 text-center"><i class="fas fa-circle"></i></div> Non visitato</span>
+                                            <span class="flex items-center gap-1.5"><div class="w-4 h-4 rounded-full bg-slate-200 dark:bg-slate-800 border border-dashed border-slate-400 dark:border-slate-600 text-slate-500 dark:text-slate-400 inline-flex items-center justify-center text-[7px] font-black shadow-xs leading-none select-none flex-shrink-0 text-center"><i class="fas fa-border-none"></i></div> Vuoto</span>
                                         </div>
 
                                     </div>
@@ -1068,7 +1079,7 @@
                         <p class="text-sm text-slate-500 dark:text-slate-400 text-center leading-relaxed">
                             Come preferisci iniziare a scoprire l'applicazione?
                         </p>
-                        <div class="space-y-2.5 pt-2">
+                        <div class="space-y-2 pt-2">
                             <button @click="startInteractiveGuideFromIntro()"
                                 class="w-full py-3.5 px-4 rounded-2xl bg-jw-600 text-white font-extrabold text-xs shadow-lg shadow-jw-600/30 hover:bg-jw-700 active:scale-[0.98] transition-all flex items-center justify-center gap-2">
                                 <i class="fas fa-wand-magic-sparkles text-sm"></i>
@@ -1077,6 +1088,11 @@
                             <button @click="finishTutorial()"
                                 class="w-full py-3 px-4 rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-extrabold text-xs hover:bg-slate-200 dark:hover:bg-slate-700 active:scale-[0.98] transition-all flex items-center justify-center gap-2">
                                 <span>Comincia ad usarlo</span>
+                            </button>
+                            <button @click="openPwaGuide()"
+                                class="w-full py-2.5 px-3 rounded-2xl border border-jw-200 dark:border-jw-900/60 text-jw-600 dark:text-jw-400 font-bold text-xs hover:bg-jw-50 dark:hover:bg-jw-950/40 transition-all flex items-center justify-center gap-2">
+                                <i class="fas fa-mobile-screen-button"></i>
+                                <span>Come installare su iPhone (PWA)</span>
                             </button>
                         </div>
                     </div>
@@ -1196,24 +1212,152 @@
             <div @click="finishTutorial()" class="absolute inset-0 bg-slate-900/60 backdrop-blur-md transition-opacity"></div>
 
             <!-- Modal Box -->
-            <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 w-full max-w-sm relative shadow-2xl animate-slide-up border border-slate-100 dark:border-slate-800 overflow-hidden flex flex-col justify-between gap-6 text-center">
+            <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-7 w-full max-w-sm relative shadow-2xl animate-slide-up border border-slate-100 dark:border-slate-800 overflow-hidden flex flex-col justify-between gap-5 text-center">
                 
-                <div class="space-y-3">
-                    <div class="w-16 h-16 rounded-3xl bg-jw-600 text-white flex items-center justify-center text-3xl shadow-lg shadow-jw-600/30 mx-auto">
+                <div class="space-y-2.5">
+                    <div class="w-14 h-14 rounded-3xl bg-jw-600 text-white flex items-center justify-center text-2xl shadow-lg shadow-jw-600/30 mx-auto">
                         <i class="fas fa-rocket"></i>
                     </div>
-                    <h3 class="text-2xl font-black text-slate-900 dark:text-white tracking-tight">Tutorial Completato!</h3>
-                    <p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
-                        Tutto pronto! Ora puoi iniziare a organizzare liberamente i tuoi territori e registrare le visite.
+                    <h3 class="text-xl font-black text-slate-900 dark:text-white tracking-tight">Tutorial Completato!</h3>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+                        Tutto pronto per organizzare i territori e registrare le tue visite.
                     </p>
                 </div>
 
-                <!-- Button -->
+                <!-- PWA Installation Card Prompt -->
+                <div class="bg-slate-50 dark:bg-slate-800/60 rounded-2xl p-3.5 border border-slate-200/70 dark:border-slate-700/60 text-left space-y-2">
+                    <div class="flex items-center gap-2 text-jw-600 dark:text-jw-400 font-black text-xs">
+                        <i class="fas fa-mobile-screen-button text-sm"></i>
+                        <span>Aggiungi alla Schermata Home</span>
+                    </div>
+                    <p class="text-[11px] text-slate-600 dark:text-slate-300 leading-relaxed">
+                        Vuoi usare MioTerritorio a tutto schermo come una vera app sul tuo iPhone o iPad?
+                    </p>
+                    <button @click="openPwaGuide()"
+                        class="w-full py-2.5 px-3 rounded-xl bg-jw-600 text-white font-extrabold text-xs shadow-md shadow-jw-600/20 hover:bg-jw-700 active:scale-[0.98] transition-all flex items-center justify-center gap-2">
+                        <i class="fas fa-arrow-up-from-bracket text-xs"></i>
+                        <span>Guarda come fare in 2 tocchi</span>
+                    </button>
+                </div>
+
+                <!-- Button to Start Using App -->
                 <button @click="finishTutorial()"
-                    class="w-full py-4 rounded-2xl bg-jw-600 text-white font-extrabold text-sm shadow-lg shadow-jw-600/30 hover:bg-jw-700 active:scale-[0.98] transition-all flex items-center justify-center gap-2">
+                    class="w-full py-3.5 rounded-2xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-white font-extrabold text-xs active:scale-[0.98] transition-all flex items-center justify-center gap-2">
                     <span>Comincia ad usare MioTerritorio</span>
                     <i class="fas fa-arrow-right"></i>
                 </button>
+            </div>
+        </div>
+
+        <!-- PWA Installation Guide Modal (Modern Apple/PWA Tutorial Walkthrough) -->
+        <div x-show="modals.pwaGuide" x-cloak class="fixed inset-0 z-[110] flex items-center justify-center p-4">
+            <!-- Backdrop -->
+            <div @click="closePwaGuide()" class="absolute inset-0 bg-slate-900/70 backdrop-blur-md transition-opacity"></div>
+
+            <!-- Modal Box -->
+            <div class="bg-white dark:bg-slate-900 rounded-3xl p-5 sm:p-6 w-full max-w-sm relative shadow-2xl animate-slide-up border border-slate-100 dark:border-slate-800 overflow-hidden flex flex-col gap-4">
+                
+                <!-- Header -->
+                <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
+                    <div class="flex items-center gap-2.5">
+                        <div class="w-8 h-8 rounded-xl bg-jw-600 text-white flex items-center justify-center text-sm shadow-xs flex-shrink-0">
+                            <i class="fas fa-mobile-screen-button"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-black text-slate-900 dark:text-white leading-tight">Installa su iPhone / Home</h3>
+                            <p class="text-[10px] font-semibold text-slate-400">Modalità App a schermo intero</p>
+                        </div>
+                    </div>
+                    <button @click="closePwaGuide()" class="w-7 h-7 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-400 hover:text-slate-600 dark:hover:text-white flex items-center justify-center transition-colors">
+                        <i class="fas fa-times text-xs"></i>
+                    </button>
+                </div>
+
+                <!-- Slide Content -->
+                <div class="flex-1 flex flex-col justify-center min-h-[260px]">
+                    <!-- Step 1: Condividi -->
+                    <div x-show="pwaStep === 0" class="space-y-3 animate-fade-in text-center">
+                        <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-jw-50 dark:bg-jw-950/60 text-jw-600 dark:text-jw-400 text-xs font-black">
+                            <span>1. Tocca Condividi</span>
+                        </div>
+                        <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed px-2">
+                            In basso su <strong>Safari</strong>, tocca l'icona di <strong>Condividi</strong> <i class="fas fa-arrow-up-from-bracket text-jw-600"></i> (oppure i tre puntini <i class="fas fa-ellipsis"></i>).
+                        </p>
+                        <div class="bg-slate-50 dark:bg-slate-950/60 rounded-2xl p-2 border border-slate-200/70 dark:border-slate-800 flex items-center justify-center overflow-hidden max-h-[170px]">
+                            <img src="img/pwa/pwa_step1.png" alt="Passo 1: Tocca Condividi in Safari" class="max-h-[155px] w-auto object-contain rounded-xl shadow-xs">
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Aggiungi alla schermata Home -->
+                    <div x-show="pwaStep === 1" class="space-y-3 animate-fade-in text-center">
+                        <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-jw-50 dark:bg-jw-950/60 text-jw-600 dark:text-jw-400 text-xs font-black">
+                            <span>2. Aggiungi a Home</span>
+                        </div>
+                        <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed px-2">
+                            Scorri le opzioni verso il basso e tocca <strong>"Aggiungi alla schermata Home"</strong> <i class="fas fa-plus-square text-jw-600"></i>.
+                        </p>
+                        <div class="bg-slate-50 dark:bg-slate-950/60 rounded-2xl p-2 border border-slate-200/70 dark:border-slate-800 flex items-center justify-center overflow-hidden max-h-[170px]">
+                            <img src="img/pwa/pwa_step2.png" alt="Passo 2: Aggiungi alla schermata Home" class="max-h-[155px] w-auto object-contain rounded-xl shadow-xs">
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Conferma Aggiungi -->
+                    <div x-show="pwaStep === 2" class="space-y-3 animate-fade-in text-center">
+                        <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-jw-50 dark:bg-jw-950/60 text-jw-600 dark:text-jw-400 text-xs font-black">
+                            <span>3. Conferma Aggiungi</span>
+                        </div>
+                        <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed px-2">
+                            Verifica che il nome sia <strong>MioTerritorio</strong> e tocca <strong>"Aggiungi"</strong> in alto a destra.
+                        </p>
+                        <div class="bg-slate-50 dark:bg-slate-950/60 rounded-2xl p-2 border border-slate-200/70 dark:border-slate-800 flex items-center justify-center overflow-hidden max-h-[170px]">
+                            <img src="img/pwa/pwa_step3.png" alt="Passo 3: Tocca Aggiungi" class="max-h-[155px] w-auto object-contain rounded-xl shadow-xs">
+                        </div>
+                    </div>
+
+                    <!-- Step 4: Home screen -->
+                    <div x-show="pwaStep === 3" class="space-y-3 animate-fade-in text-center">
+                        <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 text-xs font-black">
+                            <i class="fas fa-check"></i>
+                            <span>Pronto sulla Home!</span>
+                        </div>
+                        <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed px-2">
+                            Troverai l'icona di <strong>MioTerritorio</strong> sulla tua schermata Home. Aprila per usarla a tutto schermo senza barre del browser!
+                        </p>
+                        <div class="bg-slate-50 dark:bg-slate-950/60 rounded-2xl p-2 border border-slate-200/70 dark:border-slate-800 flex items-center justify-center overflow-hidden max-h-[170px]">
+                            <img src="img/pwa/pwa_step4.png" alt="Passo 4: Icona MioTerritorio su Home Screen" class="max-h-[155px] w-auto object-contain rounded-xl shadow-xs">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Navigation Dots & Buttons -->
+                <div class="space-y-3 pt-1 border-t border-slate-100 dark:border-slate-800">
+                    <!-- Dots Progress Indicator -->
+                    <div class="flex items-center justify-center gap-2">
+                        <template x-for="i in [0, 1, 2, 3]" :key="i">
+                            <button @click="pwaStep = i" class="h-1.5 rounded-full transition-all duration-300"
+                                :class="pwaStep === i ? 'w-5 bg-jw-600' : 'w-1.5 bg-slate-200 dark:bg-slate-700'"></button>
+                        </template>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="flex items-center gap-2">
+                        <button x-show="pwaStep > 0" @click="prevPwaStep()"
+                            class="py-3 px-4 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 font-bold text-xs hover:bg-slate-50 dark:hover:bg-slate-800 transition-all">
+                            Indietro
+                        </button>
+                        <button x-show="pwaStep < 3" @click="nextPwaStep()"
+                            class="py-3 px-5 rounded-xl bg-jw-600 text-white font-extrabold text-xs shadow-md shadow-jw-600/30 hover:bg-jw-700 active:scale-[0.98] transition-all flex-1 flex items-center justify-center gap-1.5">
+                            <span>Avanti</span>
+                            <i class="fas fa-arrow-right text-[10px]"></i>
+                        </button>
+                        <button x-show="pwaStep === 3" @click="closePwaGuide()"
+                            class="py-3 px-5 rounded-xl bg-emerald-600 text-white font-extrabold text-xs shadow-md shadow-emerald-600/30 hover:bg-emerald-700 active:scale-[0.98] transition-all flex-1 flex items-center justify-center gap-1.5">
+                            <i class="fas fa-check text-[10px]"></i>
+                            <span>Ho capito, grazie!</span>
+                        </button>
+                    </div>
+                </div>
+
             </div>
         </div>
 

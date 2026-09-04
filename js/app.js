@@ -6,7 +6,7 @@ function territoryApp() {
         activeTerritory: null,
         selectionMode: false,
         selectedUnits: [],
-        modals: { newTerritory: false, newAddress: false, note: false, deleteConfirm: false, colorPickerId: null, tutorial: false, tutorialComplete: false },
+        modals: { newTerritory: false, newAddress: false, note: false, deleteConfirm: false, colorPickerId: null, tutorial: false, tutorialComplete: false, pwaGuide: false },
         deleteState: { type: null, id: null, targetName: '' },
         forms: { territoryName: '', territoryColor: null, addressName: '', addressUnits: '', addressRows: '', addressCols: '', addressCreationMode: 'simple', customCols: [], noteText: '' },
         currentEditingUnit: null,
@@ -20,6 +20,7 @@ function territoryApp() {
         searchQuery: '',
         filterType: 'all',
         introStep: 0,
+        pwaStep: 0,
         tutorialActive: false,
         tutorialStep: 1,
         testedStates: { green: false, red: false, hole: false },
@@ -67,6 +68,23 @@ function territoryApp() {
         startInteractiveGuideFromIntro() {
             this.modals.tutorial = false;
             this.startInteractiveGuide();
+        },
+        openPwaGuide() {
+            this.pwaStep = 0;
+            this.modals.pwaGuide = true;
+        },
+        closePwaGuide() {
+            this.modals.pwaGuide = false;
+        },
+        nextPwaStep() {
+            if (this.pwaStep < 3) {
+                this.pwaStep++;
+            }
+        },
+        prevPwaStep() {
+            if (this.pwaStep > 0) {
+                this.pwaStep--;
+            }
         },
         startInteractiveGuide() {
             this.modals.tutorial = false;

@@ -1,20 +1,27 @@
 {
-  "name": "Gestore Territori JW",
-  "short_name": "Territori",
-  "description": "App per la gestione dei territori e citofoni.",
-  "start_url": "index.html",
+  "name": "MioTerritorio",
+  "short_name": "MioTerritorio",
+  "description": "App per la gestione dei territori e citofoni nel ministero.",
+  "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#526ca2",
+  "background_color": "#0b0f19",
+  "theme_color": "#5b3c88",
   "icons": [
     {
       "src": "icons/icon-192.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     },
     {
       "src": "icons/icon-512.png",
       "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/apple-touch-icon.png",
+      "sizes": "180x180",
       "type": "image/png"
     }
   ]

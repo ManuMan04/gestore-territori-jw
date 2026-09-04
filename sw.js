@@ -1,4 +1,4 @@
-const CACHE_NAME = 'territori-cache-v22';
+const CACHE_NAME = 'territori-cache-v23';
 const ASSETS = [
     'index.html',
     'css/style.css',
@@ -14,6 +14,12 @@ const ASSETS = [
     'webfonts/fa-brands-400.woff2',
     'webfonts/fa-brands-400.ttf',
     'icons/icon-192.png',
+    'icons/icon-512.png',
+    'icons/apple-touch-icon.png',
+    'img/pwa/pwa_step1.png',
+    'img/pwa/pwa_step2.png',
+    'img/pwa/pwa_step3.png',
+    'img/pwa/pwa_step4.png',
     'manifest.json'
 ];
 
