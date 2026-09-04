@@ -1079,41 +1079,41 @@
             </div>
         </template>
 
-        <!-- Bottom Navigation Bar (3 Buttons: Territori, Statistiche, Altro) -->
-        <nav x-show="view === 'dashboard' || view === 'stats' || view === 'settings'"
-            class="flex-shrink-0 bg-white/95 dark:bg-[#0b0f19] backdrop-blur-lg border-t border-slate-200/80 dark:border-slate-800/60 z-30 transition-colors"
-            style="padding-bottom: max(0.5rem, env(safe-area-inset-bottom, 0px));">
-            <div class="flex items-center justify-around px-4 py-2 max-w-lg mx-auto">
+        <!-- Bottom Navigation Floating Card (3 Buttons: Territori, Statistiche, Altro) -->
+        <div x-show="view === 'dashboard' || view === 'stats' || view === 'settings'"
+            class="flex-shrink-0 px-4 pt-1 z-30 transition-all pointer-events-none"
+            style="padding-bottom: max(0.75rem, env(safe-area-inset-bottom, 0px));">
+            <nav class="max-w-md md:max-w-lg mx-auto bg-white/95 dark:bg-[#0f172a]/95 backdrop-blur-xl rounded-3xl border border-slate-200/80 dark:border-slate-800/80 shadow-xl shadow-slate-900/10 dark:shadow-black/40 px-3 py-2 pointer-events-auto flex items-center justify-around">
                 
                 <!-- Tab 1: Territori -->
                 <button @click="switchTab('territori')"
-                    class="flex-1 py-1 flex flex-col items-center justify-center gap-1 transition-all active:scale-95"
-                    :class="currentTab === 'territori' ? 'text-jw-600 dark:text-purple-400 font-extrabold' : 'text-slate-400 dark:text-slate-500 font-medium hover:text-slate-600 dark:hover:text-slate-300'">
+                    class="flex-1 py-1 flex flex-col items-center justify-center gap-1 transition-all active:scale-95 select-none"
+                    :class="currentTab === 'territori' ? 'text-jw-600 dark:text-purple-400 font-black' : 'text-slate-400 dark:text-slate-500 font-medium hover:text-slate-600 dark:hover:text-slate-300'">
                     <i class="fas fa-map text-lg"></i>
                     <span class="text-[11px] leading-none">Territori</span>
-                    <span class="w-6 h-[2px] rounded-full transition-all mt-0.5" :class="currentTab === 'territori' ? 'bg-jw-600 dark:bg-purple-400 opacity-100' : 'bg-transparent opacity-0'"></span>
+                    <span class="w-6 h-[2.5px] rounded-full transition-all mt-0.5" :class="currentTab === 'territori' ? 'bg-jw-600 dark:bg-purple-400 opacity-100' : 'bg-transparent opacity-0'"></span>
                 </button>
 
                 <!-- Tab 2: Statistiche -->
                 <button @click="switchTab('stats')"
-                    class="flex-1 py-1 flex flex-col items-center justify-center gap-1 transition-all active:scale-95"
-                    :class="currentTab === 'stats' ? 'text-jw-600 dark:text-purple-400 font-extrabold' : 'text-slate-400 dark:text-slate-500 font-medium hover:text-slate-600 dark:hover:text-slate-300'">
+                    class="flex-1 py-1 flex flex-col items-center justify-center gap-1 transition-all active:scale-95 select-none"
+                    :class="currentTab === 'stats' ? 'text-jw-600 dark:text-purple-400 font-black' : 'text-slate-400 dark:text-slate-500 font-medium hover:text-slate-600 dark:hover:text-slate-300'">
                     <i class="fas fa-chart-simple text-lg"></i>
                     <span class="text-[11px] leading-none">Statistiche</span>
-                    <span class="w-6 h-[2px] rounded-full transition-all mt-0.5" :class="currentTab === 'stats' ? 'bg-jw-600 dark:bg-purple-400 opacity-100' : 'bg-transparent opacity-0'"></span>
+                    <span class="w-6 h-[2.5px] rounded-full transition-all mt-0.5" :class="currentTab === 'stats' ? 'bg-jw-600 dark:bg-purple-400 opacity-100' : 'bg-transparent opacity-0'"></span>
                 </button>
 
                 <!-- Tab 3: Altro -->
                 <button @click="switchTab('altro')"
-                    class="flex-1 py-1 flex flex-col items-center justify-center gap-1 transition-all active:scale-95"
-                    :class="currentTab === 'altro' ? 'text-jw-600 dark:text-purple-400 font-extrabold' : 'text-slate-400 dark:text-slate-500 font-medium hover:text-slate-600 dark:hover:text-slate-300'">
+                    class="flex-1 py-1 flex flex-col items-center justify-center gap-1 transition-all active:scale-95 select-none"
+                    :class="currentTab === 'altro' ? 'text-jw-600 dark:text-purple-400 font-black' : 'text-slate-400 dark:text-slate-500 font-medium hover:text-slate-600 dark:hover:text-slate-300'">
                     <i class="fas fa-ellipsis text-lg"></i>
                     <span class="text-[11px] leading-none">Altro</span>
-                    <span class="w-6 h-[2px] rounded-full transition-all mt-0.5" :class="currentTab === 'altro' ? 'bg-jw-600 dark:bg-purple-400 opacity-100' : 'bg-transparent opacity-0'"></span>
+                    <span class="w-6 h-[2.5px] rounded-full transition-all mt-0.5" :class="currentTab === 'altro' ? 'bg-jw-600 dark:bg-purple-400 opacity-100' : 'bg-transparent opacity-0'"></span>
                 </button>
 
-            </div>
-        </nav>
+            </nav>
+        </div>
 
         <!-- Modals -->
         <!-- Color Picker -->
