@@ -1,4 +1,4 @@
-const CACHE_NAME = 'territori-cache-v27';
+const CACHE_NAME = 'territori-cache-v28';
 const ASSETS = [
     './',
     'index.html',
@@ -19,6 +19,8 @@ const ASSETS = [
     'icons/apple-touch-icon.png',
     'favicon.ico',
     'favicon.png',
+    'img/empty_map_dark.png',
+    'img/empty_map_light.png',
     'img/pwa/pwa_step1.png',
     'img/pwa/pwa_step2.png',
     'img/pwa/pwa_step3.png',

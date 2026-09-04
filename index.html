@@ -48,23 +48,23 @@
         <template x-if="view === 'dashboard'">
             <div class="flex-1 flex flex-col h-full min-h-0 bg-slate-100/80 dark:bg-slate-950 animate-fade-in relative z-0">
                 <!-- Header -->
-                <header class="flex-shrink-0 z-30 px-5 pb-4 bg-slate-100/90 dark:bg-slate-950/90 backdrop-blur-md transition-colors"
+                <header class="flex-shrink-0 z-30 px-5 pb-3 bg-slate-100/90 dark:bg-slate-950/90 backdrop-blur-md transition-colors"
                     style="padding-top: calc(max(1rem, env(safe-area-inset-top, 0px)) + 0.75rem);">
 
                     <!-- Identity + Theme Switcher -->
-                    <div class="flex items-center justify-between mb-5">
+                    <div class="flex items-center justify-between mb-4">
                         <!-- Logo & Title -->
                         <div class="flex items-center gap-3">
-                            <div class="w-12 h-12 bg-jw-600 rounded-2xl flex items-center justify-center shadow-lg shadow-jw-600/30 text-white text-xl flex-shrink-0">
+                            <div class="w-11 h-11 bg-jw-600 rounded-2xl flex items-center justify-center shadow-lg shadow-jw-600/30 text-white text-lg flex-shrink-0">
                                 <i class="fas fa-location-dot"></i>
                             </div>
                             <div>
-                                <h1 class="text-2xl font-black tracking-tight text-slate-900 dark:text-white leading-none mb-1">
+                                <h1 class="text-2xl font-black tracking-tight text-slate-900 dark:text-white leading-tight">
                                     MioTerritorio
                                 </h1>
-                                <div class="flex items-center gap-1.5">
+                                <div class="flex items-center gap-1.5 mt-0.5">
                                     <span class="w-2 h-2 rounded-full bg-emerald-500 inline-block"></span>
-                                    <p class="text-xs font-semibold text-slate-400 capitalize" x-text="getDateString()"></p>
+                                    <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 capitalize" x-text="getDateString()"></p>
                                 </div>
                             </div>
                         </div>
@@ -72,181 +72,342 @@
                         <!-- Top Right Action Buttons (Settings & Theme Toggle) -->
                         <div class="flex items-center gap-2">
                             <button @click="openSettings()" title="Impostazioni"
-                                class="w-10 h-10 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-xs flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all flex-shrink-0">
+                                class="w-10 h-10 rounded-2xl bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-slate-800 shadow-xs flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all flex-shrink-0 active:scale-95">
                                 <i class="fas fa-gear text-base text-jw-600 dark:text-jw-400"></i>
                             </button>
 
-                            <!-- Theme Toggle Pill (Identical to Detail View) -->
-                            <div class="bg-white dark:bg-slate-900 p-1 rounded-full flex items-center border border-slate-200/80 dark:border-slate-800 shadow-xs flex-shrink-0">
-                                <button @click="toggleTheme()" title="Cambia tema"
-                                    class="w-8 h-8 rounded-full flex items-center justify-center transition-all"
-                                    :class="isDark ? 'bg-jw-600 text-white shadow-xs' : 'bg-amber-100/70 text-amber-600 shadow-xs'">
-                                    <i class="fas text-xs" :class="isDark ? 'fa-moon' : 'fa-sun'"></i>
-                                </button>
-                            </div>
+                            <!-- Theme Toggle Button -->
+                            <button @click="toggleTheme()" title="Cambia tema"
+                                class="w-10 h-10 rounded-2xl bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-slate-800 shadow-xs flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all flex-shrink-0 active:scale-95">
+                                <i class="fas text-base" :class="isDark ? 'fa-moon text-purple-400' : 'fa-sun text-amber-500'"></i>
+                            </button>
                         </div>
                     </div>
 
-                    <!-- Search Row -->
-                    <div class="mb-3">
-                        <div class="relative w-full group">
-                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
+                    <!-- Search Row with Filters Button -->
+                    <div class="flex items-center gap-2 mb-3">
+                        <div class="relative flex-1 group">
+                            <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
                                 <i class="fas fa-search text-sm"></i>
                             </div>
                             <input type="text" x-model="searchQuery" placeholder="Cerca tra i tuoi territori..."
-                                class="w-full pl-11 pr-10 py-3 bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 focus:border-jw-600/50 focus:ring-4 focus:ring-jw-600/10 rounded-2xl outline-none transition-all text-sm text-slate-800 dark:text-slate-200 shadow-sm shadow-slate-200/60 dark:shadow-none">
+                                class="w-full pl-10 pr-10 py-3 bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-slate-800 focus:border-jw-600/50 focus:ring-4 focus:ring-jw-600/10 rounded-2xl outline-none transition-all text-sm text-slate-800 dark:text-slate-200 shadow-xs">
                             <div x-show="searchQuery" class="absolute inset-y-0 right-0 pr-3 flex items-center">
                                 <button @click="searchQuery = ''" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">
                                     <i class="fas fa-times-circle"></i>
                                 </button>
                             </div>
                         </div>
+
+                        <!-- Sliders Filter Action Button -->
+                        <button @click="filterType = filterType === 'all' ? 'in_progress' : (filterType === 'in_progress' ? 'completed' : 'all')"
+                            title="Cambia filtro"
+                            class="w-11 h-11 rounded-2xl bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-slate-800 text-slate-500 dark:text-slate-300 flex items-center justify-center text-sm shadow-xs flex-shrink-0 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all active:scale-95">
+                            <i class="fas fa-sliders"></i>
+                        </button>
                     </div>
 
                     <!-- Filter Pills Row -->
-                    <div class="flex items-center gap-2 overflow-x-auto no-scrollbar">
+                    <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-0.5">
                         <template x-for="f in [
                             {id: 'all', label: 'Tutti'}, 
                             {id: 'in_progress', label: 'In corso'}, 
                             {id: 'completed', label: 'Completati'}
                         ]" :key="f.id">
                             <button @click="filterType = f.id"
-                                class="px-5 py-2.5 rounded-2xl text-xs font-bold whitespace-nowrap transition-all border shadow-sm shadow-slate-200/50 dark:shadow-none"
+                                class="px-5 py-2.5 rounded-2xl text-xs font-bold whitespace-nowrap transition-all border shadow-xs"
                                 :class="filterType === f.id ? 
                                     'bg-jw-600 dark:bg-jw-600 border-jw-600 dark:border-jw-600 text-white shadow-md shadow-jw-600/20' : 
-                                    'bg-white dark:bg-slate-900 border-slate-200/80 dark:border-slate-800 text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800'"
+                                    'bg-white dark:bg-[#111827] border-slate-200/80 dark:border-slate-800 text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800'"
                                 x-text="f.label">
                             </button>
                         </template>
                     </div>
                 </header>
 
-                <!-- Territory List -->
+                <!-- Territory List / Empty View -->
                 <div class="flex-1 overflow-y-auto no-scrollbar flex flex-col min-h-0" id="territory-list"
                     x-ref="territoryList">
 
-                    <div class="flex-1 p-4 pt-3 md:p-6 md:pt-3 pb-6">
-                        <div x-show="getFilteredTerritories().length === 0" class="text-center py-12 text-slate-400">
-                            <i class="fas fa-search-minus text-4xl mb-4 opacity-20"></i>
-                            <p class="text-sm font-medium">Nessun territorio trovato.</p>
-                        </div>
+                    <div class="flex-1 p-4 pt-2 md:p-6 md:pt-2 pb-6">
+                        
+                        <!-- Empty / No Results State (Exact Match to Design) -->
+                        <div x-show="getFilteredTerritories().length === 0" class="flex flex-col items-center justify-center pt-2 pb-6 animate-fade-in">
+                            
+                            <!-- 3D Map Illustration (Dark & Light) -->
+                            <div class="w-full flex items-center justify-center my-1">
+                                <img x-show="isDark" src="img/empty_map_dark.png" alt="Nessun territorio" class="w-64 max-h-44 object-contain pointer-events-none select-none">
+                                <img x-show="!isDark" src="img/empty_map_light.png" alt="Nessun territorio" class="w-64 max-h-44 object-contain pointer-events-none select-none">
+                            </div>
 
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <template x-for="t in getFilteredTerritories()" :key="t.id">
+                            <!-- Text Message -->
+                            <h3 class="text-xl font-black text-slate-900 dark:text-white text-center mt-2 mb-1">
+                                Nessun territorio trovato.
+                            </h3>
+                            <p class="text-xs text-slate-500 dark:text-slate-400 text-center max-w-xs mx-auto leading-relaxed mb-5">
+                                Non ci sono territori che corrispondono alla tua ricerca.
+                            </p>
 
-                                <div x-show="t" :data-id="t.id"
-                                    class="group bg-white dark:bg-slate-900 rounded-3xl p-5 border border-slate-200/80 dark:border-slate-800/80 shadow-xs hover:shadow-md transition-all cursor-pointer relative flex flex-col gap-3.5 select-none"
-                                    :class="{'ring-4 ring-jw-500/80 ring-offset-2': tutorialActive && tutorialStep === 1 && territories.length > 0}"
-                                    :style="'border-left: 6px solid ' + (t.color || '#5b3c88') + '; touch-action: pan-y;'"
-                                    @touchstart="handleCardTouchStart($event)"
-                                    @touchmove="handleCardTouchMove($event)"
-                                    @click="openTerritory(t.id)">
+                            <!-- Cosa puoi fare? Card -->
+                            <div class="w-full bg-white dark:bg-[#111827] rounded-3xl p-5 border border-slate-200/80 dark:border-slate-800 space-y-3.5 shadow-xs mb-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-8 h-8 rounded-xl bg-purple-100 dark:bg-[#312356] text-jw-600 dark:text-[#c084fc] flex items-center justify-center text-sm flex-shrink-0">
+                                        <i class="fas fa-lightbulb"></i>
+                                    </div>
+                                    <h4 class="font-bold text-slate-900 dark:text-white text-sm">Cosa puoi fare?</h4>
+                                </div>
 
-                                    <!-- Card Header -->
-                                    <div class="flex items-start justify-between gap-3 pl-1">
-                                        <div class="min-w-0 flex-1">
-                                            <!-- Title & Edit Pen -->
-                                            <div class="flex items-center gap-1.5 mb-1">
-                                                <span x-text="t.name" class="font-extrabold text-lg text-slate-800 dark:text-white max-w-full break-words leading-snug"></span>
-                                                <button @click.stop="promptRenameTerritory(t)"
-                                                    class="w-6 h-6 flex items-center justify-center text-slate-400 dark:text-slate-500 hover:text-jw-600 transition-colors flex-shrink-0">
-                                                    <i class="fas fa-pen text-xs"></i>
-                                                </button>
-                                            </div>
-
-                                            <!-- Meta info (Indirizzi & Citofoni) -->
-                                            <div class="flex items-center gap-2 text-xs font-semibold text-slate-400 dark:text-slate-500">
-                                                <span class="flex items-center gap-1">
-                                                    <i class="fas fa-location-dot text-slate-400 text-[11px]"></i>
-                                                    <strong class="text-slate-700 dark:text-slate-300 font-bold" x-text="t.addresses ? t.addresses.length : 0"></strong> Indirizzi
-                                                </span>
-                                                <span class="text-slate-300 dark:text-slate-700">|</span>
-                                                <span class="flex items-center gap-1">
-                                                    <i class="fas fa-table-cells text-slate-400 text-[11px]"></i>
-                                                    <strong class="text-slate-700 dark:text-slate-300 font-bold" x-text="countTotalUnits(t)"></strong> Citofoni
-                                                </span>
-                                            </div>
+                                <div class="space-y-3 pt-1">
+                                    <div class="flex items-center gap-3.5">
+                                        <div class="w-7 h-7 rounded-xl bg-slate-100 dark:bg-[#18253e] text-slate-500 dark:text-[#60a5fa] flex items-center justify-center text-xs flex-shrink-0">
+                                            <i class="fas fa-search"></i>
                                         </div>
-
-                                        <!-- Header Actions (3-Dots Button) -->
-                                        <div class="flex items-center gap-1.5 flex-shrink-0" @click.stop>
-                                            <!-- 3-Dots Options Button -->
-                                            <div class="relative flex-shrink-0">
-                                                <button @click="toggleCardMenu(t.id)"
-                                                    class="w-9 h-9 rounded-2xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-500 hover:text-jw-600 dark:hover:text-jw-400 flex items-center justify-center transition-all border border-slate-200/80 dark:border-slate-700/80 shadow-xs">
-                                                    <i class="fas fa-ellipsis text-sm"></i>
-                                                </button>
-
-                                                <!-- 3-Dots Dropdown Menu -->
-                                                <div x-show="activeCardMenuId === t.id" x-cloak
-                                                    @click.away="closeCardMenu()"
-                                                    class="absolute right-0 top-11 w-44 bg-white dark:bg-slate-900 rounded-2xl p-2 shadow-2xl border border-slate-200/80 dark:border-slate-800 z-50 animate-fade-in flex flex-col gap-1">
-                                                    
-                                                    <button @click="openColorModal(t.id)"
-                                                        class="w-full py-2.5 px-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 font-bold text-xs flex items-center gap-2.5 transition-all text-left">
-                                                        <i class="fas fa-palette text-jw-600 dark:text-jw-400"></i> Cambia colore
-                                                    </button>
-
-                                                    <button @click="confirmDelete('territory', t.id); closeCardMenu()"
-                                                        class="w-full py-2.5 px-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 text-rose-600 dark:text-rose-400 font-bold text-xs flex items-center gap-2.5 transition-all text-left">
-                                                        <i class="fas fa-trash-alt text-xs"></i> Elimina
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        <span class="text-xs font-medium text-slate-600 dark:text-slate-300">Prova a modificare i filtri di ricerca</span>
                                     </div>
 
-                                    <!-- Progress Bar -->
-                                    <div class="flex items-center gap-3 pl-1">
-                                        <div class="h-2.5 flex-1 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
-                                            <div class="h-full rounded-full transition-all duration-500"
-                                                :style="{ width: calculateStats(t).percent + '%', backgroundColor: t.color || '#5b3c88' }"></div>
+                                    <div class="flex items-center gap-3.5">
+                                        <div class="w-7 h-7 rounded-xl bg-slate-100 dark:bg-[#18253e] text-slate-500 dark:text-[#60a5fa] flex items-center justify-center text-xs flex-shrink-0">
+                                            <i class="fas fa-sliders"></i>
                                         </div>
-                                        <span class="font-extrabold text-sm text-jw-600 dark:text-jw-400 min-w-[40px] text-right"
-                                            x-text="calculateStats(t).percent + '%'"></span>
+                                        <span class="text-xs font-medium text-slate-600 dark:text-slate-300">Controlla l'ortografia</span>
                                     </div>
 
-                                    <!-- Bottom Pill Row (Stats icons matching detail view) -->
-                                    <div class="bg-slate-50/80 dark:bg-slate-800/40 rounded-2xl p-2.5 px-3.5 flex items-center justify-around gap-2 border border-slate-100/80 dark:border-slate-800/40">
-                                        <!-- Green Fatti -->
-                                        <div class="flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400 text-xs font-bold">
-                                            <div class="w-4 h-4 rounded-full bg-emerald-500 text-white inline-flex items-center justify-center text-[8px] font-black shadow-xs leading-none select-none flex-shrink-0 text-center">
-                                                <i class="fas fa-check"></i>
-                                            </div>
-                                            <span><strong x-text="calculateStats(t).green"></strong> <span x-text="calculateStats(t).green === 1 ? 'Fatto' : 'Fatti'"></span></span>
+                                    <div class="flex items-center gap-3.5">
+                                        <div class="w-7 h-7 rounded-xl bg-purple-100 dark:bg-[#312356] text-jw-600 dark:text-[#c084fc] flex items-center justify-center text-xs flex-shrink-0">
+                                            <i class="fas fa-plus"></i>
                                         </div>
-
-                                        <!-- Red Assenti -->
-                                        <div class="flex items-center gap-1.5 text-rose-500 dark:text-rose-400 text-xs font-bold">
-                                            <div class="w-4 h-4 rounded-full bg-rose-500 text-white inline-flex items-center justify-center text-[8px] font-black shadow-xs leading-none select-none flex-shrink-0 text-center">
-                                                <i class="fas fa-times"></i>
-                                            </div>
-                                            <span><strong x-text="calculateStats(t).red"></strong> <span x-text="calculateStats(t).red === 1 ? 'Assente' : 'Assenti'"></span></span>
-                                        </div>
-
-                                        <!-- Neutral Non Visitati -->
-                                        <div class="flex items-center gap-1.5 text-slate-400 dark:text-slate-500 text-xs font-bold">
-                                            <div class="w-4 h-4 rounded-full bg-slate-300 dark:bg-slate-600 text-white inline-flex items-center justify-center text-[6px] font-black shadow-xs leading-none select-none flex-shrink-0 text-center">
-                                                <i class="fas fa-circle"></i>
-                                            </div>
-                                            <span><strong class="text-slate-700 dark:text-slate-300" x-text="calculateStats(t).neutral"></strong> <span x-text="calculateStats(t).neutral === 1 ? 'Non visitato' : 'Non visitati'"></span></span>
-                                        </div>
+                                        <span class="text-xs font-medium text-slate-600 dark:text-slate-300">Crea un nuovo territorio per iniziare</span>
                                     </div>
                                 </div>
-                            </template>
-                        </div>
+                            </div>
 
-                        <!-- Add Button -->
-                        <div class="mt-5 pb-8">
+                            <!-- Action Button for Empty State -->
                             <button @click="openNewTerritoryModal()"
                                 class="w-full py-4 rounded-2xl bg-jw-600 hover:bg-jw-700 text-white font-extrabold text-sm shadow-lg shadow-jw-600/30 active:scale-[0.98] transition-all flex items-center justify-center gap-2.5"
                                 :class="{'ring-4 ring-jw-400 ring-offset-2 animate-bounce': tutorialActive && tutorialStep === 1 && territories.length === 0}">
                                 <i class="fas fa-plus-circle text-base"></i> Crea Nuovo Territorio
                             </button>
                         </div>
+
+                        <!-- Territory Cards Grid (When territories exist) -->
+                        <div x-show="getFilteredTerritories().length > 0">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <template x-for="t in getFilteredTerritories()" :key="t.id">
+
+                                    <div x-show="t" :data-id="t.id"
+                                        class="group bg-white dark:bg-[#111827] rounded-3xl p-5 border border-slate-200/80 dark:border-slate-800/80 shadow-xs hover:shadow-md transition-all cursor-pointer relative flex flex-col gap-3.5 select-none"
+                                        :class="{'ring-4 ring-jw-500/80 ring-offset-2': tutorialActive && tutorialStep === 1 && territories.length > 0}"
+                                        :style="'border-left: 6px solid ' + (t.color || '#5b3c88') + '; touch-action: pan-y;'"
+                                        @touchstart="handleCardTouchStart($event)"
+                                        @touchmove="handleCardTouchMove($event)"
+                                        @click="openTerritory(t.id)">
+
+                                        <!-- Card Header -->
+                                        <div class="flex items-start justify-between gap-3 pl-1">
+                                            <div class="min-w-0 flex-1">
+                                                <!-- Title & Edit Pen -->
+                                                <div class="flex items-center gap-1.5 mb-1">
+                                                    <span x-text="t.name" class="font-extrabold text-lg text-slate-800 dark:text-white max-w-full break-words leading-snug"></span>
+                                                    <button @click.stop="promptRenameTerritory(t)"
+                                                        class="w-6 h-6 flex items-center justify-center text-slate-400 dark:text-slate-500 hover:text-jw-600 transition-colors flex-shrink-0">
+                                                        <i class="fas fa-pen text-xs"></i>
+                                                    </button>
+                                                </div>
+
+                                                <!-- Meta info (Indirizzi & Citofoni) -->
+                                                <div class="flex items-center gap-2 text-xs font-semibold text-slate-400 dark:text-slate-500">
+                                                    <span class="flex items-center gap-1">
+                                                        <i class="fas fa-location-dot text-slate-400 text-[11px]"></i>
+                                                        <strong class="text-slate-700 dark:text-slate-300 font-bold" x-text="t.addresses ? t.addresses.length : 0"></strong> Indirizzi
+                                                    </span>
+                                                    <span class="text-slate-300 dark:text-slate-700">|</span>
+                                                    <span class="flex items-center gap-1">
+                                                        <i class="fas fa-table-cells text-slate-400 text-[11px]"></i>
+                                                        <strong class="text-slate-700 dark:text-slate-300 font-bold" x-text="countTotalUnits(t)"></strong> Citofoni
+                                                    </span>
+                                                </div>
+                                            </div>
+
+                                            <!-- Header Actions (3-Dots Button) -->
+                                            <div class="flex items-center gap-1.5 flex-shrink-0" @click.stop>
+                                                <!-- 3-Dots Options Button -->
+                                                <div class="relative flex-shrink-0">
+                                                    <button @click="toggleCardMenu(t.id)"
+                                                        class="w-9 h-9 rounded-2xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-500 hover:text-jw-600 dark:hover:text-jw-400 flex items-center justify-center transition-all border border-slate-200/80 dark:border-slate-700/80 shadow-xs">
+                                                        <i class="fas fa-ellipsis text-sm"></i>
+                                                    </button>
+
+                                                    <!-- 3-Dots Dropdown Menu -->
+                                                    <div x-show="activeCardMenuId === t.id" x-cloak
+                                                        @click.away="closeCardMenu()"
+                                                        class="absolute right-0 top-11 w-44 bg-white dark:bg-[#111827] rounded-2xl p-2 shadow-2xl border border-slate-200/80 dark:border-slate-800 z-50 animate-fade-in flex flex-col gap-1">
+                                                        
+                                                        <button @click="openColorModal(t.id)"
+                                                            class="w-full py-2.5 px-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 font-bold text-xs flex items-center gap-2.5 transition-all text-left">
+                                                            <i class="fas fa-palette text-jw-600 dark:text-jw-400"></i> Cambia colore
+                                                        </button>
+
+                                                        <button @click="confirmDelete('territory', t.id); closeCardMenu()"
+                                                            class="w-full py-2.5 px-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 text-rose-600 dark:text-rose-400 font-bold text-xs flex items-center gap-2.5 transition-all text-left">
+                                                            <i class="fas fa-trash-alt text-xs"></i> Elimina
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Progress Bar -->
+                                        <div class="flex items-center gap-3 pl-1">
+                                            <div class="h-2.5 flex-1 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+                                                <div class="h-full rounded-full transition-all duration-500"
+                                                    :style="{ width: calculateStats(t).percent + '%', backgroundColor: t.color || '#5b3c88' }"></div>
+                                            </div>
+                                            <span class="font-extrabold text-sm text-jw-600 dark:text-jw-400 min-w-[40px] text-right"
+                                                x-text="calculateStats(t).percent + '%'"></span>
+                                        </div>
+
+                                        <!-- Bottom Pill Row (Stats icons matching detail view) -->
+                                        <div class="bg-slate-50/80 dark:bg-slate-800/40 rounded-2xl p-2.5 px-3.5 flex items-center justify-around gap-2 border border-slate-100/80 dark:border-slate-800/40">
+                                            <!-- Green Fatti -->
+                                            <div class="flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400 text-xs font-bold">
+                                                <div class="w-4 h-4 rounded-full bg-emerald-500 text-white inline-flex items-center justify-center text-[8px] font-black shadow-xs leading-none select-none flex-shrink-0 text-center">
+                                                    <i class="fas fa-check"></i>
+                                                </div>
+                                                <span><strong x-text="calculateStats(t).green"></strong> <span x-text="calculateStats(t).green === 1 ? 'Fatto' : 'Fatti'"></span></span>
+                                            </div>
+
+                                            <!-- Red Assenti -->
+                                            <div class="flex items-center gap-1.5 text-rose-500 dark:text-rose-400 text-xs font-bold">
+                                                <div class="w-4 h-4 rounded-full bg-rose-500 text-white inline-flex items-center justify-center text-[8px] font-black shadow-xs leading-none select-none flex-shrink-0 text-center">
+                                                    <i class="fas fa-times"></i>
+                                                </div>
+                                                <span><strong x-text="calculateStats(t).red"></strong> <span x-text="calculateStats(t).red === 1 ? 'Assente' : 'Assenti'"></span></span>
+                                            </div>
+
+                                            <!-- Neutral Non Visitati -->
+                                            <div class="flex items-center gap-1.5 text-slate-400 dark:text-slate-500 text-xs font-bold">
+                                                <div class="w-4 h-4 rounded-full bg-slate-300 dark:bg-slate-600 text-white inline-flex items-center justify-center text-[6px] font-black shadow-xs leading-none select-none flex-shrink-0 text-center">
+                                                    <i class="fas fa-circle"></i>
+                                                </div>
+                                                <span><strong class="text-slate-700 dark:text-slate-300" x-text="calculateStats(t).neutral"></strong> <span x-text="calculateStats(t).neutral === 1 ? 'Non visitato' : 'Non visitati'"></span></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </template>
+                            </div>
+
+                            <!-- Add Button when territories exist -->
+                            <div class="mt-5 pb-8">
+                                <button @click="openNewTerritoryModal()"
+                                    class="w-full py-4 rounded-2xl bg-jw-600 hover:bg-jw-700 text-white font-extrabold text-sm shadow-lg shadow-jw-600/30 active:scale-[0.98] transition-all flex items-center justify-center gap-2.5">
+                                    <i class="fas fa-plus-circle text-base"></i> Crea Nuovo Territorio
+                                </button>
+                            </div>
+                        </div>
+
                         <div class="h-20"></div>
                     </div>
 
+                </div>
+            </div>
+        </template>
+
+        <!-- Statistics View -->
+        <template x-if="view === 'stats'">
+            <div class="flex-1 flex flex-col h-full min-h-0 bg-slate-100/80 dark:bg-slate-950 animate-fade-in relative z-0">
+                <!-- Header -->
+                <header class="flex-shrink-0 px-5 pb-3 bg-slate-100/90 dark:bg-slate-950/90 backdrop-blur-md flex items-center justify-between z-20 transition-colors"
+                    style="padding-top: calc(max(1rem, env(safe-area-inset-top, 0px)) + 0.5rem);">
+                    <div class="flex items-center gap-3.5">
+                        <button @click="switchTab('territori')"
+                            class="w-10 h-10 rounded-full sm:rounded-2xl bg-white dark:bg-[#111827] hover:bg-slate-50 dark:hover:bg-slate-800 flex items-center justify-center text-slate-700 dark:text-slate-200 transition-all flex-shrink-0 border border-slate-200/80 dark:border-slate-800 shadow-xs active:scale-95">
+                            <i class="fas fa-arrow-left text-sm"></i>
+                        </button>
+                        <div>
+                            <h2 class="text-2xl font-black text-slate-900 dark:text-white leading-tight">Statistiche</h2>
+                            <p class="text-xs font-medium text-slate-500 dark:text-slate-400">Panoramica del ministero</p>
+                        </div>
+                    </div>
+
+                    <!-- Theme Toggle Button -->
+                    <button @click="toggleTheme()" title="Cambia tema"
+                        class="w-10 h-10 rounded-2xl bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-slate-800 shadow-xs flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all flex-shrink-0 active:scale-95">
+                        <i class="fas text-base" :class="isDark ? 'fa-moon text-purple-400' : 'fa-sun text-amber-500'"></i>
+                    </button>
+                </header>
+
+                <div class="flex-1 overflow-y-auto p-4 md:p-6 space-y-4 no-scrollbar pb-20 min-h-0">
+                    <!-- Card 1: Progresso Globale -->
+                    <div class="bg-white dark:bg-[#111827] rounded-3xl p-5 shadow-xs border border-slate-200/80 dark:border-slate-800 space-y-4">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">Progresso Globale</span>
+                            <span class="text-xs font-black text-jw-600 dark:text-jw-400" x-text="calculateGlobalStats().percent + '% completato'"></span>
+                        </div>
+
+                        <!-- Big progress bar -->
+                        <div class="w-full bg-slate-100 dark:bg-[#0d1322] rounded-full h-3 overflow-hidden border border-slate-200/40 dark:border-slate-800">
+                            <div class="bg-gradient-to-r from-jw-600 to-indigo-500 h-full rounded-full transition-all duration-500"
+                                :style="'width: ' + calculateGlobalStats().percent + '%'"></div>
+                        </div>
+
+                        <!-- 3 Status Pills -->
+                        <div class="grid grid-cols-3 gap-2 text-center pt-1">
+                            <div class="p-3 rounded-2xl bg-emerald-50/70 dark:bg-emerald-950/40 border border-emerald-200/50 dark:border-emerald-900/40">
+                                <div class="text-lg font-black text-emerald-600 dark:text-emerald-400" x-text="calculateGlobalStats().green">0</div>
+                                <div class="text-[10px] font-bold text-emerald-700 dark:text-emerald-500 uppercase">Fatti</div>
+                            </div>
+                            <div class="p-3 rounded-2xl bg-rose-50/70 dark:bg-rose-950/40 border border-rose-200/50 dark:border-rose-900/40">
+                                <div class="text-lg font-black text-rose-600 dark:text-rose-400" x-text="calculateGlobalStats().red">0</div>
+                                <div class="text-[10px] font-bold text-rose-700 dark:text-rose-500 uppercase">Assenti</div>
+                            </div>
+                            <div class="p-3 rounded-2xl bg-slate-100/70 dark:bg-[#0d1322] border border-slate-200/50 dark:border-slate-800">
+                                <div class="text-lg font-black text-slate-700 dark:text-slate-300" x-text="calculateGlobalStats().neutral">0</div>
+                                <div class="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase">Non visitati</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 2: Riepilogo Territori -->
+                    <div class="bg-white dark:bg-[#111827] rounded-3xl p-5 shadow-xs border border-slate-200/80 dark:border-slate-800 space-y-3">
+                        <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">Stato Territori</span>
+                        
+                        <div class="grid grid-cols-3 gap-2 p-4 rounded-2xl bg-slate-50 dark:bg-[#0d1322] border border-slate-100 dark:border-slate-800 text-center divide-x divide-slate-200/60 dark:divide-slate-800">
+                            <div>
+                                <div class="text-xl font-black text-slate-900 dark:text-white" x-text="calculateGlobalStats().totalTerritories">0</div>
+                                <div class="text-[10px] font-bold text-slate-400 uppercase">Totali</div>
+                            </div>
+                            <div>
+                                <div class="text-xl font-black text-amber-500" x-text="calculateGlobalStats().inProgress">0</div>
+                                <div class="text-[10px] font-bold text-slate-400 uppercase">In corso</div>
+                            </div>
+                            <div>
+                                <div class="text-xl font-black text-emerald-500" x-text="calculateGlobalStats().completed">0</div>
+                                <div class="text-[10px] font-bold text-slate-400 uppercase">Completati</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 3: Territori Progress List -->
+                    <div x-show="territories.length > 0" class="bg-white dark:bg-[#111827] rounded-3xl p-5 shadow-xs border border-slate-200/80 dark:border-slate-800 space-y-3">
+                        <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">Avanzamento per Territorio</span>
+                        
+                        <div class="space-y-3 divide-y divide-slate-100 dark:divide-slate-800/80">
+                            <template x-for="t in territories" :key="t.id">
+                                <div class="pt-3 first:pt-0 cursor-pointer" @click="openTerritory(t.id)">
+                                    <div class="flex items-center justify-between mb-1.5">
+                                        <div class="flex items-center gap-2">
+                                            <span class="w-3 h-3 rounded-full flex-shrink-0" :style="'background-color: ' + (t.color || '#5b3c88')"></span>
+                                            <span class="font-bold text-xs text-slate-800 dark:text-white" x-text="t.name"></span>
+                                        </div>
+                                        <span class="text-xs font-black text-slate-600 dark:text-slate-300" x-text="calculateStats(t).percent + '%'"></span>
+                                    </div>
+                                    <div class="w-full bg-slate-100 dark:bg-[#0d1322] rounded-full h-1.5 overflow-hidden">
+                                        <div class="h-1.5 rounded-full" :style="{ width: calculateStats(t).percent + '%', backgroundColor: t.color || '#5b3c88' }"></div>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
                 </div>
             </div>
         </template>
@@ -882,6 +1043,42 @@
 
             </div>
         </template>
+
+        <!-- Bottom Navigation Bar (3 Buttons: Territori, Statistiche, Altro) -->
+        <nav x-show="view === 'dashboard' || view === 'stats' || view === 'settings'"
+            class="flex-shrink-0 bg-white/95 dark:bg-[#0b0f19]/95 backdrop-blur-lg border-t border-slate-200/80 dark:border-slate-800/80 z-30 transition-colors"
+            style="padding-bottom: max(0.5rem, env(safe-area-inset-bottom, 0px));">
+            <div class="flex items-center justify-around px-4 py-1.5 max-w-lg mx-auto">
+                
+                <!-- Tab 1: Territori -->
+                <button @click="switchTab('territori')"
+                    class="flex-1 py-1.5 flex flex-col items-center justify-center gap-1 transition-all active:scale-95"
+                    :class="currentTab === 'territori' ? 'text-jw-600 dark:text-jw-400' : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'">
+                    <i class="fas fa-map text-lg"></i>
+                    <span class="text-[11px] font-bold">Territori</span>
+                    <span class="w-6 h-0.5 rounded-full transition-all" :class="currentTab === 'territori' ? 'bg-jw-600 dark:bg-jw-400' : 'bg-transparent'"></span>
+                </button>
+
+                <!-- Tab 2: Statistiche -->
+                <button @click="switchTab('stats')"
+                    class="flex-1 py-1.5 flex flex-col items-center justify-center gap-1 transition-all active:scale-95"
+                    :class="currentTab === 'stats' ? 'text-jw-600 dark:text-jw-400' : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'">
+                    <i class="fas fa-chart-simple text-lg"></i>
+                    <span class="text-[11px] font-bold">Statistiche</span>
+                    <span class="w-6 h-0.5 rounded-full transition-all" :class="currentTab === 'stats' ? 'bg-jw-600 dark:bg-jw-400' : 'bg-transparent'"></span>
+                </button>
+
+                <!-- Tab 3: Altro -->
+                <button @click="switchTab('altro')"
+                    class="flex-1 py-1.5 flex flex-col items-center justify-center gap-1 transition-all active:scale-95"
+                    :class="currentTab === 'altro' ? 'text-jw-600 dark:text-jw-400' : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'">
+                    <i class="fas fa-ellipsis text-lg"></i>
+                    <span class="text-[11px] font-bold">Altro</span>
+                    <span class="w-6 h-0.5 rounded-full transition-all" :class="currentTab === 'altro' ? 'bg-jw-600 dark:bg-jw-400' : 'bg-transparent'"></span>
+                </button>
+
+            </div>
+        </nav>
 
         <!-- Modals -->
         <!-- Color Picker -->

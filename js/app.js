@@ -167,7 +167,12 @@ function territoryApp() {
         },
 
         toggleTheme() { this.isDark = !this.isDark; },
-        getDateString() { return new Date().toLocaleDateString('it-IT', { weekday: 'long', month: 'long', day: 'numeric' }); },
+        getDateString() {
+            const now = new Date();
+            const days = ['Domenica', 'Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì', 'Sabato'];
+            const months = ['Gennaio', 'Febbraio', 'Marzo', 'Aprile', 'Maggio', 'Giugno', 'Luglio', 'Agosto', 'Settembre', 'Ottobre', 'Novembre', 'Dicembre'];
+            return `${days[now.getDay()]} ${now.getDate()} ${months[now.getMonth()]}`;
+        },
         formatDate(dateStr) { if (!dateStr) return ''; return new Date(dateStr).toLocaleDateString('it-IT'); },
         formatDateShort(dateStr) { if (!dateStr) return ''; return new Date(dateStr).toLocaleDateString('it-IT'); },
         formatDateTime(dateStr) {
@@ -248,16 +253,29 @@ function territoryApp() {
             this.selectionMode = false;
             this.activeCardMenuId = null;
         },
+        currentTab: 'territori',
         previousView: 'dashboard',
         previousInfoView: 'settings',
+        switchTab(tab) {
+            this.currentTab = tab;
+            if (tab === 'territori') {
+                this.view = 'dashboard';
+            } else if (tab === 'stats') {
+                this.view = 'stats';
+            } else if (tab === 'altro') {
+                this.openSettings();
+            }
+        },
         openSettings() {
             if (this.view !== 'settings' && this.view !== 'info') {
                 this.previousView = this.view;
             }
+            this.currentTab = 'altro';
             this.view = 'settings';
         },
         goBackFromSettings() {
             this.view = this.previousView || 'dashboard';
+            this.currentTab = (this.view === 'stats') ? 'stats' : 'territori';
         },
         openInfo() {
             if (this.view !== 'info') {
@@ -633,24 +651,40 @@ function territoryApp() {
 
         calculateGlobalStats() {
             let totalUnits = 0;
-            let completedUnits = 0;
+            let green = 0;
+            let red = 0;
+            let inProgress = 0;
+            let completed = 0;
+            let notStarted = 0;
 
             this.territories.forEach(t => {
-                if (t.addresses) {
-                    t.addresses.forEach(a => {
-                        if (a.units) {
-                            const valid = a.units.filter(u => !u.isHole);
-                            totalUnits += valid.length;
-                            completedUnits += valid.filter(u => u.status !== 0).length;
-                        }
-                    });
-                }
+                const s = this.calculateStats(t);
+                if (s.percent === 100 && s.total > 0) completed++;
+                else if (s.percent > 0) inProgress++;
+                else notStarted++;
+
+                totalUnits += s.total;
+                green += s.green;
+                red += s.red;
             });
 
-            const remaining = totalUnits - completedUnits;
+            const completedUnits = green + red;
+            const neutral = totalUnits - completedUnits;
             const percent = totalUnits === 0 ? 0 : Math.round((completedUnits / totalUnits) * 100);
 
-            return { percent, remaining, total: totalUnits };
+            return {
+                percent,
+                totalUnits,
+                completedUnits,
+                green,
+                red,
+                neutral,
+                totalTerritories: this.territories.length,
+                inProgress,
+                completed,
+                notStarted,
+                totalAddresses: this.countAllAddresses()
+            };
         },
 
         calculateStats(t) {
