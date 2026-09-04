@@ -69,16 +69,11 @@
                             </div>
                         </div>
 
-                        <!-- Top Right Action Buttons (Settings & Theme Toggle) -->
+                        <!-- Top Right Action Buttons (Theme Toggle) -->
                         <div class="flex items-center gap-2">
-                            <button @click="openSettings()" title="Impostazioni"
-                                class="w-10 h-10 rounded-2xl bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-slate-800 shadow-xs flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all flex-shrink-0 active:scale-95">
-                                <i class="fas fa-gear text-base text-jw-600 dark:text-jw-400"></i>
-                            </button>
-
                             <!-- Theme Toggle Button -->
                             <button @click="toggleTheme()" title="Cambia tema"
-                                class="w-10 h-10 rounded-2xl bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-slate-800 shadow-xs flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all flex-shrink-0 active:scale-95">
+                                class="w-10 h-10 rounded-2xl bg-white dark:bg-[#0d1424] border border-slate-200/80 dark:border-slate-800/80 shadow-xs flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/80 transition-all flex-shrink-0 active:scale-95">
                                 <i class="fas text-base" :class="isDark ? 'fa-moon text-purple-400' : 'fa-sun text-amber-500'"></i>
                             </button>
                         </div>
@@ -91,7 +86,7 @@
                                 <i class="fas fa-search text-sm"></i>
                             </div>
                             <input type="text" x-model="searchQuery" placeholder="Cerca tra i tuoi territori..."
-                                class="w-full pl-10 pr-10 py-3 bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-slate-800 focus:border-jw-600/50 focus:ring-4 focus:ring-jw-600/10 rounded-2xl outline-none transition-all text-sm text-slate-800 dark:text-slate-200 shadow-xs">
+                                class="w-full pl-10 pr-10 py-3 bg-white dark:bg-[#0d1424] border border-slate-200/80 dark:border-slate-800/80 focus:border-jw-600/50 focus:ring-4 focus:ring-jw-600/10 rounded-2xl outline-none transition-all text-sm text-slate-800 dark:text-slate-200 shadow-xs">
                             <div x-show="searchQuery" class="absolute inset-y-0 right-0 pr-3 flex items-center">
                                 <button @click="searchQuery = ''" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">
                                     <i class="fas fa-times-circle"></i>
@@ -102,9 +97,9 @@
                         <!-- Sliders Filter Action Button -->
                         <button @click="openFilterModal()"
                             title="Filtri e ordinamento"
-                            class="w-11 h-11 rounded-2xl bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-slate-800 text-slate-500 dark:text-slate-300 flex items-center justify-center text-sm shadow-xs flex-shrink-0 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all active:scale-95 relative">
+                            class="w-11 h-11 rounded-2xl bg-white dark:bg-[#0d1424] border border-slate-200/80 dark:border-slate-800/80 text-slate-500 dark:text-slate-300 flex items-center justify-center text-sm shadow-xs flex-shrink-0 hover:bg-slate-50 dark:hover:bg-slate-800/80 transition-all active:scale-95 relative">
                             <i class="fas fa-sliders" :class="hasActiveFilters() ? 'text-jw-600 dark:text-jw-400' : ''"></i>
-                            <span x-show="hasActiveFilters()" class="absolute top-2 right-2 w-2 h-2 rounded-full bg-jw-600 dark:bg-purple-400 ring-2 ring-white dark:ring-[#111827]"></span>
+                            <span x-show="hasActiveFilters()" class="absolute top-2 right-2 w-2 h-2 rounded-full bg-jw-600 dark:bg-purple-400 ring-2 ring-white dark:ring-[#0d1424]"></span>
                         </button>
                     </div>
 
@@ -119,7 +114,7 @@
                                 class="px-5 py-2.5 rounded-2xl text-xs font-bold whitespace-nowrap transition-all border shadow-xs"
                                 :class="filterType === f.id ? 
                                     'bg-jw-600 dark:bg-jw-600 border-jw-600 dark:border-jw-600 text-white shadow-md shadow-jw-600/20' : 
-                                    'bg-white dark:bg-[#111827] border-slate-200/80 dark:border-slate-800 text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800'"
+                                    'bg-white dark:bg-[#0d1424] border-slate-200/80 dark:border-slate-800/80 text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/80'"
                                 x-text="f.label">
                             </button>
                         </template>
@@ -150,9 +145,9 @@
                             </p>
 
                             <!-- Cosa puoi fare? Card -->
-                            <div class="w-full bg-white dark:bg-[#111827] rounded-3xl p-5 border border-slate-200/80 dark:border-slate-800 space-y-3.5 shadow-xs mb-4">
+                            <div class="w-full bg-white dark:bg-[#0d1424] rounded-3xl p-5 border border-slate-200/80 dark:border-slate-800/80 space-y-3.5 shadow-xs mb-4">
                                 <div class="flex items-center gap-3">
-                                    <div class="w-8 h-8 rounded-xl bg-purple-100 dark:bg-[#312356] text-jw-600 dark:text-[#c084fc] flex items-center justify-center text-sm flex-shrink-0 shadow-xs">
+                                    <div class="w-8 h-8 rounded-xl bg-amber-100 dark:bg-[#382618] text-amber-600 dark:text-amber-400 flex items-center justify-center text-sm flex-shrink-0 shadow-xs">
                                         <i class="fas fa-lightbulb"></i>
                                     </div>
                                     <h4 class="font-bold text-slate-900 dark:text-white text-sm">Cosa puoi fare?</h4>
@@ -160,21 +155,21 @@
 
                                 <div class="space-y-3 pt-1">
                                     <div class="flex items-center gap-3.5">
-                                        <div class="w-7 h-7 rounded-xl bg-blue-100 dark:bg-[#18253e] text-blue-600 dark:text-[#60a5fa] flex items-center justify-center text-xs flex-shrink-0 shadow-xs">
+                                        <div class="w-7 h-7 rounded-xl bg-slate-100 dark:bg-[#141c2e] text-slate-500 dark:text-slate-400 flex items-center justify-center text-xs flex-shrink-0 shadow-xs">
                                             <i class="fas fa-search"></i>
                                         </div>
                                         <span class="text-xs font-medium text-slate-600 dark:text-slate-300">Prova a modificare i filtri di ricerca</span>
                                     </div>
 
                                     <div class="flex items-center gap-3.5">
-                                        <div class="w-7 h-7 rounded-xl bg-amber-100 dark:bg-[#382618] text-amber-600 dark:text-amber-400 flex items-center justify-center text-xs flex-shrink-0 shadow-xs">
+                                        <div class="w-7 h-7 rounded-xl bg-slate-100 dark:bg-[#141c2e] text-slate-500 dark:text-slate-400 flex items-center justify-center text-xs flex-shrink-0 shadow-xs">
                                             <i class="fas fa-sliders"></i>
                                         </div>
                                         <span class="text-xs font-medium text-slate-600 dark:text-slate-300">Controlla l'ortografia</span>
                                     </div>
 
                                     <div class="flex items-center gap-3.5">
-                                        <div class="w-7 h-7 rounded-xl bg-purple-100 dark:bg-[#312356] text-jw-600 dark:text-[#c084fc] flex items-center justify-center text-xs flex-shrink-0 shadow-xs">
+                                        <div class="w-7 h-7 rounded-xl bg-slate-100 dark:bg-[#141c2e] text-slate-500 dark:text-slate-400 flex items-center justify-center text-xs flex-shrink-0 shadow-xs">
                                             <i class="fas fa-plus"></i>
                                         </div>
                                         <span class="text-xs font-medium text-slate-600 dark:text-slate-300">Crea un nuovo territorio per iniziare</span>
@@ -196,7 +191,7 @@
                                 <template x-for="t in getFilteredTerritories()" :key="t.id">
 
                                     <div x-show="t" :data-id="t.id"
-                                        class="group bg-white dark:bg-[#111827] rounded-3xl p-5 border border-slate-200/80 dark:border-slate-800/80 shadow-xs hover:shadow-md transition-all cursor-pointer relative flex flex-col gap-3.5 select-none"
+                                        class="group bg-white dark:bg-[#0d1424] rounded-3xl p-5 border border-slate-200/80 dark:border-slate-800/80 shadow-xs hover:shadow-md transition-all cursor-pointer relative flex flex-col gap-3.5 select-none"
                                         :class="{'ring-4 ring-jw-500/80 ring-offset-2': tutorialActive && tutorialStep === 1 && territories.length > 0}"
                                         :style="'border-left: 6px solid ' + (t.color || '#5b3c88') + '; touch-action: pan-y;'"
                                         @touchstart="handleCardTouchStart($event)"
@@ -241,7 +236,7 @@
                                                     <!-- 3-Dots Dropdown Menu -->
                                                     <div x-show="activeCardMenuId === t.id" x-cloak
                                                         @click.away="closeCardMenu()"
-                                                        class="absolute right-0 top-11 w-44 bg-white dark:bg-[#111827] rounded-2xl p-2 shadow-2xl border border-slate-200/80 dark:border-slate-800 z-50 animate-fade-in flex flex-col gap-1">
+                                                        class="absolute right-0 top-11 w-44 bg-white dark:bg-[#0d1424] rounded-2xl p-2 shadow-2xl border border-slate-200/80 dark:border-slate-800/80 z-50 animate-fade-in flex flex-col gap-1">
                                                         
                                                         <button @click="openColorModal(t.id)"
                                                             class="w-full py-2.5 px-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 font-bold text-xs flex items-center gap-2.5 transition-all text-left">
@@ -259,7 +254,7 @@
 
                                         <!-- Progress Bar -->
                                         <div class="flex items-center gap-3 pl-1">
-                                            <div class="h-2.5 flex-1 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+                                            <div class="h-2.5 flex-1 bg-slate-100 dark:bg-[#141c2e] rounded-full overflow-hidden">
                                                 <div class="h-full rounded-full transition-all duration-500"
                                                     :style="{ width: calculateStats(t).percent + '%', backgroundColor: t.color || '#5b3c88' }"></div>
                                             </div>
@@ -268,7 +263,7 @@
                                         </div>
 
                                         <!-- Bottom Pill Row (Stats icons matching detail view) -->
-                                        <div class="bg-slate-50/80 dark:bg-slate-800/40 rounded-2xl p-2.5 px-3.5 flex items-center justify-around gap-2 border border-slate-100/80 dark:border-slate-800/40">
+                                        <div class="bg-slate-50/80 dark:bg-[#141c2e]/60 rounded-2xl p-2.5 px-3.5 flex items-center justify-around gap-2 border border-slate-100/80 dark:border-slate-800/60">
                                             <!-- Green Fatti -->
                                             <div class="flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400 text-xs font-bold">
                                                 <div class="w-4 h-4 rounded-full bg-emerald-500 text-white inline-flex items-center justify-center text-[8px] font-black shadow-xs leading-none select-none flex-shrink-0 text-center">
@@ -298,15 +293,13 @@
                             </div>
 
                             <!-- Add Button when territories exist -->
-                            <div class="mt-5 pb-8">
+                            <div class="mt-5 pb-2">
                                 <button @click="openNewTerritoryModal()"
                                     class="w-full py-4 rounded-2xl bg-jw-600 hover:bg-jw-700 text-white font-extrabold text-sm shadow-lg shadow-jw-600/30 active:scale-[0.98] transition-all flex items-center justify-center gap-2.5">
                                     <i class="fas fa-plus-circle text-base"></i> Crea Nuovo Territorio
                                 </button>
                             </div>
                         </div>
-
-                        <div class="h-20"></div>
                     </div>
 
                 </div>
@@ -321,7 +314,7 @@
                     style="padding-top: calc(max(1rem, env(safe-area-inset-top, 0px)) + 0.5rem);">
                     <div class="flex items-center gap-3.5">
                         <button @click="switchTab('territori')"
-                            class="w-10 h-10 rounded-full sm:rounded-2xl bg-white dark:bg-[#111827] hover:bg-slate-50 dark:hover:bg-slate-800 flex items-center justify-center text-slate-700 dark:text-slate-200 transition-all flex-shrink-0 border border-slate-200/80 dark:border-slate-800 shadow-xs active:scale-95">
+                            class="w-10 h-10 rounded-full sm:rounded-2xl bg-white dark:bg-[#0d1424] hover:bg-slate-50 dark:hover:bg-slate-800/80 flex items-center justify-center text-slate-700 dark:text-slate-200 transition-all flex-shrink-0 border border-slate-200/80 dark:border-slate-800/80 shadow-xs active:scale-95">
                             <i class="fas fa-arrow-left text-sm"></i>
                         </button>
                         <div>
@@ -332,115 +325,272 @@
 
                     <!-- Theme Toggle Button -->
                     <button @click="toggleTheme()" title="Cambia tema"
-                        class="w-10 h-10 rounded-2xl bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-slate-800 shadow-xs flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all flex-shrink-0 active:scale-95">
+                        class="w-10 h-10 rounded-2xl bg-white dark:bg-[#0d1424] border border-slate-200/80 dark:border-slate-800/80 shadow-xs flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/80 transition-all flex-shrink-0 active:scale-95">
                         <i class="fas text-base" :class="isDark ? 'fa-moon text-purple-400' : 'fa-sun text-amber-500'"></i>
                     </button>
                 </header>
 
-                <div class="flex-1 overflow-y-auto p-4 md:p-6 space-y-4 no-scrollbar pb-24 min-h-0">
-                    <!-- Card 1: Progresso Globale -->
-                    <div class="bg-white dark:bg-[#111827] rounded-3xl p-5 shadow-xs border border-slate-200/80 dark:border-slate-800 space-y-4">
-                        <div class="flex items-start justify-between">
-                            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">Progresso Globale</span>
-                            <div class="text-right">
-                                <div class="text-2xl font-black text-jw-600 dark:text-purple-400 leading-none" x-text="calculateGlobalStats().percent + '%'">0%</div>
-                                <span class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">completato</span>
+                <div class="flex-1 overflow-y-auto p-4 md:p-6 space-y-4 no-scrollbar pb-6 min-h-0">
+                    <!-- Card 1: Panoramica generale -->
+                    <div class="bg-white dark:bg-[#0d1424] rounded-3xl p-5 shadow-xs border border-slate-200/80 dark:border-slate-800/80 space-y-4">
+                        <div class="flex items-center justify-between">
+                            <h3 class="font-bold text-slate-900 dark:text-white text-sm">Panoramica generale</h3>
+                            <div class="flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-xl bg-slate-100 dark:bg-[#141c2e] text-slate-600 dark:text-slate-300 border border-slate-200/60 dark:border-slate-800/80">
+                                <span>Ultimi 7 giorni</span>
+                                <i class="fas fa-chevron-down text-[10px] text-slate-400"></i>
                             </div>
                         </div>
 
-                        <!-- Progress bar -->
-                        <div class="w-full bg-slate-100 dark:bg-[#0d1322] rounded-full h-3 overflow-hidden border border-slate-200/40 dark:border-slate-800/80">
-                            <div class="bg-gradient-to-r from-jw-600 to-indigo-500 dark:from-purple-600 dark:to-indigo-500 h-full rounded-full transition-all duration-500"
-                                :style="'width: ' + calculateGlobalStats().percent + '%'"></div>
-                        </div>
-
-                        <!-- 3 Status Cards (Matching exact screenshot styling) -->
+                        <!-- 3 Status Stat Boxes -->
                         <div class="grid grid-cols-3 gap-2.5 pt-1">
                             <!-- Fatti -->
-                            <div class="p-3.5 rounded-2xl bg-emerald-50/70 dark:bg-[#062c1e]/60 border border-emerald-200/50 dark:border-emerald-500/20 text-center flex flex-col items-center justify-center">
-                                <div class="w-7 h-7 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xs shadow-xs mb-1.5">
-                                    <i class="fas fa-check"></i>
+                            <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-[#141c2e] border border-slate-100 dark:border-slate-800/80 flex flex-col justify-between">
+                                <div class="flex items-center justify-between mb-2">
+                                    <div class="w-8 h-8 rounded-xl bg-emerald-100 dark:bg-[#0d2e20] text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-xs flex-shrink-0 shadow-xs">
+                                        <i class="fas fa-check"></i>
+                                    </div>
+                                    <span class="text-[10px] font-extrabold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/70 px-1.5 py-0.5 rounded-md">
+                                        +<span x-text="getStatsPercent('completed')"></span>%
+                                    </span>
                                 </div>
-                                <div class="text-xl font-black text-emerald-700 dark:text-emerald-400" x-text="calculateGlobalStats().green">0</div>
-                                <div class="text-[10px] font-bold text-emerald-800/70 dark:text-emerald-500/80 uppercase">Fatti</div>
+                                <div class="text-2xl font-black text-slate-900 dark:text-white leading-tight" x-text="calculateGlobalStats().green">0</div>
+                                <div class="text-xs font-semibold text-slate-500 dark:text-slate-400 mt-0.5">Fatti</div>
                             </div>
 
                             <!-- Assenti -->
-                            <div class="p-3.5 rounded-2xl bg-rose-50/70 dark:bg-[#2f1019]/60 border border-rose-200/50 dark:border-rose-500/20 text-center flex flex-col items-center justify-center">
-                                <div class="w-7 h-7 rounded-full bg-rose-500 text-white flex items-center justify-center text-xs shadow-xs mb-1.5">
-                                    <i class="fas fa-times"></i>
+                            <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-[#141c2e] border border-slate-100 dark:border-slate-800/80 flex flex-col justify-between">
+                                <div class="flex items-center justify-between mb-2">
+                                    <div class="w-8 h-8 rounded-xl bg-rose-100 dark:bg-[#34171d] text-rose-600 dark:text-rose-400 flex items-center justify-center text-xs flex-shrink-0 shadow-xs">
+                                        <i class="fas fa-times"></i>
+                                    </div>
+                                    <span class="text-[10px] font-extrabold text-slate-400 dark:text-slate-500 bg-slate-100 dark:bg-[#1b253b] px-1.5 py-0.5 rounded-md">
+                                        <span x-text="getStatsPercent('red')"></span>%
+                                    </span>
                                 </div>
-                                <div class="text-xl font-black text-rose-700 dark:text-rose-400" x-text="calculateGlobalStats().red">0</div>
-                                <div class="text-[10px] font-bold text-rose-800/70 dark:text-rose-500/80 uppercase">Assenti</div>
+                                <div class="text-2xl font-black text-slate-900 dark:text-white leading-tight" x-text="calculateGlobalStats().red">0</div>
+                                <div class="text-xs font-semibold text-slate-500 dark:text-slate-400 mt-0.5">Assenti</div>
                             </div>
 
                             <!-- Non visitati -->
-                            <div class="p-3.5 rounded-2xl bg-slate-100/70 dark:bg-[#0d162a]/60 border border-slate-200/50 dark:border-indigo-500/20 text-center flex flex-col items-center justify-center">
-                                <div class="w-7 h-7 rounded-full bg-slate-300 dark:bg-slate-700 text-slate-700 dark:text-slate-300 flex items-center justify-center text-[8px] shadow-xs mb-1.5">
-                                    <i class="fas fa-circle"></i>
+                            <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-[#141c2e] border border-slate-100 dark:border-slate-800/80 flex flex-col justify-between">
+                                <div class="flex items-center justify-between mb-2">
+                                    <div class="w-8 h-8 rounded-xl bg-blue-100 dark:bg-[#15233c] text-blue-600 dark:text-blue-400 flex items-center justify-center text-xs flex-shrink-0 shadow-xs">
+                                        <i class="fas fa-eye"></i>
+                                    </div>
+                                    <span class="text-[10px] font-extrabold text-slate-400 dark:text-slate-500 bg-slate-100 dark:bg-[#1b253b] px-1.5 py-0.5 rounded-md">
+                                        <span x-text="getStatsPercent('neutral')"></span>%
+                                    </span>
                                 </div>
-                                <div class="text-xl font-black text-slate-700 dark:text-indigo-300" x-text="calculateGlobalStats().neutral">0</div>
-                                <div class="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase">Non visitati</div>
+                                <div class="text-2xl font-black text-slate-900 dark:text-white leading-tight" x-text="calculateGlobalStats().neutral">0</div>
+                                <div class="text-xs font-semibold text-slate-500 dark:text-slate-400 mt-0.5">Non visitati</div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Card 2: Stato Territori -->
-                    <div class="bg-white dark:bg-[#111827] rounded-3xl p-5 shadow-xs border border-slate-200/80 dark:border-slate-800 space-y-3">
-                        <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">Stato Territori</span>
-                        
-                        <div class="grid grid-cols-3 gap-2 p-4 rounded-2xl bg-slate-50 dark:bg-[#0d1322] border border-slate-100 dark:border-slate-800/80 text-center divide-x divide-slate-200/60 dark:divide-slate-800">
+                    <!-- Card 2: Andamento visite -->
+                    <div class="bg-white dark:bg-[#0d1424] rounded-3xl p-5 shadow-xs border border-slate-200/80 dark:border-slate-800/80 space-y-4">
+                        <div class="flex items-center justify-between">
                             <div>
-                                <div class="text-2xl font-black text-slate-900 dark:text-white" x-text="calculateGlobalStats().totalTerritories">0</div>
-                                <div class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase mt-0.5">Totali</div>
+                                <h3 class="font-bold text-slate-900 dark:text-white text-sm">Andamento visite</h3>
+                                <p class="text-[11px] text-slate-400 dark:text-slate-500 mt-0.5">Questa settimana</p>
                             </div>
-                            <div>
-                                <div class="text-2xl font-black text-amber-500" x-text="calculateGlobalStats().inProgress">0</div>
-                                <div class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase mt-0.5">In corso</div>
+                        </div>
+
+                        <!-- Chart SVG Area -->
+                        <div class="relative w-full pt-1">
+                            <div class="flex items-stretch gap-2">
+                                <!-- Y Axis -->
+                                <div class="flex flex-col justify-between text-[10px] font-bold text-slate-400 dark:text-slate-500 text-right pr-1 h-36 select-none">
+                                    <span>10</span>
+                                    <span>7.5</span>
+                                    <span>5</span>
+                                    <span>2.5</span>
+                                    <span>0</span>
+                                </div>
+                                <!-- Graph Area -->
+                                <div class="flex-1 relative h-36">
+                                    <!-- Gridlines -->
+                                    <div class="absolute inset-0 flex flex-col justify-between pointer-events-none">
+                                        <div class="w-full border-b border-dashed border-slate-200 dark:border-slate-800/80"></div>
+                                        <div class="w-full border-b border-dashed border-slate-200 dark:border-slate-800/80"></div>
+                                        <div class="w-full border-b border-dashed border-slate-200 dark:border-slate-800/80"></div>
+                                        <div class="w-full border-b border-dashed border-slate-200 dark:border-slate-800/80"></div>
+                                        <div class="w-full border-b border-slate-200 dark:border-slate-800/80"></div>
+                                    </div>
+                                    <!-- SVG Path -->
+                                    <svg class="w-full h-full overflow-visible" viewBox="0 0 300 120" preserveAspectRatio="none">
+                                        <defs>
+                                            <linearGradient id="chartGradient" x1="0" y1="0" x2="0" y2="1">
+                                                <stop offset="0%" stop-color="#8b5cf6" stop-opacity="0.35" />
+                                                <stop offset="100%" stop-color="#8b5cf6" stop-opacity="0.0" />
+                                            </linearGradient>
+                                        </defs>
+                                        <!-- Area Fill -->
+                                        <path d="M 0,110 Q 50,105 100,85 T 200,45 T 300,30 L 300,120 L 0,120 Z" fill="url(#chartGradient)" />
+                                        <!-- Smooth Curve Line -->
+                                        <path d="M 0,110 Q 50,105 100,85 T 200,45 T 300,30" fill="none" stroke="#8b5cf6" stroke-width="2.5" stroke-linecap="round" />
+                                        <!-- Dot Points -->
+                                        <circle cx="0" cy="110" r="3" class="fill-[#8b5cf6] ring-2 ring-white dark:ring-[#0d1424]" />
+                                        <circle cx="50" cy="105" r="3" class="fill-[#8b5cf6] ring-2 ring-white dark:ring-[#0d1424]" />
+                                        <circle cx="100" cy="85" r="3" class="fill-[#8b5cf6] ring-2 ring-white dark:ring-[#0d1424]" />
+                                        <circle cx="150" cy="65" r="3" class="fill-[#8b5cf6] ring-2 ring-white dark:ring-[#0d1424]" />
+                                        <circle cx="200" cy="45" r="3" class="fill-[#8b5cf6] ring-2 ring-white dark:ring-[#0d1424]" />
+                                        <circle cx="250" cy="38" r="3" class="fill-[#8b5cf6] ring-2 ring-white dark:ring-[#0d1424]" />
+                                        <circle cx="300" cy="30" r="3.5" class="fill-purple-400 ring-2 ring-white dark:ring-[#0d1424]" />
+                                    </svg>
+                                </div>
                             </div>
-                            <div>
-                                <div class="text-2xl font-black text-emerald-500" x-text="calculateGlobalStats().completed">0</div>
-                                <div class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase mt-0.5">Completati</div>
+
+                            <!-- X Axis Days -->
+                            <div class="flex justify-between pl-7 pt-2 text-[11px] font-bold text-slate-400 dark:text-slate-500">
+                                <span>Lun</span>
+                                <span>Mar</span>
+                                <span>Mer</span>
+                                <span>Gio</span>
+                                <span>Ven</span>
+                                <span>Sab</span>
+                                <span>Dom</span>
+                            </div>
+                        </div>
+
+                        <!-- Bottom Legend with counts -->
+                        <div class="flex items-center justify-around pt-3 border-t border-slate-100 dark:border-slate-800/80 text-xs font-semibold text-slate-600 dark:text-slate-400">
+                            <div class="flex items-center gap-1.5">
+                                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                                <span>Fatti (<span x-text="calculateGlobalStats().green"></span>)</span>
+                            </div>
+                            <div class="flex items-center gap-1.5">
+                                <span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span>
+                                <span>Assenti (<span x-text="calculateGlobalStats().red"></span>)</span>
+                            </div>
+                            <div class="flex items-center gap-1.5">
+                                <span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span>
+                                <span>Non visitati (<span x-text="calculateGlobalStats().neutral"></span>)</span>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Card 3: Attività Recenti -->
-                    <div class="bg-white dark:bg-[#111827] rounded-3xl p-5 shadow-xs border border-slate-200/80 dark:border-slate-800 space-y-3">
-                        <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">Attività Recenti</span>
+                    <!-- Card 3: Distribuzione territori -->
+                    <div class="bg-white dark:bg-[#0d1424] rounded-3xl p-5 shadow-xs border border-slate-200/80 dark:border-slate-800/80 space-y-4">
+                        <h3 class="font-bold text-slate-900 dark:text-white text-sm">Distribuzione territori</h3>
                         
-                        <!-- When territories are empty -->
-                        <div x-show="territories.length === 0" class="p-8 rounded-2xl bg-slate-50 dark:bg-[#0d1322] border border-slate-100 dark:border-slate-800/80 text-center flex flex-col items-center justify-center">
-                            <div class="w-12 h-12 rounded-2xl bg-slate-100 dark:bg-[#151c2e] text-slate-400 dark:text-slate-500 flex items-center justify-center text-xl mb-3 shadow-xs">
-                                <i class="fas fa-file-lines"></i>
+                        <div class="flex items-center gap-5">
+                            <!-- Donut SVG -->
+                            <div class="relative w-28 h-28 flex-shrink-0 flex items-center justify-center">
+                                <svg class="w-full h-full -rotate-90" viewBox="0 0 100 100">
+                                    <!-- Background Circle -->
+                                    <circle cx="50" cy="50" r="38" fill="none" stroke="currentColor" class="text-slate-100 dark:text-[#141c2e]" stroke-width="11" />
+                                    
+                                    <!-- Segments -->
+                                    <template x-if="!getDonutSegments().empty">
+                                        <g>
+                                            <!-- Completed (Green) -->
+                                            <circle cx="50" cy="50" r="38" fill="none" stroke="#10b981" stroke-width="11"
+                                                :stroke-dasharray="getDonutSegments().compDash"
+                                                stroke-dashoffset="0" stroke-linecap="round" />
+                                            <!-- In Progress (Amber) -->
+                                            <circle cx="50" cy="50" r="38" fill="none" stroke="#f59e0b" stroke-width="11"
+                                                :stroke-dasharray="getDonutSegments().inProgDash"
+                                                :stroke-dashoffset="getDonutSegments().inProgOffset" stroke-linecap="round" />
+                                        </g>
+                                    </template>
+                                </svg>
+                                <!-- Center Total Text -->
+                                <div class="absolute inset-0 flex flex-col items-center justify-center text-center select-none">
+                                    <span class="text-2xl font-black text-slate-900 dark:text-white leading-none" x-text="calculateGlobalStats().totalTerritories">0</span>
+                                    <span class="text-[9px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mt-0.5">Totale</span>
+                                </div>
                             </div>
-                            <h4 class="font-bold text-slate-800 dark:text-slate-200 text-sm mb-1">Nessuna attività registrata</h4>
-                            <p class="text-xs text-slate-400 dark:text-slate-500 max-w-xs">Le tue modifiche ai territori appariranno qui.</p>
+
+                            <!-- 4 Status Legend Rows -->
+                            <div class="flex-1 space-y-2.5">
+                                <!-- Completati -->
+                                <div class="flex items-center justify-between text-xs">
+                                    <div class="flex items-center gap-2">
+                                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                                        <span class="font-medium text-slate-600 dark:text-slate-300">Completati</span>
+                                    </div>
+                                    <div class="flex items-center gap-1.5 font-bold">
+                                        <span class="text-slate-900 dark:text-white" x-text="calculateGlobalStats().completed">0</span>
+                                        <span class="text-[11px] text-slate-400 dark:text-slate-500 font-semibold" x-text="'(' + getStatsPercent('completed') + '%)'"></span>
+                                    </div>
+                                </div>
+
+                                <!-- In corso -->
+                                <div class="flex items-center justify-between text-xs">
+                                    <div class="flex items-center gap-2">
+                                        <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+                                        <span class="font-medium text-slate-600 dark:text-slate-300">In corso</span>
+                                    </div>
+                                    <div class="flex items-center gap-1.5 font-bold">
+                                        <span class="text-slate-900 dark:text-white" x-text="calculateGlobalStats().inProgress">0</span>
+                                        <span class="text-[11px] text-slate-400 dark:text-slate-500 font-semibold" x-text="'(' + getStatsPercent('in_progress') + '%)'"></span>
+                                    </div>
+                                </div>
+
+                                <!-- Assenti -->
+                                <div class="flex items-center justify-between text-xs">
+                                    <div class="flex items-center gap-2">
+                                        <span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span>
+                                        <span class="font-medium text-slate-600 dark:text-slate-300">Assenti</span>
+                                    </div>
+                                    <div class="flex items-center gap-1.5 font-bold">
+                                        <span class="text-slate-900 dark:text-white" x-text="calculateGlobalStats().red">0</span>
+                                        <span class="text-[11px] text-slate-400 dark:text-slate-500 font-semibold" x-text="'(' + getStatsPercent('red') + '%)'"></span>
+                                    </div>
+                                </div>
+
+                                <!-- Non visitati -->
+                                <div class="flex items-center justify-between text-xs">
+                                    <div class="flex items-center gap-2">
+                                        <span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span>
+                                        <span class="font-medium text-slate-600 dark:text-slate-300">Non visitati</span>
+                                    </div>
+                                    <div class="flex items-center gap-1.5 font-bold">
+                                        <span class="text-slate-900 dark:text-white" x-text="calculateGlobalStats().neutral">0</span>
+                                        <span class="text-[11px] text-slate-400 dark:text-slate-500 font-semibold" x-text="'(' + getStatsPercent('neutral') + '%)'"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 4: Attività recenti -->
+                    <div class="bg-white dark:bg-[#0d1424] rounded-3xl p-5 shadow-xs border border-slate-200/80 dark:border-slate-800/80 space-y-3">
+                        <div class="flex items-center justify-between">
+                            <h3 class="font-bold text-slate-900 dark:text-white text-sm">Attività recenti</h3>
+                            <button @click="switchTab('territori')" class="text-xs font-bold text-slate-400 dark:text-slate-500 hover:text-jw-600 dark:hover:text-purple-400 flex items-center gap-1 transition-colors">
+                                <span>Tutti</span>
+                                <i class="fas fa-chevron-right text-[10px]"></i>
+                            </button>
+                        </div>
+                        
+                        <!-- Empty placeholder -->
+                        <div x-show="territories.length === 0" class="py-6 px-4 rounded-2xl bg-slate-50 dark:bg-[#141c2e] border border-slate-100 dark:border-slate-800/80 text-center flex flex-col items-center justify-center">
+                            <div class="w-11 h-11 rounded-2xl bg-slate-100 dark:bg-[#1b253b] text-slate-400 dark:text-slate-500 flex items-center justify-center text-lg mb-2 shadow-xs">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <h4 class="font-bold text-slate-800 dark:text-slate-200 text-xs mb-0.5">Nessuna attività recente</h4>
+                            <p class="text-[11px] text-slate-400 dark:text-slate-500 max-w-xs">Le modifiche ai territori e alle visite appariranno qui.</p>
                         </div>
 
-                        <!-- When territories exist: show territory list -->
+                        <!-- Non-empty territories list -->
                         <div x-show="territories.length > 0" class="space-y-3 divide-y divide-slate-100 dark:divide-slate-800/80">
-                            <template x-for="t in territories" :key="t.id">
+                            <template x-for="t in territories.slice(0, 5)" :key="t.id">
                                 <div class="pt-3 first:pt-0 cursor-pointer" @click="openTerritory(t.id)">
                                     <div class="flex items-center justify-between mb-1.5">
-                                        <div class="flex items-center gap-2">
+                                        <div class="flex items-center gap-2 min-w-0">
                                             <span class="w-3 h-3 rounded-full flex-shrink-0" :style="'background-color: ' + (t.color || '#5b3c88')"></span>
-                                            <span class="font-bold text-xs text-slate-800 dark:text-white" x-text="t.name"></span>
+                                            <span class="font-bold text-xs text-slate-800 dark:text-white truncate" x-text="t.name"></span>
                                         </div>
-                                        <span class="text-xs font-black text-slate-600 dark:text-slate-300" x-text="calculateStats(t).percent + '%'"></span>
+                                        <span class="text-xs font-black text-jw-600 dark:text-purple-400" x-text="calculateStats(t).percent + '%'"></span>
                                     </div>
-                                    <div class="w-full bg-slate-100 dark:bg-[#0d1322] rounded-full h-1.5 overflow-hidden">
-                                        <div class="h-1.5 rounded-full" :style="{ width: calculateStats(t).percent + '%', backgroundColor: t.color || '#5b3c88' }"></div>
+                                    <div class="w-full bg-slate-100 dark:bg-[#141c2e] rounded-full h-1.5 overflow-hidden">
+                                        <div class="h-1.5 rounded-full transition-all duration-300" :style="{ width: calculateStats(t).percent + '%', backgroundColor: t.color || '#5b3c88' }"></div>
                                     </div>
                                 </div>
                             </template>
                         </div>
-                    </div>
-
-                    <!-- Card 4: Motivational Banner -->
-                    <div class="p-4 rounded-3xl bg-gradient-to-r from-purple-900/30 to-indigo-900/30 border border-purple-500/20 text-center flex items-center justify-center gap-2 shadow-xs">
-                        <i class="fas fa-sparkles text-purple-400 text-sm"></i>
-                        <span class="text-xs font-bold text-purple-200">Ogni territorio conta • Piccoli passi, grandi risultati.</span>
                     </div>
 
                 </div>
@@ -457,7 +607,7 @@
 
                     <div class="flex items-center gap-3.5">
                         <button @click="goBackFromSettings()"
-                            class="w-10 h-10 rounded-full sm:rounded-2xl bg-white dark:bg-[#111827] hover:bg-slate-50 dark:hover:bg-slate-800 flex items-center justify-center text-slate-700 dark:text-slate-200 transition-all flex-shrink-0 border border-slate-200/80 dark:border-slate-800 shadow-xs active:scale-95">
+                            class="w-10 h-10 rounded-full sm:rounded-2xl bg-white dark:bg-[#0d1424] hover:bg-slate-50 dark:hover:bg-slate-800/80 flex items-center justify-center text-slate-700 dark:text-slate-200 transition-all flex-shrink-0 border border-slate-200/80 dark:border-slate-800/80 shadow-xs active:scale-95">
                             <i class="fas fa-arrow-left text-sm"></i>
                         </button>
                         <div>
@@ -467,15 +617,15 @@
                     </div>
                 </header>
 
-                <div class="flex-1 overflow-y-auto p-4 md:p-6 space-y-4 no-scrollbar pb-16 min-h-0">
+                <div class="flex-1 overflow-y-auto p-4 md:p-6 space-y-4 no-scrollbar pb-6 min-h-0">
                     <!-- Gruppo 1: Aspetto -->
-                    <div class="bg-white dark:bg-[#111827] rounded-3xl p-5 shadow-xs border border-slate-200/80 dark:border-slate-800 space-y-3">
+                    <div class="bg-white dark:bg-[#0d1424] rounded-3xl p-5 shadow-xs border border-slate-200/80 dark:border-slate-800/80 space-y-3">
                         <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
                             Aspetto
                         </div>
                         <div class="flex items-center justify-between">
                             <div class="flex items-center gap-3.5">
-                                <div class="w-11 h-11 rounded-2xl bg-[#312356] text-[#c084fc] flex items-center justify-center text-lg flex-shrink-0">
+                                <div class="w-11 h-11 rounded-2xl bg-purple-100 dark:bg-[#312356] text-purple-600 dark:text-[#c084fc] flex items-center justify-center text-lg flex-shrink-0 shadow-xs">
                                     <i class="fas fa-palette"></i>
                                 </div>
                                 <div>
@@ -484,27 +634,26 @@
                                 </div>
                             </div>
                             
-                            <!-- Dropdown / Selector Button -->
+                            <!-- Toggle Button (Standard Pill without dropdown chevron) -->
                             <button @click="toggleTheme()"
-                                class="px-3.5 py-2 rounded-2xl bg-slate-100 dark:bg-[#141c2e] border border-slate-200 dark:border-slate-700/70 hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-800 dark:text-white flex items-center gap-2 text-xs font-semibold shadow-xs transition-all active:scale-95">
+                                class="px-4 py-2 rounded-2xl bg-slate-100 dark:bg-[#141c2e] border border-slate-200 dark:border-slate-700/70 hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-800 dark:text-white flex items-center gap-2 text-xs font-semibold shadow-xs transition-all active:scale-95">
                                 <i class="fas text-sm" :class="isDark ? 'fa-moon text-purple-400' : 'fa-sun text-amber-500'"></i>
                                 <span x-text="isDark ? 'Scuro' : 'Chiaro'"></span>
-                                <i class="fas fa-chevron-down text-slate-400 text-[10px] ml-1"></i>
                             </button>
                         </div>
                     </div>
 
                     <!-- Gruppo 2: Guide & Installazione -->
-                    <div class="bg-white dark:bg-[#111827] rounded-3xl p-5 shadow-xs border border-slate-200/80 dark:border-slate-800 space-y-3">
+                    <div class="bg-white dark:bg-[#0d1424] rounded-3xl p-5 shadow-xs border border-slate-200/80 dark:border-slate-800/80 space-y-3">
                         <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
                             Guide & Utilizzo
                         </div>
                         <div class="divide-y divide-slate-100 dark:divide-slate-800/80">
-                            <!-- PWA Guide Item -->
-                            <button @click="openPwaGuide()"
+                            <!-- PWA Guide Item (hidden if already running in standalone PWA mode) -->
+                            <button x-show="!isStandalone" @click="openPwaGuide()"
                                 class="w-full py-3.5 flex items-center justify-between text-left hover:opacity-80 transition-opacity">
                                 <div class="flex items-center gap-3.5">
-                                    <div class="w-11 h-11 rounded-2xl bg-[#18253e] text-[#60a5fa] flex items-center justify-center text-base flex-shrink-0">
+                                    <div class="w-11 h-11 rounded-2xl bg-blue-100 dark:bg-[#18253e] text-blue-600 dark:text-[#60a5fa] flex items-center justify-center text-base flex-shrink-0 shadow-xs">
                                         <i class="fas fa-mobile-screen"></i>
                                     </div>
                                     <div>
@@ -512,14 +661,14 @@
                                         <p class="text-xs text-slate-500 dark:text-slate-400">Schermo intero su iPhone o Android, 100% offline</p>
                                     </div>
                                 </div>
-                                <i class="fas fa-chevron-right text-xs text-slate-500"></i>
+                                <i class="fas fa-chevron-right text-xs text-slate-400"></i>
                             </button>
 
                             <!-- Tutorial Item -->
                             <button @click="openIntroModal()"
                                 class="w-full py-3.5 flex items-center justify-between text-left hover:opacity-80 transition-opacity">
                                 <div class="flex items-center gap-3.5">
-                                    <div class="w-11 h-11 rounded-2xl bg-[#312356] text-[#c084fc] flex items-center justify-center text-base flex-shrink-0">
+                                    <div class="w-11 h-11 rounded-2xl bg-purple-100 dark:bg-[#312356] text-purple-600 dark:text-[#c084fc] flex items-center justify-center text-base flex-shrink-0 shadow-xs">
                                         <i class="fas fa-graduation-cap"></i>
                                     </div>
                                     <div>
@@ -527,13 +676,13 @@
                                         <p class="text-xs text-slate-500 dark:text-slate-400">Rivedi i passaggi e l'introduzione alle funzioni</p>
                                     </div>
                                 </div>
-                                <i class="fas fa-chevron-right text-xs text-slate-500"></i>
+                                <i class="fas fa-chevron-right text-xs text-slate-400"></i>
                             </button>
                         </div>
                     </div>
 
                     <!-- Gruppo 3: Dati & Memoria Locale -->
-                    <div class="bg-white dark:bg-[#111827] rounded-3xl p-5 shadow-xs border border-slate-200/80 dark:border-slate-800 space-y-4">
+                    <div class="bg-white dark:bg-[#0d1424] rounded-3xl p-5 shadow-xs border border-slate-200/80 dark:border-slate-800/80 space-y-4">
                         <div class="flex items-center justify-between">
                             <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
                                 Dati & Memoria Locale
@@ -544,7 +693,7 @@
                         </div>
 
                         <!-- Data Summary Grid -->
-                        <div class="grid grid-cols-3 gap-2 p-4 rounded-2xl bg-slate-50 dark:bg-[#0d1322] border border-slate-100 dark:border-slate-800 text-center divide-x divide-slate-200/60 dark:divide-slate-800">
+                        <div class="grid grid-cols-3 gap-2 p-4 rounded-2xl bg-slate-50 dark:bg-[#141c2e] border border-slate-100 dark:border-slate-800/80 text-center divide-x divide-slate-200/60 dark:divide-slate-800">
                             <div>
                                 <i class="fas fa-map text-slate-400 text-base mb-1.5 block"></i>
                                 <div class="text-2xl font-black text-slate-900 dark:text-white" x-text="territories.length">0</div>
@@ -563,10 +712,10 @@
                         </div>
 
                         <!-- Memoria utilizzata -->
-                        <div class="p-4 rounded-2xl bg-slate-50 dark:bg-[#0d1322] border border-slate-100 dark:border-slate-800 space-y-2.5">
+                        <div class="p-4 rounded-2xl bg-slate-50 dark:bg-[#141c2e] border border-slate-100 dark:border-slate-800/80 space-y-2.5">
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center gap-2.5">
-                                    <div class="w-8 h-8 rounded-xl bg-slate-200/60 dark:bg-[#1a233a] text-slate-600 dark:text-slate-300 flex items-center justify-center text-xs">
+                                    <div class="w-8 h-8 rounded-xl bg-slate-200/60 dark:bg-[#1b253b] text-slate-600 dark:text-slate-300 flex items-center justify-center text-xs shadow-xs">
                                         <i class="fas fa-database"></i>
                                     </div>
                                     <span class="text-xs font-semibold text-slate-700 dark:text-slate-300">Memoria utilizzata</span>
@@ -582,7 +731,7 @@
                         </div>
 
                         <!-- Info Note Box -->
-                        <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-[#0d1322] border border-slate-100 dark:border-slate-800 flex items-start gap-3">
+                        <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-[#141c2e] border border-slate-100 dark:border-slate-800/80 flex items-start gap-3">
                             <i class="fas fa-circle-info text-slate-400 text-base flex-shrink-0 mt-0.5"></i>
                             <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
                                 I dati sono memorizzati solo su questo dispositivo. Nessun dato viene inviato a server esterni.
@@ -599,7 +748,7 @@
                     </div>
 
                     <!-- Gruppo 4: Informazioni sull'App -->
-                    <div class="bg-white dark:bg-[#111827] rounded-3xl p-5 shadow-xs border border-slate-200/80 dark:border-slate-800 space-y-3">
+                    <div class="bg-white dark:bg-[#0d1424] rounded-3xl p-5 shadow-xs border border-slate-200/80 dark:border-slate-800/80 space-y-3">
                         <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
                             Altro
                         </div>
@@ -608,7 +757,7 @@
                             <button @click="openInfo()"
                                 class="w-full py-3.5 flex items-center justify-between text-left hover:opacity-80 transition-opacity">
                                 <div class="flex items-center gap-3.5">
-                                    <div class="w-11 h-11 rounded-2xl bg-[#18253e] text-[#60a5fa] flex items-center justify-center text-base flex-shrink-0">
+                                    <div class="w-11 h-11 rounded-2xl bg-blue-100 dark:bg-[#18253e] text-blue-600 dark:text-[#60a5fa] flex items-center justify-center text-base flex-shrink-0 shadow-xs">
                                         <i class="fas fa-file-lines"></i>
                                     </div>
                                     <div>
@@ -616,7 +765,7 @@
                                         <p class="text-xs text-slate-500 dark:text-slate-400">Note legali, responsabilità personale, codice sorgente</p>
                                     </div>
                                 </div>
-                                <i class="fas fa-chevron-right text-xs text-slate-500"></i>
+                                <i class="fas fa-chevron-right text-xs text-slate-400"></i>
                             </button>
                         </div>
                     </div>
@@ -641,14 +790,14 @@
 
                     <div class="flex items-center gap-3">
                         <button @click="goBackFromInfo()"
-                            class="w-10 h-10 rounded-2xl bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 flex items-center justify-center text-slate-600 dark:text-slate-300 transition-all flex-shrink-0 border border-slate-200/80 dark:border-slate-700/80 shadow-xs">
+                            class="w-10 h-10 rounded-2xl bg-white dark:bg-[#0d1424] hover:bg-slate-50 dark:hover:bg-slate-800/80 flex items-center justify-center text-slate-600 dark:text-slate-300 transition-all flex-shrink-0 border border-slate-200/80 dark:border-slate-800/80 shadow-xs">
                             <i class="fas fa-arrow-left"></i>
                         </button>
                         <h2 class="text-xl font-extrabold text-slate-900 dark:text-white">Informazioni</h2>
                     </div>
                     
                     <!-- Theme Toggle Pill -->
-                    <div class="bg-white dark:bg-slate-900 p-1 rounded-full flex items-center border border-slate-200/80 dark:border-slate-800 shadow-xs flex-shrink-0">
+                    <div class="bg-white dark:bg-[#0d1424] p-1 rounded-full flex items-center border border-slate-200/80 dark:border-slate-800/80 shadow-xs flex-shrink-0">
                         <button @click="toggleTheme()" title="Cambia tema"
                             class="w-8 h-8 rounded-full flex items-center justify-center transition-all"
                             :class="isDark ? 'bg-jw-600 text-white shadow-xs' : 'bg-amber-100/70 text-amber-600 shadow-xs'">
@@ -657,11 +806,11 @@
                     </div>
                 </header>
 
-                <div class="flex-1 overflow-y-auto p-4 md:p-6 space-y-4 no-scrollbar pb-12 min-h-0">
+                <div class="flex-1 overflow-y-auto p-4 md:p-6 space-y-4 no-scrollbar pb-6 min-h-0">
                     <div class="space-y-4">
                         <!-- Open Source Card -->
-                        <div class="bg-white dark:bg-slate-900 rounded-3xl p-5 shadow-xs border border-slate-200/80 dark:border-slate-800 flex gap-4">
-                            <div class="flex-shrink-0 w-11 h-11 rounded-2xl bg-jw-50 dark:bg-jw-950/60 text-jw-600 dark:text-jw-400 flex items-center justify-center text-base">
+                        <div class="bg-white dark:bg-[#0d1424] rounded-3xl p-5 shadow-xs border border-slate-200/80 dark:border-slate-800/80 flex gap-4">
+                            <div class="flex-shrink-0 w-11 h-11 rounded-2xl bg-jw-50 dark:bg-[#1f1530] text-jw-600 dark:text-jw-400 flex items-center justify-center text-base">
                                 <i class="fas fa-code"></i>
                             </div>
                             <div class="min-w-0 flex-1">
@@ -676,8 +825,8 @@
                         </div>
 
                         <!-- Responsibility Card -->
-                        <div class="bg-white dark:bg-slate-900 rounded-3xl p-5 shadow-xs border border-slate-200/80 dark:border-slate-800 flex gap-4">
-                            <div class="flex-shrink-0 w-11 h-11 rounded-2xl bg-jw-50 dark:bg-jw-950/60 text-jw-600 dark:text-jw-400 flex items-center justify-center text-base">
+                        <div class="bg-white dark:bg-[#0d1424] rounded-3xl p-5 shadow-xs border border-slate-200/80 dark:border-slate-800/80 flex gap-4">
+                            <div class="flex-shrink-0 w-11 h-11 rounded-2xl bg-jw-50 dark:bg-[#1f1530] text-jw-600 dark:text-jw-400 flex items-center justify-center text-base">
                                 <i class="fas fa-exclamation-circle"></i>
                             </div>
                             <div class="min-w-0 flex-1">
@@ -691,8 +840,8 @@
                         </div>
 
                         <!-- Ministry Card -->
-                        <div class="bg-white dark:bg-slate-900 rounded-3xl p-5 shadow-xs border border-slate-200/80 dark:border-slate-800 flex gap-4">
-                            <div class="flex-shrink-0 w-11 h-11 rounded-2xl bg-amber-50 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 flex items-center justify-center text-base">
+                        <div class="bg-white dark:bg-[#0d1424] rounded-3xl p-5 shadow-xs border border-slate-200/80 dark:border-slate-800/80 flex gap-4">
+                            <div class="flex-shrink-0 w-11 h-11 rounded-2xl bg-amber-50 dark:bg-[#2e1d0d] text-amber-600 dark:text-amber-400 flex items-center justify-center text-base">
                                 <i class="fas fa-hands-helping"></i>
                             </div>
                             <div class="min-w-0 flex-1">
@@ -705,7 +854,7 @@
                         </div>
 
                         <!-- Disclaimer Bar -->
-                        <div class="p-5 bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+                        <div class="p-5 bg-white dark:bg-[#0d1424] rounded-3xl border border-slate-200/80 dark:border-slate-800/80 text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
                             <p class="font-black uppercase tracking-wider text-[11px] mb-1.5 opacity-60">Disclaimer Legale</p>
                             Questo strumento non è associato, autorizzato né sponsorizzato dalla <span
                                 class="text-slate-700 dark:text-slate-300 font-bold">The Watchtower Bible and Tract
@@ -725,7 +874,7 @@
                     style="padding-top: calc(max(1rem, env(safe-area-inset-top, 0px)) + 0.5rem);">
 
                     <button @click="goBack()"
-                        class="w-10 h-10 rounded-2xl bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 flex items-center justify-center text-slate-600 dark:text-slate-300 transition-all flex-shrink-0 border border-slate-200/80 dark:border-slate-700/80 shadow-xs">
+                        class="w-10 h-10 rounded-2xl bg-white dark:bg-[#0d1424] hover:bg-slate-50 dark:hover:bg-slate-800/80 flex items-center justify-center text-slate-600 dark:text-slate-300 transition-all flex-shrink-0 border border-slate-200/80 dark:border-slate-800/80 shadow-xs">
                         <i class="fas fa-arrow-left"></i>
                     </button>
 
@@ -733,7 +882,7 @@
                     <div class="flex-1 min-w-0 flex items-center justify-start gap-1">
                         <span x-ref="titleInput" contenteditable="true" x-text="activeTerritory && activeTerritory.name"
                             @blur="activeTerritory.name = $el.innerText" @keydown.enter.prevent="$el.blur()"
-                            class="font-extrabold text-xl text-slate-900 dark:text-white border-b border-transparent transition-colors px-1 py-1 truncate focus:bg-white dark:focus:bg-slate-800 rounded-t"
+                            class="font-extrabold text-xl text-slate-900 dark:text-white border-b border-transparent transition-colors px-1 py-1 truncate focus:bg-white dark:focus:bg-[#0d1424] rounded-t"
                             placeholder="Nome Territorio"></span>
                         <button @click="focusAtEnd($refs.titleInput)"
                             class="w-6 h-6 flex items-center justify-center text-slate-400 dark:text-slate-500 hover:text-jw-600 dark:hover:text-jw-400 transition-colors flex-shrink-0">
@@ -744,12 +893,12 @@
                     <!-- Top Right Action Buttons (Settings & Theme Toggle) -->
                     <div class="flex items-center gap-2 flex-shrink-0">
                         <button @click="openSettings()" title="Impostazioni"
-                            class="w-10 h-10 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-xs flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all flex-shrink-0">
+                            class="w-10 h-10 rounded-2xl bg-white dark:bg-[#0d1424] border border-slate-200/80 dark:border-slate-800/80 shadow-xs flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/80 transition-all flex-shrink-0">
                             <i class="fas fa-gear text-base text-jw-600 dark:text-jw-400"></i>
                         </button>
 
                         <!-- Theme Toggle Pill -->
-                        <div class="bg-white dark:bg-slate-900 p-1 rounded-full flex items-center border border-slate-200/80 dark:border-slate-800 shadow-xs">
+                        <div class="bg-white dark:bg-[#0d1424] p-1 rounded-full flex items-center border border-slate-200/80 dark:border-slate-800/80 shadow-xs">
                             <button @click="toggleTheme()" title="Cambia tema"
                                 class="w-8 h-8 rounded-full flex items-center justify-center transition-all"
                                 :class="isDark ? 'bg-jw-600 text-white shadow-xs' : 'bg-amber-100/70 text-amber-600 shadow-xs'">
@@ -760,16 +909,16 @@
                 </header>
 
                 <!-- Detail Content -->
-                <div class="flex-1 overflow-y-auto p-4 md:p-6 no-scrollbar pb-32 min-h-0">
+                <div class="flex-1 overflow-y-auto p-4 md:p-6 no-scrollbar pb-8 min-h-0">
 
                     <!-- Riepilogo Card -->
-                    <div class="bg-white dark:bg-slate-900 rounded-3xl p-5 shadow-xs border border-slate-200/80 dark:border-slate-800 mb-4 flex flex-col gap-3">
+                    <div class="bg-white dark:bg-[#0d1424] rounded-3xl p-5 shadow-xs border border-slate-200/80 dark:border-slate-800/80 mb-4 flex flex-col gap-3">
                         <div class="flex items-center gap-2 text-jw-600 dark:text-jw-400 font-extrabold text-sm tracking-wide">
                             <span>Riepilogo</span>
                         </div>
                         
                         <!-- Row 1: Indirizzi & Citofoni (2 Columns) -->
-                        <div class="grid grid-cols-2 gap-2 pb-2.5 border-b border-slate-100 dark:border-slate-800 text-center divide-x divide-slate-100 dark:divide-slate-800">
+                        <div class="grid grid-cols-2 gap-2 pb-2.5 border-b border-slate-100 dark:border-slate-800/80 text-center divide-x divide-slate-100 dark:divide-slate-800/80">
                             <!-- Indirizzi -->
                             <div class="flex flex-col items-center justify-center px-1">
                                 <div class="flex items-center gap-1.5 text-jw-600 dark:text-jw-400 mb-0.5">
@@ -790,7 +939,7 @@
                         </div>
 
                         <!-- Row 2: Fatti, Assenti, Non visitati (3 Columns) -->
-                        <div class="grid grid-cols-3 gap-2 pt-1 text-center divide-x divide-slate-100 dark:divide-slate-800">
+                        <div class="grid grid-cols-3 gap-2 pt-1 text-center divide-x divide-slate-100 dark:divide-slate-800/80">
                             <!-- Fatti -->
                             <div class="flex flex-col items-center justify-center px-1">
                                 <div class="flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400 mb-0.5">
@@ -827,13 +976,13 @@
                     </div>
 
                     <!-- Note Card -->
-                    <div class="bg-white dark:bg-slate-900 rounded-3xl p-5 shadow-xs border border-slate-200/80 dark:border-slate-800 mb-4 flex flex-col gap-2">
+                    <div class="bg-white dark:bg-[#0d1424] rounded-3xl p-5 shadow-xs border border-slate-200/80 dark:border-slate-800/80 mb-4 flex flex-col gap-2">
                         <div class="text-jw-600 dark:text-jw-400 font-extrabold text-xs tracking-wider">
                             <span>Note</span>
                         </div>
                         <div contenteditable="true" x-text="activeTerritory.notes || ''"
                             @blur="activeTerritory.notes = $el.innerText"
-                            class="min-h-[24px] text-sm text-slate-700 dark:text-slate-300 outline-none border-b border-slate-100 dark:border-slate-800 focus:border-jw-600 transition-colors py-1"
+                            class="min-h-[24px] text-sm text-slate-700 dark:text-slate-300 outline-none border-b border-slate-100 dark:border-slate-800/80 focus:border-jw-600 transition-colors py-1"
                             placeholder="Scrivi qui..."></div>
                     </div>
 
@@ -841,7 +990,7 @@
                     <div class="flex justify-end mb-4" x-show="activeTerritory.addresses.length > 0">
                         <button @click="toggleSelectionMode()"
                             class="px-4 py-2 rounded-2xl text-xs font-bold transition-all flex items-center gap-2 border shadow-xs"
-                            :class="selectionMode ? 'bg-jw-600 text-white border-jw-600 ring-2 ring-jw-200 dark:ring-jw-900' : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 border-slate-200/80 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800'">
+                            :class="selectionMode ? 'bg-jw-600 text-white border-jw-600 ring-2 ring-jw-200 dark:ring-jw-900' : 'bg-white dark:bg-[#0d1424] text-slate-600 dark:text-slate-400 border-slate-200/80 dark:border-slate-800/80 hover:bg-slate-50 dark:hover:bg-slate-800/80'">
                             <i class="fas fa-square-check text-jw-600 dark:text-jw-400" :class="{'text-white': selectionMode}"></i>
                             <span x-text="selectionMode ? 'Mod. Selezione Attiva' : 'Seleziona'"></span>
                         </button>
@@ -852,11 +1001,11 @@
                         <template x-for="(addr, addrIdx) in activeTerritory ? activeTerritory.addresses : []"
                             :key="addr.id">
                             <div x-show="addr" x-data="{ expanded: true }" :data-id="addr.id"
-                                class="group bg-white dark:bg-slate-900 rounded-3xl shadow-xs border border-slate-200/80 dark:border-slate-800 overflow-hidden select-none touch-manipulation"
+                                class="group bg-white dark:bg-[#0d1424] rounded-3xl shadow-xs border border-slate-200/80 dark:border-slate-800/80 overflow-hidden select-none touch-manipulation"
                                 style="-webkit-touch-callout: none;">
 
                                 <!-- Address Header -->
-                                <div class="p-4 md:px-6 flex items-center justify-between gap-3 cursor-pointer bg-white dark:bg-slate-900 transition-colors"
+                                <div class="p-4 md:px-6 flex items-center justify-between gap-3 cursor-pointer bg-white dark:bg-[#0d1424] transition-colors"
                                     :class="expanded ? 'border-b border-slate-100 dark:border-slate-800/60' : ''"
                                     @click="expanded = !expanded">
 
@@ -896,10 +1045,10 @@
 
                                 <!-- Units Content -->
                                 <div x-show="expanded" x-collapse>
-                                    <div class="p-4 md:p-6 bg-slate-50/50 dark:bg-slate-950/40">
+                                    <div class="p-4 md:p-6 bg-slate-50/50 dark:bg-[#070b16]/60">
                                         
                                         <!-- Address Mini Summary (Matching Riepilogo icons & layout) -->
-                                        <div class="bg-white dark:bg-slate-900/80 rounded-2xl p-2.5 mb-4 border border-slate-200/60 dark:border-slate-800/80 grid grid-cols-3 gap-2 text-center divide-x divide-slate-100 dark:divide-slate-800">
+                                        <div class="bg-white dark:bg-[#0d1424] rounded-2xl p-2.5 mb-4 border border-slate-200/60 dark:border-slate-800/80 grid grid-cols-3 gap-2 text-center divide-x divide-slate-100 dark:divide-slate-800/80">
                                             <!-- Fatto -->
                                             <div class="flex flex-col items-center justify-center px-1">
                                                 <div class="flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400 mb-0.5">
@@ -968,7 +1117,7 @@
 
                                             <!-- Add Unit Tile at end -->
                                             <button @click="addUnit(addr.id)"
-                                                class="aspect-square rounded-2xl border-2 border-dashed border-jw-200 dark:border-jw-800 flex flex-col items-center justify-center text-jw-600 dark:text-jw-400 hover:bg-jw-50/50 dark:hover:bg-jw-950/30 transition-all bg-white dark:bg-slate-900 shadow-xs">
+                                                class="aspect-square rounded-2xl border-2 border-dashed border-jw-200 dark:border-jw-800 flex flex-col items-center justify-center text-jw-600 dark:text-jw-400 hover:bg-jw-50/50 dark:hover:bg-jw-950/30 transition-all bg-white dark:bg-[#0d1424] shadow-xs">
                                                 <i class="fas fa-plus text-sm mb-0.5"></i>
                                                 <span class="text-[10px] font-extrabold">Aggiungi</span>
                                             </button>
@@ -1038,7 +1187,6 @@
                             <i class="fas fa-plus-circle text-base"></i> Aggiungi Indirizzo
                         </button>
                     </div>
-                    <div class="h-16"></div>
                 </div>
 
                 <!-- Bulk Actions -->
@@ -1046,7 +1194,7 @@
                     x-transition:enter-start="translate-y-full" x-transition:enter-end="translate-y-0"
                     x-transition:leave="transition ease-in duration-150" x-transition:leave-start="translate-y-0"
                     x-transition:leave-end="translate-y-full"
-                    class="fixed bottom-0 left-0 right-0 p-4 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 max-w-md md:max-w-3xl lg:max-w-5xl mx-auto z-40 shadow-lg">
+                    class="fixed bottom-0 left-0 right-0 p-4 bg-white dark:bg-[#0d1424] border-t border-slate-200/80 dark:border-slate-800/80 max-w-md md:max-w-3xl lg:max-w-5xl mx-auto z-40 shadow-lg">
 
                     <div class="flex items-center justify-between mb-3 text-xs font-bold px-1 text-slate-500 dark:text-slate-400 uppercase tracking-wider">
                         <span x-text="selectedUnits.length + ' SELEZIONATI'"></span>
@@ -1054,22 +1202,22 @@
 
                     <div class="flex gap-2 md:gap-3">
                         <button @click="confirmDelete('units')" :disabled="selectedUnits.length === 0"
-                            class="flex-1 py-3 bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-rose-500 rounded-2xl transition-all disabled:opacity-40 flex flex-col items-center justify-center gap-1">
+                            class="flex-1 py-3 bg-slate-100 dark:bg-[#141c2e] text-slate-500 hover:text-rose-500 rounded-2xl transition-all disabled:opacity-40 flex flex-col items-center justify-center gap-1">
                             <i class="fas fa-trash-alt text-base"></i>
                             <span class="text-[10px] font-extrabold">ELIMINA</span>
                         </button>
                         <button @click="bulkAction('green')" :disabled="selectedUnits.length === 0"
-                            class="flex-1 py-3 bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-emerald-600 rounded-2xl transition-all disabled:opacity-40 flex flex-col items-center justify-center gap-1">
+                            class="flex-1 py-3 bg-slate-100 dark:bg-[#141c2e] text-slate-500 hover:text-emerald-600 rounded-2xl transition-all disabled:opacity-40 flex flex-col items-center justify-center gap-1">
                             <i class="fas fa-check text-base"></i>
                             <span class="text-[10px] font-extrabold">VERDE</span>
                         </button>
                         <button @click="bulkAction('red')" :disabled="selectedUnits.length === 0"
-                            class="flex-1 py-3 bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-rose-600 rounded-2xl transition-all disabled:opacity-40 flex flex-col items-center justify-center gap-1">
+                            class="flex-1 py-3 bg-slate-100 dark:bg-[#141c2e] text-slate-500 hover:text-rose-600 rounded-2xl transition-all disabled:opacity-40 flex flex-col items-center justify-center gap-1">
                             <i class="fas fa-times text-base"></i>
                             <span class="text-[10px] font-extrabold">ROSSO</span>
                         </button>
                         <button @click="bulkAction('hole')" :disabled="selectedUnits.length === 0"
-                            class="flex-1 py-3 bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-jw-600 rounded-2xl transition-all disabled:opacity-40 flex flex-col items-center justify-center gap-1">
+                            class="flex-1 py-3 bg-slate-100 dark:bg-[#141c2e] text-slate-500 hover:text-jw-600 rounded-2xl transition-all disabled:opacity-40 flex flex-col items-center justify-center gap-1">
                             <i class="fas fa-border-none text-base"></i>
                             <span class="text-[10px] font-extrabold">VUOTO</span>
                         </button>
@@ -1083,7 +1231,7 @@
         <div x-show="view === 'dashboard' || view === 'stats' || view === 'settings'"
             class="flex-shrink-0 px-4 pt-1 z-30 transition-all pointer-events-none"
             style="padding-bottom: max(0.75rem, env(safe-area-inset-bottom, 0px));">
-            <nav class="max-w-md md:max-w-lg mx-auto bg-white/95 dark:bg-[#0f172a]/95 backdrop-blur-xl rounded-3xl border border-slate-200/80 dark:border-slate-800/80 shadow-xl shadow-slate-900/10 dark:shadow-black/40 px-3 py-2 pointer-events-auto flex items-center justify-around">
+            <nav class="max-w-md md:max-w-lg mx-auto bg-white/95 dark:bg-[#0d1424] backdrop-blur-xl rounded-3xl border border-slate-200/80 dark:border-slate-800/80 shadow-xl shadow-slate-900/10 dark:shadow-none px-3 py-2 pointer-events-auto flex items-center justify-around">
                 
                 <!-- Tab 1: Territori -->
                 <button @click="switchTab('territori')"
@@ -1121,7 +1269,7 @@
             class="fixed inset-0 z-[80] flex items-center justify-center p-4">
             <div @click="modals.colorPickerId = null" class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
             <div
-                class="bg-white dark:bg-gray-900 rounded-2xl p-6 w-full max-w-sm relative shadow-2xl animate-slide-up border border-gray-100 dark:border-gray-800">
+                class="bg-white dark:bg-[#0d1424] rounded-2xl p-6 w-full max-w-sm relative shadow-2xl animate-slide-up border border-slate-200/80 dark:border-slate-800/80">
 
                 <h3 class="text-lg font-bold mb-4 text-gray-900 dark:text-white">Seleziona Colore</h3>
 
@@ -1132,14 +1280,14 @@
                             :style="{ backgroundColor: c }"></button>
                     </template>
                     <button @click="setTerritoryColor(territories.find(t => t.id === modals.colorPickerId), null)"
-                        class="w-full aspect-square rounded-full border-2 border-gray-200 dark:border-gray-700 flex items-center justify-center text-gray-400 bg-gray-50 dark:bg-gray-800">
+                        class="w-full aspect-square rounded-full border-2 border-gray-200 dark:border-gray-700 flex items-center justify-center text-gray-400 bg-gray-50 dark:bg-[#141c2e]">
                         <i class="fas fa-ban"></i>
                     </button>
                 </div>
 
                 <div class="flex justify-end">
                     <button @click="modals.colorPickerId = null"
-                        class="px-6 py-2.5 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 font-bold rounded-xl active:scale-95 transition-all">Chiudi</button>
+                        class="px-6 py-2.5 bg-gray-100 dark:bg-[#141c2e] text-gray-600 dark:text-gray-300 font-bold rounded-xl active:scale-95 transition-all">Chiudi</button>
                 </div>
             </div>
         </div>
@@ -1147,7 +1295,7 @@
         <div x-show="modals.deleteConfirm" x-cloak class="fixed inset-0 z-[70] flex items-center justify-center p-4">
             <div @click="modals.deleteConfirm = false" class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
             <div
-                class="bg-white dark:bg-gray-900 rounded-2xl p-6 w-full max-w-sm relative shadow-xl animate-slide-down border border-gray-100 dark:border-gray-800">
+                class="bg-white dark:bg-[#0d1424] rounded-2xl p-6 w-full max-w-sm relative shadow-xl animate-slide-down border border-slate-200/80 dark:border-slate-800/80">
 
                 <div
                     class="w-12 h-12 rounded-full bg-red-100 dark:bg-red-900/30 text-red-500 flex items-center justify-center mb-4 mx-auto text-xl">
@@ -1160,7 +1308,7 @@
                 </p>
                 <div class="flex gap-3">
                     <button @click="modals.deleteConfirm = false"
-                        class="flex-1 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 font-medium hover:bg-gray-50 dark:hover:bg-gray-800">Annulla</button>
+                        class="flex-1 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 font-medium hover:bg-gray-50 dark:hover:bg-[#141c2e]">Annulla</button>
                     <button @click="executeDelete()"
                         class="flex-1 py-2.5 rounded-xl bg-red-500 text-white font-medium hover:bg-red-600 shadow-lg shadow-red-500/20">Elimina</button>
                 </div>
@@ -1170,11 +1318,11 @@
         <div x-show="modals.newTerritory" x-cloak class="fixed inset-0 z-[60] flex items-center justify-center p-4">
             <div @click="modals.newTerritory = false" class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
             <div
-                class="bg-white dark:bg-gray-900 rounded-2xl p-6 w-full max-w-sm relative shadow-2xl animate-slide-up border border-gray-100 dark:border-gray-800">
+                class="bg-white dark:bg-[#0d1424] rounded-2xl p-6 w-full max-w-sm relative shadow-2xl animate-slide-up border border-slate-200/80 dark:border-slate-800/80">
 
                 <h3 class="text-lg font-bold mb-4 text-gray-900 dark:text-white">Nuovo Territorio</h3>
                 <input type="text" x-model="forms.territoryName"
-                    class="w-full p-3 bg-gray-50 dark:bg-gray-800 border-none rounded-xl focus:ring-2 focus:ring-jw-600 text-gray-900 dark:text-white mb-4"
+                    class="w-full p-3 bg-gray-50 dark:bg-[#141c2e] border border-gray-200 dark:border-gray-800 rounded-xl focus:ring-2 focus:ring-jw-600 text-gray-900 dark:text-white mb-4"
                     placeholder="Es: Centro Storico / Piazza Garibaldi">
 
                 <div class="mb-4">
@@ -1189,7 +1337,7 @@
                         </template>
                         <button @click="forms.territoryColor = null"
                             class="w-full aspect-square rounded-full border-2 border-gray-200 dark:border-gray-700 flex items-center justify-center text-gray-400"
-                            :class="forms.territoryColor === null ? 'bg-gray-100 dark:bg-gray-800 border-jw-600' : 'bg-transparent'">
+                            :class="forms.territoryColor === null ? 'bg-gray-100 dark:bg-[#141c2e] border-jw-600' : 'bg-transparent'">
                             <i class="fas fa-ban"></i>
                         </button>
                     </div>
@@ -1209,26 +1357,26 @@
         <div x-show="modals.newAddress" x-cloak class="fixed inset-0 z-[60] flex items-center justify-center p-4">
             <div @click="modals.newAddress = false" class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
             <div
-                class="bg-white dark:bg-gray-900 rounded-2xl p-6 w-full max-w-sm relative shadow-2xl animate-slide-up border border-gray-100 dark:border-gray-800">
+                class="bg-white dark:bg-[#0d1424] rounded-2xl p-6 w-full max-w-sm relative shadow-2xl animate-slide-up border border-slate-200/80 dark:border-slate-800/80">
 
                 <h3 class="text-lg font-bold mb-4 text-gray-900 dark:text-white">Nuovo Indirizzo</h3>
 
                 <!-- Toggle Mode -->
-                <div class="flex bg-gray-100 dark:bg-gray-800 p-1 rounded-xl mb-6">
+                <div class="flex bg-gray-100 dark:bg-[#141c2e] p-1 rounded-xl mb-6">
                     <button @click="forms.addressCreationMode = 'simple'"
                         class="flex-1 py-1.5 text-xs inline-flex items-center justify-center font-extrabold rounded-lg transition-all"
-                        :class="forms.addressCreationMode === 'simple' ? 'bg-white dark:bg-gray-700 text-jw-600 dark:text-jw-400 shadow-sm' : 'text-gray-400'">
+                        :class="forms.addressCreationMode === 'simple' ? 'bg-white dark:bg-[#1e293b] text-jw-600 dark:text-jw-400 shadow-sm' : 'text-gray-400'">
                         Semplice
                     </button>
                     <button @click="forms.addressCreationMode = 'grid'"
                         class="flex-1 py-1.5 text-xs inline-flex items-center justify-center font-extrabold rounded-lg transition-all"
-                        :class="forms.addressCreationMode === 'grid' ? 'bg-white dark:bg-gray-700 text-jw-600 dark:text-jw-400 shadow-sm' : 'text-gray-400'">
+                        :class="forms.addressCreationMode === 'grid' ? 'bg-white dark:bg-[#1e293b] text-jw-600 dark:text-jw-400 shadow-sm' : 'text-gray-400'">
                         Griglia
                     </button>
                     <button
                         @click="forms.addressCreationMode = 'custom'; if(forms.customCols.length === 0) forms.customCols = ['', '']"
                         class="flex-1 py-1.5 text-xs inline-flex items-center justify-center font-extrabold rounded-lg transition-all"
-                        :class="forms.addressCreationMode === 'custom' ? 'bg-white dark:bg-gray-700 text-jw-600 dark:text-jw-400 shadow-sm' : 'text-gray-400'">
+                        :class="forms.addressCreationMode === 'custom' ? 'bg-white dark:bg-[#1e293b] text-jw-600 dark:text-jw-400 shadow-sm' : 'text-gray-400'">
                         Avanzata
                     </button>
                 </div>
@@ -1238,7 +1386,7 @@
                         <label
                             class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5 block ml-1">Nome/Via</label>
                         <input type="text" x-model="forms.addressName"
-                            class="w-full p-3 bg-gray-50 dark:bg-gray-800 border-none rounded-xl focus:ring-2 focus:ring-jw-500 text-gray-900 dark:text-white shadow-inner"
+                            class="w-full p-3 bg-gray-50 dark:bg-[#141c2e] border border-gray-200 dark:border-gray-800 rounded-xl focus:ring-2 focus:ring-jw-500 text-gray-900 dark:text-white shadow-inner"
                             placeholder="Es: Via Roma 12">
                     </div>
 
@@ -1249,7 +1397,7 @@
                                 class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5 block ml-1">Numero
                                 Citofoni</label>
                             <input type="tel" x-model="forms.addressUnits"
-                                class="w-full p-3 bg-gray-50 dark:bg-gray-800 border-none rounded-xl focus:ring-2 focus:ring-jw-500 text-gray-900 dark:text-white shadow-inner"
+                                class="w-full p-3 bg-gray-50 dark:bg-[#141c2e] border border-gray-200 dark:border-gray-800 rounded-xl focus:ring-2 focus:ring-jw-500 text-gray-900 dark:text-white shadow-inner"
                                 placeholder="Es: 24">
                         </div>
 
@@ -1259,7 +1407,7 @@
                                 <label
                                     class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5 block ml-1">Colonne</label>
                                 <input type="tel" x-model="forms.addressCols"
-                                    class="w-full p-3 bg-gray-50 dark:bg-gray-800 border-none rounded-xl focus:ring-2 focus:ring-jw-500 text-gray-900 dark:text-white shadow-inner text-center"
+                                    class="w-full p-3 bg-gray-50 dark:bg-[#141c2e] border border-gray-200 dark:border-gray-800 rounded-xl focus:ring-2 focus:ring-jw-500 text-gray-900 dark:text-white shadow-inner text-center"
                                     placeholder="Es: 4">
                             </div>
                             <div class="flex items-center pt-6 text-gray-300">
@@ -1269,7 +1417,7 @@
                                 <label
                                     class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5 block ml-1">Righe</label>
                                 <input type="tel" x-model="forms.addressRows"
-                                    class="w-full p-3 bg-gray-50 dark:bg-gray-800 border-none rounded-xl focus:ring-2 focus:ring-jw-500 text-gray-900 dark:text-white shadow-inner text-center"
+                                    class="w-full p-3 bg-gray-50 dark:bg-[#141c2e] border border-gray-200 dark:border-gray-800 rounded-xl focus:ring-2 focus:ring-jw-500 text-gray-900 dark:text-white shadow-inner text-center"
                                     placeholder="Es: 20">
                             </div>
                         </div>
@@ -1285,7 +1433,7 @@
                             </div>
 
                             <!-- Rows & Cols Controls -->
-                            <div class="flex items-center justify-between bg-slate-50 dark:bg-slate-800/60 p-2.5 rounded-2xl border border-slate-100 dark:border-slate-800 text-xs font-bold">
+                            <div class="flex items-center justify-between bg-slate-50 dark:bg-[#141c2e] p-2.5 rounded-2xl border border-slate-100 dark:border-slate-800 text-xs font-bold">
                                 <div class="flex items-center gap-1.5">
                                     <span class="text-slate-400">Colonne:</span>
                                     <button @click="removeVisualCol()" :disabled="forms.visualCols <= 1" class="w-6 h-6 rounded-lg bg-white dark:bg-slate-700 text-slate-600 dark:text-slate-300 disabled:opacity-30 shadow-xs flex items-center justify-center"><i class="fas fa-minus text-[10px]"></i></button>
@@ -1308,8 +1456,8 @@
                                         <button @click="toggleVisualSlot(idx)" type="button"
                                             class="aspect-square rounded-xl flex flex-col items-center justify-center transition-all border text-xs font-extrabold select-none"
                                             :class="slot.isHole ? 
-                                                'bg-slate-100/60 dark:bg-slate-900/40 border-dashed border-slate-300 dark:border-slate-700 text-slate-300 dark:text-slate-700' : 
-                                                'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 shadow-xs hover:border-jw-600'">
+                                                'bg-slate-100/60 dark:bg-[#141c2e]/60 border-dashed border-slate-300 dark:border-slate-700 text-slate-300 dark:text-slate-700' : 
+                                                'bg-white dark:bg-[#1e293b] border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 shadow-xs hover:border-jw-600'">
                                             <span x-show="!slot.isHole" x-text="getVisualSlotUnitNumber(idx)"></span>
                                             <i x-show="slot.isHole" class="fas fa-border-none text-[10px] opacity-40"></i>
                                         </button>
@@ -1347,11 +1495,11 @@
         <div x-show="modals.note" x-cloak class="fixed inset-0 z-[60] flex items-center justify-center p-4">
             <div @click="closeNoteModal()" class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
             <div
-                class="bg-white dark:bg-slate-900 rounded-3xl p-6 w-full max-w-sm relative shadow-2xl border border-slate-100 dark:border-slate-800">
+                class="bg-white dark:bg-[#0d1424] rounded-3xl p-6 w-full max-w-sm relative shadow-2xl border border-slate-200/80 dark:border-slate-800/80">
 
                 <h3 class="text-lg font-bold mb-4 text-slate-900 dark:text-white">Note Citofono</h3>
                 <textarea x-model="forms.noteText"
-                    class="w-full h-32 p-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-jw-600 outline-none resize-none text-slate-800 dark:text-slate-200 mb-4 text-sm"
+                    class="w-full h-32 p-3 bg-slate-50 dark:bg-[#141c2e] border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-jw-600 outline-none resize-none text-slate-800 dark:text-slate-200 mb-4 text-sm"
                     placeholder="Aggiungi una nota..."></textarea>
                 <div class="flex items-center justify-between gap-3">
                     <button @click="deleteCurrentEditingUnit()"
@@ -1375,14 +1523,14 @@
 
             <!-- Modal Box -->
             <div @touchstart="handleIntroTouchStart($event)" @touchend="handleIntroTouchEnd($event)"
-                class="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 w-full max-w-md relative shadow-2xl animate-slide-up border border-slate-100 dark:border-slate-800 overflow-hidden flex flex-col justify-between min-h-[480px]">
+                class="bg-white dark:bg-[#0d1424] rounded-3xl p-6 sm:p-8 w-full max-w-md relative shadow-2xl animate-slide-up border border-slate-200/80 dark:border-slate-800/80 overflow-hidden flex flex-col justify-between min-h-[480px]">
                 
                 <!-- Header (Skip Button) -->
                 <div class="flex items-center justify-between mb-2">
                     <span class="text-xs font-extrabold uppercase tracking-widest text-jw-600 dark:text-jw-400">
                         Guida Rapida
                     </span>
-                    <button @click="finishTutorial()" class="text-xs font-bold text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors px-2.5 py-1 rounded-xl bg-slate-100 dark:bg-slate-800">
+                    <button @click="finishTutorial()" class="text-xs font-bold text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors px-2.5 py-1 rounded-xl bg-slate-100 dark:bg-[#141c2e]">
                         Salta
                     </button>
                 </div>
@@ -1398,7 +1546,7 @@
                         <p class="text-sm text-slate-500 dark:text-slate-400 text-center leading-relaxed">
                             L'applicazione semplice e moderna progettata per aiutarti a gestire i tuoi territori e le visite nel ministero.
                         </p>
-                        <div class="bg-slate-50 dark:bg-slate-800/50 rounded-2xl p-3.5 space-y-2.5 border border-slate-100 dark:border-slate-800/80 text-xs text-slate-600 dark:text-slate-300">
+                        <div class="bg-slate-50 dark:bg-[#141c2e] rounded-2xl p-3.5 space-y-2.5 border border-slate-200/60 dark:border-slate-800/80 text-xs text-slate-600 dark:text-slate-300">
                             <div class="flex items-start gap-2.5">
                                 <i class="fas fa-lock text-jw-600 dark:text-jw-400 mt-0.5 text-sm flex-shrink-0"></i>
                                 <span><strong>100% privato e locale:</strong> I tuoi dati restano salvati solo sul tuo dispositivo. Nessun server esterno.</span>
@@ -1419,7 +1567,7 @@
                         <p class="text-sm text-slate-500 dark:text-slate-400 text-center leading-relaxed">
                             Crea e personalizza ogni territorio con la struttura di citofoni più adatta.
                         </p>
-                        <div class="bg-slate-50 dark:bg-slate-800/50 rounded-2xl p-3.5 space-y-2.5 border border-slate-100 dark:border-slate-800/80 text-xs text-slate-600 dark:text-slate-300">
+                        <div class="bg-slate-50 dark:bg-[#141c2e] rounded-2xl p-3.5 space-y-2.5 border border-slate-200/60 dark:border-slate-800/80 text-xs text-slate-600 dark:text-slate-300">
                             <div class="flex items-start gap-2.5">
                                 <div class="w-5 h-5 rounded-full bg-jw-50 dark:bg-jw-950/60 flex items-center justify-center text-[10px] flex-shrink-0 mt-0.5">
                                     <i class="fas fa-palette animate-color-cycle"></i>
@@ -1450,7 +1598,7 @@
                         <p class="text-sm text-slate-500 dark:text-slate-400 text-center leading-relaxed">
                             Aggiorna lo stato dei citofoni toccandoli durante il ministero.
                         </p>
-                        <div class="bg-slate-50 dark:bg-slate-800/50 rounded-2xl p-3.5 space-y-2 border border-slate-100 dark:border-slate-800/80 text-xs text-slate-600 dark:text-slate-300">
+                        <div class="bg-slate-50 dark:bg-[#141c2e] rounded-2xl p-3.5 space-y-2 border border-slate-200/60 dark:border-slate-800/80 text-xs text-slate-600 dark:text-slate-300">
                             <div class="flex items-start gap-2.5">
                                 <span class="w-4 h-4 rounded-full bg-emerald-500 text-white text-[9px] font-bold flex items-center justify-center flex-shrink-0 mt-0.5"><i class="fas fa-check"></i></span>
                                 <span><strong>1° tocco (Verde):</strong> Visita effettuata (Fatto).</span>
@@ -1486,7 +1634,7 @@
                                 <span>Avvia Tutorial Guidato</span>
                             </button>
                             <button @click="finishTutorial()"
-                                class="w-full py-3 px-4 rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-extrabold text-xs hover:bg-slate-200 dark:hover:bg-slate-700 active:scale-[0.98] transition-all flex items-center justify-center gap-2">
+                                class="w-full py-3 px-4 rounded-2xl bg-slate-100 dark:bg-[#141c2e] text-slate-700 dark:text-slate-300 font-extrabold text-xs hover:bg-slate-200 dark:hover:bg-[#1e293b] active:scale-[0.98] transition-all flex items-center justify-center gap-2">
                                 <span>Comincia ad usarlo</span>
                             </button>
                             <button @click="openPwaGuide()"
@@ -1511,7 +1659,7 @@
                     <!-- Navigation Buttons (for slides 0, 1, 2) -->
                     <div x-show="introStep < 3" class="flex items-center gap-3">
                         <button x-show="introStep > 0" @click="prevIntroStep()"
-                            class="py-3.5 px-4 rounded-2xl border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 font-bold text-sm hover:bg-slate-50 dark:hover:bg-slate-800 transition-all flex-1">
+                            class="py-3.5 px-4 rounded-2xl border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 font-bold text-sm hover:bg-slate-50 dark:hover:bg-[#141c2e] transition-all flex-1">
                             Indietro
                         </button>
                         <button @click="nextIntroStep()"
@@ -1612,7 +1760,7 @@
             <div @click="finishTutorial()" class="absolute inset-0 bg-slate-900/60 backdrop-blur-md transition-opacity"></div>
 
             <!-- Modal Box -->
-            <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-7 w-full max-w-sm relative shadow-2xl animate-slide-up border border-slate-100 dark:border-slate-800 overflow-hidden flex flex-col justify-between gap-5 text-center">
+            <div class="bg-white dark:bg-[#0d1424] rounded-3xl p-6 sm:p-7 w-full max-w-sm relative shadow-2xl animate-slide-up border border-slate-200/80 dark:border-slate-800/80 overflow-hidden flex flex-col justify-between gap-5 text-center">
                 
                 <div class="space-y-2.5">
                     <div class="w-14 h-14 rounded-3xl bg-jw-600 text-white flex items-center justify-center text-2xl shadow-lg shadow-jw-600/30 mx-auto">
@@ -1625,7 +1773,7 @@
                 </div>
 
                 <!-- PWA Installation Card Prompt -->
-                <div class="bg-slate-50 dark:bg-slate-800/60 rounded-2xl p-3.5 border border-slate-200/70 dark:border-slate-700/60 text-left space-y-2">
+                <div class="bg-slate-50 dark:bg-[#141c2e] rounded-2xl p-3.5 border border-slate-200/70 dark:border-slate-800/80 text-left space-y-2">
                     <div class="flex items-center gap-2 text-jw-600 dark:text-jw-400 font-black text-xs">
                         <i class="fas fa-mobile-screen-button text-sm"></i>
                         <span>Aggiungi alla Schermata Home</span>
@@ -1642,7 +1790,7 @@
 
                 <!-- Button to Start Using App -->
                 <button @click="finishTutorial()"
-                    class="w-full py-3.5 rounded-2xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-white font-extrabold text-xs active:scale-[0.98] transition-all flex items-center justify-center gap-2">
+                    class="w-full py-3.5 rounded-2xl bg-slate-100 dark:bg-[#141c2e] hover:bg-slate-200 dark:hover:bg-[#1e293b] text-slate-800 dark:text-white font-extrabold text-xs active:scale-[0.98] transition-all flex items-center justify-center gap-2">
                     <span>Comincia ad usare MioTerritorio</span>
                     <i class="fas fa-arrow-right"></i>
                 </button>
@@ -1655,10 +1803,10 @@
             <div @click="closePwaGuide()" class="absolute inset-0 bg-slate-900/70 backdrop-blur-md transition-opacity"></div>
 
             <!-- Modal Box -->
-            <div class="bg-white dark:bg-slate-900 rounded-3xl p-5 sm:p-6 w-full max-w-sm relative shadow-2xl animate-slide-up border border-slate-100 dark:border-slate-800 overflow-hidden flex flex-col gap-4">
+            <div class="bg-white dark:bg-[#0d1424] rounded-3xl p-5 sm:p-6 w-full max-w-sm relative shadow-2xl animate-slide-up border border-slate-200/80 dark:border-slate-800/80 overflow-hidden flex flex-col gap-4">
                 
                 <!-- Header -->
-                <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
+                <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800/80 pb-3">
                     <div class="flex items-center gap-2.5">
                         <div class="w-8 h-8 rounded-xl bg-jw-600 text-white flex items-center justify-center text-sm shadow-xs flex-shrink-0">
                             <i class="fas fa-mobile-screen-button"></i>
@@ -1668,7 +1816,7 @@
                             <p class="text-[10px] font-semibold text-slate-400">Modalità App a schermo intero</p>
                         </div>
                     </div>
-                    <button @click="closePwaGuide()" class="w-7 h-7 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-400 hover:text-slate-600 dark:hover:text-white flex items-center justify-center transition-colors">
+                    <button @click="closePwaGuide()" class="w-7 h-7 rounded-full bg-slate-100 dark:bg-[#141c2e] text-slate-400 hover:text-slate-600 dark:hover:text-white flex items-center justify-center transition-colors">
                         <i class="fas fa-times text-xs"></i>
                     </button>
                 </div>
@@ -1683,7 +1831,7 @@
                         <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed px-2">
                             In basso su <strong>Safari</strong>, tocca l'icona di <strong>Condividi</strong> <i class="fas fa-arrow-up-from-bracket text-jw-600"></i> (oppure i tre puntini <i class="fas fa-ellipsis"></i>).
                         </p>
-                        <div class="bg-slate-50 dark:bg-slate-950/60 rounded-2xl p-2 border border-slate-200/70 dark:border-slate-800 flex items-center justify-center overflow-hidden max-h-[170px]">
+                        <div class="bg-slate-50 dark:bg-[#141c2e] rounded-2xl p-2 border border-slate-200/70 dark:border-slate-800/80 flex items-center justify-center overflow-hidden max-h-[170px]">
                             <img src="img/pwa/pwa_step1.png" alt="Passo 1: Tocca Condividi in Safari" class="max-h-[155px] w-auto object-contain rounded-xl shadow-xs">
                         </div>
                     </div>
@@ -1696,7 +1844,7 @@
                         <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed px-2">
                             Scorri le opzioni verso il basso e tocca <strong>"Aggiungi alla schermata Home"</strong> <i class="fas fa-plus-square text-jw-600"></i>.
                         </p>
-                        <div class="bg-slate-50 dark:bg-slate-950/60 rounded-2xl p-2 border border-slate-200/70 dark:border-slate-800 flex items-center justify-center overflow-hidden max-h-[170px]">
+                        <div class="bg-slate-50 dark:bg-[#141c2e] rounded-2xl p-2 border border-slate-200/70 dark:border-slate-800/80 flex items-center justify-center overflow-hidden max-h-[170px]">
                             <img src="img/pwa/pwa_step2.png" alt="Passo 2: Aggiungi alla schermata Home" class="max-h-[155px] w-auto object-contain rounded-xl shadow-xs">
                         </div>
                     </div>
@@ -1709,7 +1857,7 @@
                         <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed px-2">
                             Verifica che il nome sia <strong>MioTerritorio</strong> e tocca <strong>"Aggiungi"</strong> in alto a destra.
                         </p>
-                        <div class="bg-slate-50 dark:bg-slate-950/60 rounded-2xl p-2 border border-slate-200/70 dark:border-slate-800 flex items-center justify-center overflow-hidden max-h-[170px]">
+                        <div class="bg-slate-50 dark:bg-[#141c2e] rounded-2xl p-2 border border-slate-200/70 dark:border-slate-800/80 flex items-center justify-center overflow-hidden max-h-[170px]">
                             <img src="img/pwa/pwa_step3.png" alt="Passo 3: Tocca Aggiungi" class="max-h-[155px] w-auto object-contain rounded-xl shadow-xs">
                         </div>
                     </div>
@@ -1723,14 +1871,14 @@
                         <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed px-2">
                             Troverai l'icona di <strong>MioTerritorio</strong> sulla tua schermata Home. Aprila per usarla a tutto schermo senza barre del browser!
                         </p>
-                        <div class="bg-slate-50 dark:bg-slate-950/60 rounded-2xl p-2 border border-slate-200/70 dark:border-slate-800 flex items-center justify-center overflow-hidden max-h-[170px]">
+                        <div class="bg-slate-50 dark:bg-[#141c2e] rounded-2xl p-2 border border-slate-200/70 dark:border-slate-800/80 flex items-center justify-center overflow-hidden max-h-[170px]">
                             <img src="img/pwa/pwa_step4.png" alt="Passo 4: Icona MioTerritorio su Home Screen" class="max-h-[155px] w-auto object-contain rounded-xl shadow-xs">
                         </div>
                     </div>
                 </div>
 
                 <!-- Navigation Dots & Buttons -->
-                <div class="space-y-3 pt-1 border-t border-slate-100 dark:border-slate-800">
+                <div class="space-y-3 pt-1 border-t border-slate-100 dark:border-slate-800/80">
                     <!-- Dots Progress Indicator -->
                     <div class="flex items-center justify-center gap-2">
                         <template x-for="i in [0, 1, 2, 3]" :key="i">
@@ -1742,7 +1890,7 @@
                     <!-- Action Buttons -->
                     <div class="flex items-center gap-2">
                         <button x-show="pwaStep > 0" @click="prevPwaStep()"
-                            class="py-3 px-4 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 font-bold text-xs hover:bg-slate-50 dark:hover:bg-slate-800 transition-all">
+                            class="py-3 px-4 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 font-bold text-xs hover:bg-slate-50 dark:hover:bg-[#141c2e] transition-all">
                             Indietro
                         </button>
                         <button x-show="pwaStep < 3" @click="nextPwaStep()"
@@ -1764,7 +1912,7 @@
         <!-- Reset / Format Data Confirmation Modal -->
         <div x-show="modals.resetConfirm" x-cloak class="fixed inset-0 z-[120] flex items-center justify-center p-4">
             <div @click="modals.resetConfirm = false" class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity"></div>
-            <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 w-full max-w-sm relative shadow-2xl animate-scale-up border border-slate-100 dark:border-slate-800 flex flex-col gap-4 text-center">
+            <div class="bg-white dark:bg-[#0d1424] rounded-3xl p-6 w-full max-w-sm relative shadow-2xl animate-scale-up border border-slate-200/80 dark:border-slate-800/80 flex flex-col gap-4 text-center">
                 
                 <div class="w-14 h-14 mx-auto rounded-2xl bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 flex items-center justify-center text-2xl shadow-xs">
                     <i class="fas fa-triangle-exclamation"></i>
@@ -1779,7 +1927,7 @@
 
                 <div class="grid grid-cols-2 gap-2.5 pt-2">
                     <button @click="modals.resetConfirm = false"
-                        class="py-3 px-4 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 font-bold text-xs hover:bg-slate-50 dark:hover:bg-slate-800 transition-all">
+                        class="py-3 px-4 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 font-bold text-xs hover:bg-slate-50 dark:hover:bg-[#141c2e] transition-all">
                         Annulla
                     </button>
                     <button @click="formatAppData()"
@@ -1793,7 +1941,7 @@
         <!-- Simplified Filter & Sort Modal -->
         <div x-show="modals.filterModal" x-cloak class="fixed inset-0 z-[120] flex items-center justify-center p-4">
             <div @click="closeFilterModal()" class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity"></div>
-            <div class="bg-white dark:bg-[#111827] rounded-3xl p-5 sm:p-6 w-full max-w-sm relative shadow-2xl animate-scale-up border border-slate-100 dark:border-slate-800 flex flex-col gap-4">
+            <div class="bg-white dark:bg-[#0d1424] rounded-3xl p-5 sm:p-6 w-full max-w-sm relative shadow-2xl animate-scale-up border border-slate-200/80 dark:border-slate-800/80 flex flex-col gap-4">
                 
                 <!-- Modal Header -->
                 <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800/80 pb-3">
@@ -1806,7 +1954,7 @@
                             <p class="text-[11px] font-semibold text-slate-400 dark:text-slate-500">Scegli cosa visualizzare</p>
                         </div>
                     </div>
-                    <button @click="closeFilterModal()" class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-400 hover:text-slate-600 dark:hover:text-white flex items-center justify-center transition-colors">
+                    <button @click="closeFilterModal()" class="w-8 h-8 rounded-full bg-slate-100 dark:bg-[#141c2e] text-slate-400 hover:text-slate-600 dark:hover:text-white flex items-center justify-center transition-colors">
                         <i class="fas fa-times text-xs"></i>
                     </button>
                 </div>
@@ -1819,17 +1967,17 @@
                     <div class="grid grid-cols-3 gap-1.5">
                         <button @click="filters.status = 'all'; filterType = 'all'"
                             class="py-2.5 px-2 rounded-2xl text-xs font-bold transition-all border text-center shadow-xs"
-                            :class="filters.status === 'all' ? 'bg-jw-600 text-white border-jw-600 shadow-md shadow-jw-600/20' : 'bg-slate-50 dark:bg-[#0d1322] border-slate-200/80 dark:border-slate-800 text-slate-600 dark:text-slate-400'">
+                            :class="filters.status === 'all' ? 'bg-jw-600 text-white border-jw-600 shadow-md shadow-jw-600/20' : 'bg-slate-50 dark:bg-[#141c2e] border-slate-200/80 dark:border-slate-800/80 text-slate-600 dark:text-slate-400'">
                             Tutti
                         </button>
                         <button @click="filters.status = 'in_progress'; filterType = 'in_progress'"
                             class="py-2.5 px-2 rounded-2xl text-xs font-bold transition-all border text-center shadow-xs"
-                            :class="filters.status === 'in_progress' ? 'bg-jw-600 text-white border-jw-600 shadow-md shadow-jw-600/20' : 'bg-slate-50 dark:bg-[#0d1322] border-slate-200/80 dark:border-slate-800 text-slate-600 dark:text-slate-400'">
+                            :class="filters.status === 'in_progress' ? 'bg-jw-600 text-white border-jw-600 shadow-md shadow-jw-600/20' : 'bg-slate-50 dark:bg-[#141c2e] border-slate-200/80 dark:border-slate-800/80 text-slate-600 dark:text-slate-400'">
                             In corso
                         </button>
                         <button @click="filters.status = 'completed'; filterType = 'completed'"
                             class="py-2.5 px-2 rounded-2xl text-xs font-bold transition-all border text-center shadow-xs"
-                            :class="filters.status === 'completed' ? 'bg-jw-600 text-white border-jw-600 shadow-md shadow-jw-600/20' : 'bg-slate-50 dark:bg-[#0d1322] border-slate-200/80 dark:border-slate-800 text-slate-600 dark:text-slate-400'">
+                            :class="filters.status === 'completed' ? 'bg-jw-600 text-white border-jw-600 shadow-md shadow-jw-600/20' : 'bg-slate-50 dark:bg-[#141c2e] border-slate-200/80 dark:border-slate-800/80 text-slate-600 dark:text-slate-400'">
                             Completati
                         </button>
                     </div>
@@ -1843,25 +1991,25 @@
                     <div class="grid grid-cols-2 gap-1.5">
                         <button @click="filters.sortBy = 'name_asc'"
                             class="py-2 px-3 rounded-2xl text-xs font-bold transition-all border text-left flex items-center justify-between shadow-xs"
-                            :class="filters.sortBy === 'name_asc' ? 'bg-jw-600/10 dark:bg-purple-950/40 text-jw-600 dark:text-purple-400 border-jw-600/40 dark:border-purple-500/40' : 'bg-slate-50 dark:bg-[#0d1322] border-slate-200/80 dark:border-slate-800 text-slate-600 dark:text-slate-400'">
+                            :class="filters.sortBy === 'name_asc' ? 'bg-jw-600/10 dark:bg-purple-950/40 text-jw-600 dark:text-purple-400 border-jw-600/40 dark:border-purple-500/40' : 'bg-slate-50 dark:bg-[#141c2e] border-slate-200/80 dark:border-slate-800/80 text-slate-600 dark:text-slate-400'">
                             <span>Nome (A - Z)</span>
                             <i x-show="filters.sortBy === 'name_asc'" class="fas fa-check text-[10px]"></i>
                         </button>
                         <button @click="filters.sortBy = 'percent_desc'"
                             class="py-2 px-3 rounded-2xl text-xs font-bold transition-all border text-left flex items-center justify-between shadow-xs"
-                            :class="filters.sortBy === 'percent_desc' ? 'bg-jw-600/10 dark:bg-purple-950/40 text-jw-600 dark:text-purple-400 border-jw-600/40 dark:border-purple-500/40' : 'bg-slate-50 dark:bg-[#0d1322] border-slate-200/80 dark:border-slate-800 text-slate-600 dark:text-slate-400'">
+                            :class="filters.sortBy === 'percent_desc' ? 'bg-jw-600/10 dark:bg-purple-950/40 text-jw-600 dark:text-purple-400 border-jw-600/40 dark:border-purple-500/40' : 'bg-slate-50 dark:bg-[#141c2e] border-slate-200/80 dark:border-slate-800/80 text-slate-600 dark:text-slate-400'">
                             <span>% Avanzamento</span>
                             <i x-show="filters.sortBy === 'percent_desc'" class="fas fa-check text-[10px]"></i>
                         </button>
                         <button @click="filters.sortBy = 'units_desc'"
                             class="py-2 px-3 rounded-2xl text-xs font-bold transition-all border text-left flex items-center justify-between shadow-xs"
-                            :class="filters.sortBy === 'units_desc' ? 'bg-jw-600/10 dark:bg-purple-950/40 text-jw-600 dark:text-purple-400 border-jw-600/40 dark:border-purple-500/40' : 'bg-slate-50 dark:bg-[#0d1322] border-slate-200/80 dark:border-slate-800 text-slate-600 dark:text-slate-400'">
+                            :class="filters.sortBy === 'units_desc' ? 'bg-jw-600/10 dark:bg-purple-950/40 text-jw-600 dark:text-purple-400 border-jw-600/40 dark:border-purple-500/40' : 'bg-slate-50 dark:bg-[#141c2e] border-slate-200/80 dark:border-slate-800/80 text-slate-600 dark:text-slate-400'">
                             <span>Più Citofoni</span>
                             <i x-show="filters.sortBy === 'units_desc'" class="fas fa-check text-[10px]"></i>
                         </button>
                         <button @click="filters.sortBy = 'name_desc'"
                             class="py-2 px-3 rounded-2xl text-xs font-bold transition-all border text-left flex items-center justify-between shadow-xs"
-                            :class="filters.sortBy === 'name_desc' ? 'bg-jw-600/10 dark:bg-purple-950/40 text-jw-600 dark:text-purple-400 border-jw-600/40 dark:border-purple-500/40' : 'bg-slate-50 dark:bg-[#0d1322] border-slate-200/80 dark:border-slate-800 text-slate-600 dark:text-slate-400'">
+                            :class="filters.sortBy === 'name_desc' ? 'bg-jw-600/10 dark:bg-purple-950/40 text-jw-600 dark:text-purple-400 border-jw-600/40 dark:border-purple-500/40' : 'bg-slate-50 dark:bg-[#141c2e] border-slate-200/80 dark:border-slate-800/80 text-slate-600 dark:text-slate-400'">
                             <span>Nome (Z - A)</span>
                             <i x-show="filters.sortBy === 'name_desc'" class="fas fa-check text-[10px]"></i>
                         </button>
@@ -1876,31 +2024,31 @@
                     <div class="grid grid-cols-2 gap-1.5">
                         <button @click="filters.minUnits = 0; filters.maxUnits = 100"
                             class="py-2 px-2.5 rounded-2xl text-xs font-bold transition-all border text-center shadow-xs"
-                            :class="(filters.minUnits === 0 && filters.maxUnits >= 100) ? 'bg-jw-600 text-white border-jw-600 shadow-xs' : 'bg-slate-50 dark:bg-[#0d1322] border-slate-200/80 dark:border-slate-800 text-slate-600 dark:text-slate-400'">
+                            :class="(filters.minUnits === 0 && filters.maxUnits >= 100) ? 'bg-jw-600 text-white border-jw-600 shadow-xs' : 'bg-slate-50 dark:bg-[#141c2e] border-slate-200/80 dark:border-slate-800/80 text-slate-600 dark:text-slate-400'">
                             Tutti
                         </button>
                         <button @click="filters.minUnits = 1; filters.maxUnits = 15"
                             class="py-2 px-2.5 rounded-2xl text-xs font-bold transition-all border text-center shadow-xs"
-                            :class="(filters.minUnits === 1 && filters.maxUnits === 15) ? 'bg-jw-600 text-white border-jw-600 shadow-xs' : 'bg-slate-50 dark:bg-[#0d1322] border-slate-200/80 dark:border-slate-800 text-slate-600 dark:text-slate-400'">
+                            :class="(filters.minUnits === 1 && filters.maxUnits === 15) ? 'bg-jw-600 text-white border-jw-600 shadow-xs' : 'bg-slate-50 dark:bg-[#141c2e] border-slate-200/80 dark:border-slate-800/80 text-slate-600 dark:text-slate-400'">
                             Piccoli (1-15)
                         </button>
                         <button @click="filters.minUnits = 16; filters.maxUnits = 40"
                             class="py-2 px-2.5 rounded-2xl text-xs font-bold transition-all border text-center shadow-xs"
-                            :class="(filters.minUnits === 16 && filters.maxUnits === 40) ? 'bg-jw-600 text-white border-jw-600 shadow-xs' : 'bg-slate-50 dark:bg-[#0d1322] border-slate-200/80 dark:border-slate-800 text-slate-600 dark:text-slate-400'">
+                            :class="(filters.minUnits === 16 && filters.maxUnits === 40) ? 'bg-jw-600 text-white border-jw-600 shadow-xs' : 'bg-slate-50 dark:bg-[#141c2e] border-slate-200/80 dark:border-slate-800/80 text-slate-600 dark:text-slate-400'">
                             Medi (16-40)
                         </button>
                         <button @click="filters.minUnits = 41; filters.maxUnits = 100"
                             class="py-2 px-2.5 rounded-2xl text-xs font-bold transition-all border text-center shadow-xs"
-                            :class="(filters.minUnits === 41 && filters.maxUnits >= 100) ? 'bg-jw-600 text-white border-jw-600 shadow-xs' : 'bg-slate-50 dark:bg-[#0d1322] border-slate-200/80 dark:border-slate-800 text-slate-600 dark:text-slate-400'">
+                            :class="(filters.minUnits === 41 && filters.maxUnits >= 100) ? 'bg-jw-600 text-white border-jw-600 shadow-xs' : 'bg-slate-50 dark:bg-[#141c2e] border-slate-200/80 dark:border-slate-800/80 text-slate-600 dark:text-slate-400'">
                             Grandi (40+)
                         </button>
                     </div>
                 </div>
 
                 <!-- Modal Actions -->
-                <div class="grid grid-cols-2 gap-2.5 pt-2 border-t border-slate-100 dark:border-slate-800">
+                <div class="grid grid-cols-2 gap-2.5 pt-2 border-t border-slate-100 dark:border-slate-800/80">
                     <button @click="resetFilters()"
-                        class="py-3 px-4 rounded-2xl border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 font-bold text-xs hover:bg-slate-50 dark:hover:bg-slate-800 transition-all active:scale-[0.98]">
+                        class="py-3 px-4 rounded-2xl border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 font-bold text-xs hover:bg-slate-50 dark:hover:bg-[#141c2e] transition-all active:scale-[0.98]">
                         Reimposta
                     </button>
                     <button @click="closeFilterModal()"

@@ -25,6 +25,7 @@ function territoryApp() {
         tutorialActive: false,
         tutorialStep: 1,
         testedStates: { green: false, red: false, hole: false },
+        isStandalone: false,
 
         initApp() {
             if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
@@ -32,6 +33,9 @@ function territoryApp() {
             }
             // Apply dark class to html element
             document.documentElement.classList.toggle('dark', this.isDark);
+
+            // Check standalone PWA mode
+            this.isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true || document.referrer.includes('android-app://');
 
             const stored = localStorage.getItem('territories');
             if (stored) this.territories = JSON.parse(stored);
@@ -685,6 +689,51 @@ function territoryApp() {
                 completed,
                 notStarted,
                 totalAddresses: this.countAllAddresses()
+            };
+        },
+
+        getStatsPercent(type) {
+            const stats = this.calculateGlobalStats();
+            if (type === 'completed') {
+                return stats.totalTerritories === 0 ? 0 : Math.round((stats.completed / stats.totalTerritories) * 100);
+            }
+            if (type === 'in_progress') {
+                return stats.totalTerritories === 0 ? 0 : Math.round((stats.inProgress / stats.totalTerritories) * 100);
+            }
+            if (type === 'red') {
+                return stats.totalUnits === 0 ? 0 : Math.round((stats.red / stats.totalUnits) * 100);
+            }
+            if (type === 'neutral') {
+                return stats.totalUnits === 0 ? 0 : Math.round((stats.neutral / stats.totalUnits) * 100);
+            }
+            return 0;
+        },
+
+        getDonutSegments() {
+            const stats = this.calculateGlobalStats();
+            const total = stats.totalTerritories;
+            const circumference = 2 * Math.PI * 38; // ~238.76
+            if (total === 0) {
+                return {
+                    circumference,
+                    compDash: '0',
+                    inProgDash: '0',
+                    compOffset: '0',
+                    inProgOffset: '0',
+                    empty: true
+                };
+            }
+            const compRatio = stats.completed / total;
+            const inProgRatio = stats.inProgress / total;
+            const compLen = compRatio * circumference;
+            const inProgLen = inProgRatio * circumference;
+
+            return {
+                circumference,
+                compDash: `${compLen.toFixed(1)} ${circumference.toFixed(1)}`,
+                inProgDash: `${inProgLen.toFixed(1)} ${circumference.toFixed(1)}`,
+                inProgOffset: (-compLen).toFixed(1),
+                empty: false
             };
         },
 
