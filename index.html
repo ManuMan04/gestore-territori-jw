@@ -35,7 +35,7 @@
 </head>
 
 <body
-    class="bg-slate-100/80 text-slate-900 dark:bg-slate-950 dark:text-slate-100 transition-colors duration-300 h-full overflow-hidden"
+    class="bg-slate-100/80 text-slate-900 dark:bg-slate-950 dark:text-slate-100 h-full overflow-hidden"
     x-data="territoryApp()" x-init="initApp()" @touchstart="handleSwipeStart($event)" @touchend="handleSwipeEnd($event)"
     :class="{ 'dark': isDark }">
 
@@ -335,9 +335,32 @@
                     <div class="bg-white dark:bg-[#0d1424] rounded-3xl p-5 shadow-xs border border-slate-200/80 dark:border-slate-800/80 space-y-4">
                         <div class="flex items-center justify-between">
                             <h3 class="font-bold text-slate-900 dark:text-white text-sm">Panoramica generale</h3>
-                            <div class="flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-xl bg-slate-100 dark:bg-[#141c2e] text-slate-600 dark:text-slate-300 border border-slate-200/60 dark:border-slate-800/80">
-                                <span>Ultimi 7 giorni</span>
-                                <i class="fas fa-chevron-down text-[10px] text-slate-400"></i>
+                            
+                            <!-- Interactive Time Range Dropdown -->
+                            <div class="relative" @click.outside="statsDropdownOpen = false">
+                                <button @click="statsDropdownOpen = !statsDropdownOpen" type="button"
+                                    class="flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1.5 rounded-xl bg-slate-100 dark:bg-[#141c2e] text-slate-700 dark:text-slate-200 border border-slate-200/60 dark:border-slate-800/80 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors shadow-xs">
+                                    <span x-text="getTimeRangeLabel(statsTimeRange)">Ultimi 7 giorni</span>
+                                    <i class="fas fa-chevron-down text-[9px] text-slate-400 transition-transform duration-200" :class="{ 'rotate-180': statsDropdownOpen }"></i>
+                                </button>
+                                
+                                <div x-show="statsDropdownOpen" x-cloak
+                                    x-transition:enter="transition ease-out duration-100"
+                                    x-transition:enter-start="opacity-0 scale-95"
+                                    x-transition:enter-end="opacity-100 scale-100"
+                                    x-transition:leave="transition ease-in duration-75"
+                                    x-transition:leave-start="opacity-100 scale-100"
+                                    x-transition:leave-end="opacity-0 scale-95"
+                                    class="absolute right-0 mt-1.5 w-44 bg-white dark:bg-[#0d1424] border border-slate-200/80 dark:border-slate-800/80 rounded-2xl shadow-xl p-1.5 z-40 space-y-0.5 animate-scale-up">
+                                    <template x-for="opt in timeRangeOptions" :key="opt.id">
+                                        <button @click="statsTimeRange = opt.id; statsDropdownOpen = false" type="button"
+                                            class="w-full px-3 py-2 text-xs font-bold rounded-xl flex items-center justify-between text-left transition-colors"
+                                            :class="statsTimeRange === opt.id ? 'bg-jw-600 text-white shadow-xs' : 'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-[#141c2e]'">
+                                            <span x-text="opt.label"></span>
+                                            <i x-show="statsTimeRange === opt.id" class="fas fa-check text-[10px]"></i>
+                                        </button>
+                                    </template>
+                                </div>
                             </div>
                         </div>
 
@@ -387,26 +410,28 @@
                         </div>
                     </div>
 
-                    <!-- Card 2: Andamento visite -->
+                    <!-- Card 2: Andamento visite (Real Live Dynamic Data) -->
                     <div class="bg-white dark:bg-[#0d1424] rounded-3xl p-5 shadow-xs border border-slate-200/80 dark:border-slate-800/80 space-y-4">
                         <div class="flex items-center justify-between">
                             <div>
                                 <h3 class="font-bold text-slate-900 dark:text-white text-sm">Andamento visite</h3>
-                                <p class="text-[11px] text-slate-400 dark:text-slate-500 mt-0.5">Questa settimana</p>
+                                <p class="text-[11px] text-slate-400 dark:text-slate-500 mt-0.5" x-text="getTimeRangeLabel(statsTimeRange)">Ultimi 7 giorni</p>
                             </div>
+                            <span class="text-xs font-bold text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-950/60 px-2.5 py-1 rounded-xl border border-purple-200/60 dark:border-purple-900/40">
+                                <span x-text="getVisitChartData().totalVisits"></span> visite
+                            </span>
                         </div>
 
                         <!-- Chart SVG Area -->
                         <div class="relative w-full pt-1">
                             <div class="flex items-stretch gap-2">
-                                <!-- Y Axis -->
-                                <div class="flex flex-col justify-between text-[10px] font-bold text-slate-400 dark:text-slate-500 text-right pr-1 h-36 select-none">
-                                    <span>10</span>
-                                    <span>7.5</span>
-                                    <span>5</span>
-                                    <span>2.5</span>
-                                    <span>0</span>
+                                <!-- Dynamic Y Axis -->
+                                <div class="flex flex-col justify-between text-[10px] font-bold text-slate-400 dark:text-slate-500 text-right pr-1 h-36 select-none min-w-[20px]">
+                                    <template x-for="yLab in getVisitChartData().yLabels" :key="yLab">
+                                        <span x-text="yLab"></span>
+                                    </template>
                                 </div>
+                                
                                 <!-- Graph Area -->
                                 <div class="flex-1 relative h-36">
                                     <!-- Gridlines -->
@@ -417,55 +442,61 @@
                                         <div class="w-full border-b border-dashed border-slate-200 dark:border-slate-800/80"></div>
                                         <div class="w-full border-b border-slate-200 dark:border-slate-800/80"></div>
                                     </div>
-                                    <!-- SVG Path -->
+                                    
+                                    <!-- Dynamic Real SVG Chart -->
                                     <svg class="w-full h-full overflow-visible" viewBox="0 0 300 120" preserveAspectRatio="none">
                                         <defs>
-                                            <linearGradient id="chartGradient" x1="0" y1="0" x2="0" y2="1">
-                                                <stop offset="0%" stop-color="#8b5cf6" stop-opacity="0.35" />
+                                            <linearGradient id="chartGradientReal" x1="0" y1="0" x2="0" y2="1">
+                                                <stop offset="0%" stop-color="#8b5cf6" stop-opacity="0.38" />
                                                 <stop offset="100%" stop-color="#8b5cf6" stop-opacity="0.0" />
                                             </linearGradient>
                                         </defs>
+                                        
                                         <!-- Area Fill -->
-                                        <path d="M 0,110 Q 50,105 100,85 T 200,45 T 300,30 L 300,120 L 0,120 Z" fill="url(#chartGradient)" />
+                                        <path :d="getVisitChartData().areaPath" fill="url(#chartGradientReal)" />
+                                        
                                         <!-- Smooth Curve Line -->
-                                        <path d="M 0,110 Q 50,105 100,85 T 200,45 T 300,30" fill="none" stroke="#8b5cf6" stroke-width="2.5" stroke-linecap="round" />
-                                        <!-- Dot Points -->
-                                        <circle cx="0" cy="110" r="3" class="fill-[#8b5cf6] ring-2 ring-white dark:ring-[#0d1424]" />
-                                        <circle cx="50" cy="105" r="3" class="fill-[#8b5cf6] ring-2 ring-white dark:ring-[#0d1424]" />
-                                        <circle cx="100" cy="85" r="3" class="fill-[#8b5cf6] ring-2 ring-white dark:ring-[#0d1424]" />
-                                        <circle cx="150" cy="65" r="3" class="fill-[#8b5cf6] ring-2 ring-white dark:ring-[#0d1424]" />
-                                        <circle cx="200" cy="45" r="3" class="fill-[#8b5cf6] ring-2 ring-white dark:ring-[#0d1424]" />
-                                        <circle cx="250" cy="38" r="3" class="fill-[#8b5cf6] ring-2 ring-white dark:ring-[#0d1424]" />
-                                        <circle cx="300" cy="30" r="3.5" class="fill-purple-400 ring-2 ring-white dark:ring-[#0d1424]" />
+                                        <path :d="getVisitChartData().strokePath" fill="none" stroke="#8b5cf6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+                                        
+                                        <!-- Interactive Points -->
+                                        <template x-for="(pt, idx) in getVisitChartData().points" :key="idx">
+                                            <g class="cursor-pointer" @mouseenter="hoveredChartPoint = pt" @mouseleave="hoveredChartPoint = null" @click="hoveredChartPoint = pt">
+                                                <circle :cx="pt.x" :cy="pt.y" r="3.5" class="transition-all hover:scale-125"
+                                                    :class="idx === getVisitChartData().points.length - 1 ? 'fill-purple-400 ring-2 ring-white dark:ring-[#0d1424]' : 'fill-[#8b5cf6] ring-2 ring-white dark:ring-[#0d1424]'" />
+                                            </g>
+                                        </template>
                                     </svg>
+
+                                    <!-- Floating Tooltip on Hover / Tap -->
+                                    <div x-show="hoveredChartPoint !== null" x-cloak
+                                        class="absolute -top-7 transform -translate-x-1/2 bg-slate-900/95 dark:bg-slate-800 text-white text-[10px] font-extrabold px-2 py-0.5 rounded-lg shadow-lg pointer-events-none border border-purple-500/40 z-30 whitespace-nowrap transition-all"
+                                        :style="'left: ' + (hoveredChartPoint ? (hoveredChartPoint.x / 300 * 100) : 0) + '%;'">
+                                        <span x-text="hoveredChartPoint ? (hoveredChartPoint.count + ' visite • ' + hoveredChartPoint.label) : ''"></span>
+                                    </div>
                                 </div>
                             </div>
 
-                            <!-- X Axis Days -->
+                            <!-- Dynamic X Axis Days / Dates -->
                             <div class="flex justify-between pl-7 pt-2 text-[11px] font-bold text-slate-400 dark:text-slate-500">
-                                <span>Lun</span>
-                                <span>Mar</span>
-                                <span>Mer</span>
-                                <span>Gio</span>
-                                <span>Ven</span>
-                                <span>Sab</span>
-                                <span>Dom</span>
+                                <template x-for="(pt, idx) in getVisitChartData().points" :key="idx">
+                                    <span class="text-center flex-1" x-text="pt.label"></span>
+                                </template>
                             </div>
                         </div>
 
-                        <!-- Bottom Legend with counts -->
+                        <!-- Bottom Legend with Real Counts for Timeframe -->
                         <div class="flex items-center justify-around pt-3 border-t border-slate-100 dark:border-slate-800/80 text-xs font-semibold text-slate-600 dark:text-slate-400">
                             <div class="flex items-center gap-1.5">
                                 <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
-                                <span>Fatti (<span x-text="calculateGlobalStats().green"></span>)</span>
+                                <span>Fatti (<span x-text="getVisitChartData().totalGreen"></span>)</span>
                             </div>
                             <div class="flex items-center gap-1.5">
                                 <span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span>
-                                <span>Assenti (<span x-text="calculateGlobalStats().red"></span>)</span>
+                                <span>Assenti (<span x-text="getVisitChartData().totalRed"></span>)</span>
                             </div>
                             <div class="flex items-center gap-1.5">
-                                <span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span>
-                                <span>Non visitati (<span x-text="calculateGlobalStats().neutral"></span>)</span>
+                                <span class="w-2.5 h-2.5 rounded-full bg-purple-500"></span>
+                                <span>Totali (<span x-text="getVisitChartData().totalVisits"></span>)</span>
                             </div>
                         </div>
                     </div>

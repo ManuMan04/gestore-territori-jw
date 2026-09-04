@@ -26,6 +26,17 @@ function territoryApp() {
         tutorialStep: 1,
         testedStates: { green: false, red: false, hole: false },
         isStandalone: false,
+        visitLogs: [],
+        statsTimeRange: '7d',
+        statsDropdownOpen: false,
+        timeRangeOptions: [
+            { id: '7d', label: 'Ultimi 7 giorni' },
+            { id: '14d', label: 'Ultimi 14 giorni' },
+            { id: '30d', label: 'Ultimi 30 giorni' },
+            { id: 'month', label: 'Questo mese' },
+            { id: 'all', label: 'Tutto il periodo' }
+        ],
+        hoveredChartPoint: null,
 
         initApp() {
             if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
@@ -40,6 +51,19 @@ function territoryApp() {
             const stored = localStorage.getItem('territories');
             if (stored) this.territories = JSON.parse(stored);
             this.$watch('territories', (val) => localStorage.setItem('territories', JSON.stringify(val)));
+
+            // Visit logs initialization
+            const storedLogs = localStorage.getItem('visitLogs');
+            if (storedLogs) {
+                try { this.visitLogs = JSON.parse(storedLogs); } catch(e) { this.visitLogs = []; }
+            } else {
+                this.visitLogs = [];
+            }
+            if (this.visitLogs.length === 0) {
+                this.seedInitialVisitLogs();
+            }
+            this.$watch('visitLogs', (val) => localStorage.setItem('visitLogs', JSON.stringify(val)));
+
             this.$watch('isDark', (val) => {
                 localStorage.theme = val ? 'dark' : 'light';
                 document.documentElement.classList.toggle('dark', val);
@@ -171,7 +195,17 @@ function territoryApp() {
             this.selectionMode = false;
         },
 
-        toggleTheme() { this.isDark = !this.isDark; },
+        toggleTheme() {
+            document.documentElement.classList.add('no-theme-transition');
+            this.isDark = !this.isDark;
+            localStorage.theme = this.isDark ? 'dark' : 'light';
+            document.documentElement.classList.toggle('dark', this.isDark);
+            window.requestAnimationFrame(() => {
+                setTimeout(() => {
+                    document.documentElement.classList.remove('no-theme-transition');
+                }, 50);
+            });
+        },
         getDateString() {
             const now = new Date();
             const days = ['Domenica', 'Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì', 'Sabato'];
@@ -329,8 +363,10 @@ function territoryApp() {
         },
         formatAppData() {
             localStorage.removeItem('territories');
+            localStorage.removeItem('visitLogs');
             localStorage.removeItem('tutorialSeen');
             this.territories = [];
+            this.visitLogs = [];
             this.activeTerritory = null;
             this.selectionMode = false;
             this.selectedUnits = [];
@@ -480,9 +516,11 @@ function territoryApp() {
                 } else if (unit.status === 0) {
                     // Click 1: Fatto (Green, 1)
                     unit.status = 1;
+                    this.logVisit(unit.id, addr ? addr.id : null, this.activeTerritory ? this.activeTerritory.id : null, 1);
                 } else if (unit.status === 1) {
                     // Click 2: Assente (Red, 2)
                     unit.status = 2;
+                    this.logVisit(unit.id, addr ? addr.id : null, this.activeTerritory ? this.activeTerritory.id : null, 2);
                 } else if (unit.status === 2) {
                     // Click 3: Spazio Vuoto (isHole: true)
                     unit.isHole = true;
@@ -553,6 +591,9 @@ function territoryApp() {
                         if (this.selectedUnits.includes(u.id)) {
                             u.isHole = false;
                             u.status = targetStatus;
+                            if (targetStatus === 1 || targetStatus === 2) {
+                                this.logVisit(u.id, a.id, this.activeTerritory.id, targetStatus);
+                            }
                         }
                     });
                 });
@@ -734,6 +775,215 @@ function territoryApp() {
                 inProgDash: `${inProgLen.toFixed(1)} ${circumference.toFixed(1)}`,
                 inProgOffset: (-compLen).toFixed(1),
                 empty: false
+            };
+        },
+
+        logVisit(unitId, addressId, territoryId, status) {
+            if (status === 1 || status === 2) {
+                const now = Date.now();
+                this.visitLogs.push({
+                    id: now.toString() + Math.random().toString(36).substr(2, 4),
+                    timestamp: now,
+                    status: status,
+                    unitId: unitId,
+                    addressId: addressId,
+                    territoryId: territoryId
+                });
+                if (this.visitLogs.length > 1000) {
+                    this.visitLogs = this.visitLogs.slice(-1000);
+                }
+            }
+        },
+
+        seedInitialVisitLogs() {
+            if (this.visitLogs && this.visitLogs.length > 0) return;
+            const now = Date.now();
+            const seeded = [];
+            if (this.territories) {
+                this.territories.forEach((t, tIdx) => {
+                    if (t.addresses) {
+                        t.addresses.forEach((a, aIdx) => {
+                            if (a.units) {
+                                a.units.forEach((u, uIdx) => {
+                                    if (u.status === 1 || u.status === 2) {
+                                        const offsetDays = (tIdx * 3 + aIdx * 2 + uIdx) % 6;
+                                        const ts = now - offsetDays * 86400000;
+                                        seeded.push({
+                                            id: Date.now().toString() + Math.random().toString(36).substr(2, 4),
+                                            timestamp: ts,
+                                            status: u.status,
+                                            unitId: u.id,
+                                            addressId: a.id,
+                                            territoryId: t.id
+                                        });
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
+            }
+            this.visitLogs = seeded;
+        },
+
+        getTimeRangeLabel(rangeId) {
+            const opt = this.timeRangeOptions.find(o => o.id === rangeId);
+            return opt ? opt.label : 'Ultimi 7 giorni';
+        },
+
+        getVisitChartData() {
+            const now = new Date();
+            let buckets = [];
+            const range = this.statsTimeRange || '7d';
+
+            if (range === '7d' || range === '14d') {
+                const numDays = range === '7d' ? 7 : 14;
+                const dayNames = ['Dom', 'Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab'];
+                for (let i = numDays - 1; i >= 0; i--) {
+                    const d = new Date();
+                    d.setDate(now.getDate() - i);
+                    d.setHours(0, 0, 0, 0);
+                    const nextD = new Date(d);
+                    nextD.setDate(d.getDate() + 1);
+
+                    const startTs = d.getTime();
+                    const endTs = nextD.getTime();
+
+                    const dayLogs = this.visitLogs.filter(l => l.timestamp >= startTs && l.timestamp < endTs);
+                    const green = dayLogs.filter(l => l.status === 1).length;
+                    const red = dayLogs.filter(l => l.status === 2).length;
+                    const count = dayLogs.length;
+
+                    buckets.push({
+                        date: d,
+                        label: dayNames[d.getDay()],
+                        fullDate: `${d.getDate()}/${d.getMonth() + 1}`,
+                        count,
+                        green,
+                        red
+                    });
+                }
+            } else if (range === '30d' || range === 'all') {
+                const numBuckets = 7;
+                const totalDays = 30;
+                const daysPerBucket = Math.ceil(totalDays / numBuckets);
+                for (let i = numBuckets - 1; i >= 0; i--) {
+                    const dStart = new Date();
+                    dStart.setDate(now.getDate() - (i + 1) * daysPerBucket);
+                    dStart.setHours(0, 0, 0, 0);
+                    const dEnd = new Date();
+                    dEnd.setDate(now.getDate() - i * daysPerBucket);
+                    dEnd.setHours(23, 59, 59, 999);
+
+                    const startTs = dStart.getTime();
+                    const endTs = dEnd.getTime();
+
+                    const bucketLogs = this.visitLogs.filter(l => l.timestamp >= startTs && l.timestamp <= endTs);
+                    buckets.push({
+                        label: `${dEnd.getDate()}/${dEnd.getMonth() + 1}`,
+                        fullDate: `${dStart.getDate()}/${dStart.getMonth() + 1} - ${dEnd.getDate()}/${dEnd.getMonth() + 1}`,
+                        count: bucketLogs.length,
+                        green: bucketLogs.filter(l => l.status === 1).length,
+                        red: bucketLogs.filter(l => l.status === 2).length
+                    });
+                }
+            } else if (range === 'month') {
+                const currentMonth = now.getMonth();
+                const currentYear = now.getFullYear();
+                const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+                const intervals = [
+                    { start: 1, end: 7, label: '1-7' },
+                    { start: 8, end: 14, label: '8-14' },
+                    { start: 15, end: 21, label: '15-21' },
+                    { start: 22, end: 28, label: '22-28' },
+                    { start: 29, end: daysInMonth, label: `29-${daysInMonth}` }
+                ];
+                intervals.forEach(inv => {
+                    const dStart = new Date(currentYear, currentMonth, inv.start, 0, 0, 0, 0);
+                    const dEnd = new Date(currentYear, currentMonth, inv.end, 23, 59, 59, 999);
+                    const startTs = dStart.getTime();
+                    const endTs = dEnd.getTime();
+                    const bucketLogs = this.visitLogs.filter(l => l.timestamp >= startTs && l.timestamp <= endTs);
+                    buckets.push({
+                        label: inv.label,
+                        fullDate: `${inv.label} ${now.toLocaleString('it-IT', { month: 'short' })}`,
+                        count: bucketLogs.length,
+                        green: bucketLogs.filter(l => l.status === 1).length,
+                        red: bucketLogs.filter(l => l.status === 2).length
+                    });
+                });
+            }
+
+            // Y Scale calculation
+            const maxCount = Math.max(...buckets.map(b => b.count), 0);
+            let yScaleMax = 10;
+            if (maxCount > 10) {
+                yScaleMax = Math.ceil(maxCount / 5) * 5;
+            }
+
+            const yLabels = [
+                yScaleMax,
+                (yScaleMax * 0.75) % 1 === 0 ? (yScaleMax * 0.75) : (yScaleMax * 0.75).toFixed(1),
+                (yScaleMax * 0.5) % 1 === 0 ? (yScaleMax * 0.5) : (yScaleMax * 0.5).toFixed(1),
+                (yScaleMax * 0.25) % 1 === 0 ? (yScaleMax * 0.25) : (yScaleMax * 0.25).toFixed(1),
+                0
+            ];
+
+            // SVG Coordinate generation (Viewbox: 0 0 300 120)
+            const N = buckets.length;
+            const xStart = 8;
+            const xEnd = 292;
+            const yTop = 15;
+            const yBase = 110;
+            const yHeight = yBase - yTop; // 95
+
+            const points = buckets.map((b, i) => {
+                const x = N === 1 ? 150 : xStart + (i / (N - 1)) * (xEnd - xStart);
+                const y = yScaleMax === 0 ? yBase : yBase - (b.count / yScaleMax) * yHeight;
+                return {
+                    x,
+                    y,
+                    count: b.count,
+                    green: b.green,
+                    red: b.red,
+                    label: b.label,
+                    fullDate: b.fullDate
+                };
+            });
+
+            // Curve Path Generation
+            let strokePath = '';
+            let areaPath = '';
+            if (points.length > 0) {
+                if (points.length === 1) {
+                    strokePath = `M ${points[0].x.toFixed(1)},${points[0].y.toFixed(1)}`;
+                } else {
+                    strokePath = `M ${points[0].x.toFixed(1)},${points[0].y.toFixed(1)}`;
+                    for (let i = 0; i < points.length - 1; i++) {
+                        const p0 = points[Math.max(0, i - 1)];
+                        const p1 = points[i];
+                        const p2 = points[i + 1];
+                        const p3 = points[Math.min(points.length - 1, i + 2)];
+                        const cp1x = p1.x + (p2.x - p0.x) / 6;
+                        const cp1y = p1.y + (p2.y - p0.y) / 6;
+                        const cp2x = p2.x - (p3.x - p1.x) / 6;
+                        const cp2y = p2.y - (p3.y - p1.y) / 6;
+                        strokePath += ` C ${cp1x.toFixed(1)},${cp1y.toFixed(1)} ${cp2x.toFixed(1)},${cp2y.toFixed(1)} ${p2.x.toFixed(1)},${p2.y.toFixed(1)}`;
+                    }
+                }
+                areaPath = `${strokePath} L ${points[points.length - 1].x.toFixed(1)},120 L ${points[0].x.toFixed(1)},120 Z`;
+            }
+
+            return {
+                buckets,
+                points,
+                strokePath,
+                areaPath,
+                yLabels,
+                yScaleMax,
+                totalVisits: buckets.reduce((s, b) => s + b.count, 0),
+                totalGreen: buckets.reduce((s, b) => s + b.green, 0),
+                totalRed: buckets.reduce((s, b) => s + b.red, 0)
             };
         },
 

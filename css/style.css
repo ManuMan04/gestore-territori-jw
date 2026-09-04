@@ -9,6 +9,14 @@ html.dark {
     background-color: #0b0f19;
 }
 
+/* Instant theme switch without staggered delay */
+.no-theme-transition,
+.no-theme-transition *,
+.no-theme-transition *::before,
+.no-theme-transition *::after {
+    transition: none !important;
+}
+
 /* Base Styles */
 body {
     height: 100%;
