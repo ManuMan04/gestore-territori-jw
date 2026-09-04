@@ -6,7 +6,8 @@ function territoryApp() {
         activeTerritory: null,
         selectionMode: false,
         selectedUnits: [],
-        modals: { newTerritory: false, newAddress: false, note: false, deleteConfirm: false, colorPickerId: null, tutorial: false, tutorialComplete: false, pwaGuide: false, resetConfirm: false },
+        modals: { newTerritory: false, newAddress: false, note: false, deleteConfirm: false, colorPickerId: null, tutorial: false, tutorialComplete: false, pwaGuide: false, resetConfirm: false, filterModal: false },
+        filters: { status: 'all', sortBy: 'name_asc', minUnits: 0, maxUnits: 100, hasNotesOnly: false, selectedColor: null },
         deleteState: { type: null, id: null, targetName: '' },
         forms: { territoryName: '', territoryColor: null, addressName: '', addressUnits: '', addressRows: '', addressCols: '', addressCreationMode: 'simple', customCols: [], noteText: '' },
         currentEditingUnit: null,
@@ -717,19 +718,82 @@ function territoryApp() {
                 return acc + a.units.filter(u => !u.isHole).length;
             }, 0);
         },
+        openFilterModal() {
+            this.modals.filterModal = true;
+        },
+        closeFilterModal() {
+            this.modals.filterModal = false;
+        },
+        resetFilters() {
+            this.filters = {
+                status: 'all',
+                sortBy: 'name_asc',
+                minUnits: 0,
+                maxUnits: 100,
+                hasNotesOnly: false,
+                selectedColor: null
+            };
+            this.filterType = 'all';
+        },
+        hasActiveFilters() {
+            return this.filters.status !== 'all' ||
+                   this.filters.sortBy !== 'name_asc' ||
+                   this.filters.minUnits > 0 ||
+                   this.filters.maxUnits < 100 ||
+                   this.filters.hasNotesOnly ||
+                   this.filters.selectedColor !== null;
+        },
+        getRecentActivities() {
+            if (!this.territories || this.territories.length === 0) return [];
+            return this.territories.slice(0, 5);
+        },
         getFilteredTerritories() {
             return this.territories.filter(t => {
-                const matchesSearch = t.name.toLowerCase().includes(this.searchQuery.toLowerCase());
-                if (!matchesSearch) return false;
+                if (this.searchQuery) {
+                    const matchesSearch = t.name.toLowerCase().includes(this.searchQuery.toLowerCase());
+                    if (!matchesSearch) return false;
+                }
 
                 const stats = this.calculateStats(t);
+                const totalUnits = stats.total;
                 const isCompleted = stats.percent === 100 && stats.total > 0;
                 const isInProgress = stats.percent > 0 && stats.percent < 100;
+                const isNotStarted = stats.percent === 0;
 
-                if (this.filterType === 'in_progress') return isInProgress;
-                if (this.filterType === 'completed') return isCompleted;
+                // Pill quick filter
+                if (this.filterType === 'in_progress' && !isInProgress) return false;
+                if (this.filterType === 'completed' && !isCompleted) return false;
+
+                // Modal status filter
+                if (this.filters.status === 'in_progress' && !isInProgress) return false;
+                if (this.filters.status === 'completed' && !isCompleted) return false;
+                if (this.filters.status === 'not_started' && !isNotStarted) return false;
+
+                // Units range filter
+                if (totalUnits < this.filters.minUnits) return false;
+                if (this.filters.maxUnits < 100 && totalUnits > this.filters.maxUnits) return false;
+
+                // Color filter
+                if (this.filters.selectedColor && t.color !== this.filters.selectedColor) return false;
+
+                // Notes only filter
+                if (this.filters.hasNotesOnly) {
+                    const hasNote = t.addresses && t.addresses.some(a => a.units && a.units.some(u => u.note && u.note.trim().length > 0));
+                    if (!hasNote) return false;
+                }
 
                 return true;
+            }).sort((a, b) => {
+                const statsA = this.calculateStats(a);
+                const statsB = this.calculateStats(b);
+
+                if (this.filters.sortBy === 'name_asc') return a.name.localeCompare(b.name);
+                if (this.filters.sortBy === 'name_desc') return b.name.localeCompare(a.name);
+                if (this.filters.sortBy === 'percent_desc') return statsB.percent - statsA.percent;
+                if (this.filters.sortBy === 'percent_asc') return statsA.percent - statsB.percent;
+                if (this.filters.sortBy === 'units_desc') return statsB.total - statsA.total;
+                if (this.filters.sortBy === 'units_asc') return statsA.total - statsB.total;
+                return 0;
             });
         }
     }
